@@ -116,14 +116,6 @@ public class LogMonitoringRule {
         this.createdDate = createdDate;
     }
 
-    public Date getLastAlertTime() {
-        return lastAlertTime;
-    }
-
-    public void setLastAlertTime(Date lastAlertTime) {
-        this.lastAlertTime = lastAlertTime;
-    }
-
     @Override
     public String toString() {
         return "LogMonitoringRule{" +
@@ -138,7 +130,6 @@ public class LogMonitoringRule {
                 ", logPatterns=" + logPatterns +
                 ", createdBy='" + createdBy + '\'' +
                 ", createdDate=" + createdDate +
-                ", lastAlertTime=" + lastAlertTime +
                 '}';
     }
 }

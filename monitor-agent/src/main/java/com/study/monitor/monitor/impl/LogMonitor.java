@@ -2,6 +2,7 @@ package com.study.monitor.monitor.impl;
 
 import com.study.monitor.domain.LogMonitoringRule;
 import com.study.monitor.dto.MonitorRulesDTO;
+import com.study.monitor.dto.ServerRulesDTO;
 import com.study.monitor.monitor.Monitor;
 import com.study.monitor.util.LevenshteinUtil;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -26,18 +28,22 @@ public class LogMonitor implements Monitor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessMonitor.class);
 
-    private final MonitorRulesDTO monitorRulesDTO;
-    private final Integer coolDownTimeInMinutes;
+    private final ServerRulesDTO serverRulesDTO;
+    private final Duration coolDownTime;
+    private final Duration monitoringInterval;
 
     @Autowired
-    public LogMonitor(MonitorRulesDTO monitorRulesDTO, @Value("${monitor.log.alert.cool-down-time-in-minutes}") Integer coolDownTimeInMinutes) {
-        this.monitorRulesDTO = monitorRulesDTO;
-        this.coolDownTimeInMinutes = coolDownTimeInMinutes;
+    public LogMonitor(ServerRulesDTO serverRulesDTO,
+                      @Value("${monitor.log.alert.cool-down-time}") Duration coolDownTime,
+                      @Value("${monitor.log.monitoring.interval}") Duration monitoringInterval) {
+        this.serverRulesDTO = serverRulesDTO;
+        this.coolDownTime = coolDownTime;
+        this.monitoringInterval = monitoringInterval;
     }
 
     @Override
     public void monitor() {
-        List<LogMonitoringRule> ruleList = monitorRulesDTO.getLogMonitoringRuleList();
+        List<LogMonitoringRule> ruleList = serverRulesDTO.getLogMonitoringRuleList();
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         ruleList.forEach(rule -> {
             Path logFile = Path.of(rule.getLogFilePath());
@@ -52,7 +58,7 @@ public class LogMonitor implements Monitor {
             Map<String, Date> logToLastAlertTimeMap = new HashMap<>();
             executorService.scheduleAtFixedRate(() -> {
                 // Remove expired logs
-                logToLastAlertTimeMap.entrySet().removeIf(entry -> entry.getValue().getTime() + (coolDownTimeInMinutes * 60 * 1000) < System.currentTimeMillis());
+                logToLastAlertTimeMap.entrySet().removeIf(entry -> entry.getValue().getTime() + coolDownTime.toMillis() < System.currentTimeMillis());
                 try {
                     long linesToSkip = Math.max(0, finalLastLineCount.get());
                     AtomicBoolean matchPattern = new AtomicBoolean(false);
@@ -88,9 +94,9 @@ public class LogMonitor implements Monitor {
                                 }).findFirst();
                                 if (matchLogEntryOpt.isPresent()) { // similar log exists, ignore send alert
                                     String baselineLog = matchLogEntryOpt.get().getKey();
-                                    LOGGER.warn(">>>>> Not first time met the log in {} minutes alert cool down  time window, ignore sending alert.\n>>>>>>>>>>>>>>> baselineLog: {}\n>>>>>>>>>>>>>>> matchedLog:{}", coolDownTimeInMinutes, baselineLog, matchedLog);
+                                    LOGGER.debug(">>>>> Not first time met the log in {} minutes alert cool down  time window, ignore sending alert.\n>>>>>>>>>>>>>>> baselineLog: {}\n>>>>>>>>>>>>>>> matchedLog:{}", coolDownTime.toMinutes(), baselineLog, matchedLog);
                                 } else { // not similar log exist
-                                    LOGGER.warn(">>>>> No similar log met before in {} minutes alert cool down time window.\n>>>>>>>>>>>>>>> matchPattern: {}\n>>>>>>>>>>>>>>> matchedLog: {}", coolDownTimeInMinutes, matchPattern.get(), matchedLog);
+                                    LOGGER.warn(">>>>> No similar log met in {} minutes alert cool down time window.\n>>>>>>>>>>>>>>> matchPattern: {}\n>>>>>>>>>>>>>>> matchedLog: {}", coolDownTime.toMinutes(), matchPattern.get(), matchedLog);
                                     Date currentTime = new Date();
                                     logToLastAlertTimeMap.put(matchedLog, currentTime);
                                     sendAlert(rule, matchedLog);
@@ -101,12 +107,12 @@ public class LogMonitor implements Monitor {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }, 0, 5, TimeUnit.SECONDS);
+            }, 0, monitoringInterval.toMillis(), TimeUnit.MILLISECONDS);
 
         });
     }
 
     private void sendAlert(LogMonitoringRule rule, String matchedLog) {
-        LOGGER.error(">>>>> xMatters\n<<<<<<<<<<<< matchedLog: {}", matchedLog);
+        LOGGER.error(">>>>> xMatters\n<<<<<<<<<<<< Content: {}", matchedLog);
     }
 }

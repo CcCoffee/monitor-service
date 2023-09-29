@@ -5,36 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c06b8968-018b-40ed-8dd1-70e4e90cc5aa" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-agent/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/MonitorAgentApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/accessor/MonitorCenterResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/config/MonitorConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/controller/LogController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/domain/LogMonitoringRule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/domain/ProcessMonitoringRule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/dto/MonitorRulesDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/monitor/Monitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/monitor/impl/LogMonitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/monitor/impl/ProcessMonitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/resources/application.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-agent/src/test/java/com/study/monitor/MonitorAgentApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/MonitorCenterApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/RuleController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/dto/MonitorRulesDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/entity/LogMonitoringRuleEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/entity/ProcessMonitoringRuleEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/MonitorRuleService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/MonitorRuleServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/application.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/test/java/com/study/monitor/MonitorCenterApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/domain/Server.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/dto/ServerRulesDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/util/HttpUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/dto/ServerRulesDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/entity/ServerEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/config/MonitorConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/config/MonitorConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/domain/LogMonitoringRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/domain/LogMonitoringRule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/dto/MonitorRulesDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/dto/MonitorRulesDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/monitor/impl/LogMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/monitor/impl/LogMonitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/monitor/impl/ProcessMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/monitor/impl/ProcessMonitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/dto/MonitorRulesDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/dto/MonitorRulesDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/entity/LogMonitoringRuleEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/entity/LogMonitoringRuleEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/MonitorRuleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/MonitorRuleServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,8 +30,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -64,13 +50,14 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "jdk.selected.JAVA_MODULE": "19 (2)",
-    "last_opened_file_path": "C:/Users/Administrator/Documents/github/monitor-service/monitor-center/src/main/java/com/study/monitor/entity"
+    "last_opened_file_path": "C:/Users/Administrator/Documents/github/monitor-service/monitor-agent/src/main/java/com/study/monitor/dto"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Documents\github\monitor-service\monitor-agent\src\main\java\com\study\monitor\dto" />
       <recent name="C:\Users\Administrator\Documents\github\monitor-service\monitor-center\src\main\java\com\study\monitor\entity" />
       <recent name="C:\Users\Administrator\Documents\github\monitor-service\monitor-center\src\main\java\com\study\monitor" />
       <recent name="C:\Users\Administrator\Documents\github\monitor-service\monitor-api\src\main\java\com\study\monitor\model" />
@@ -87,7 +74,20 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Application.MonitorCenterApplication">
+  <component name="RunManager" selected="Application.HttpUtil">
+    <configuration name="HttpUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.study.monitor.util.HttpUtil" />
+      <module name="monitor-agent" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.study.monitor.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MonitorAgentApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.study.monitor.MonitorAgentApplication" />
       <module name="monitor-agent" />
@@ -114,10 +114,52 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="LevenshteinTest.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="monitor-agent" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.study.monitor.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.study.monitor" />
+      <option name="MAIN_CLASS_NAME" value="com.study.monitor.LevenshteinTest" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TFIDFTextSimilarityTest.testCalculateSimilarity" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="monitor-agent" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.study.monitor.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.study.monitor" />
+      <option name="MAIN_CLASS_NAME" value="com.study.monitor.TFIDFTextSimilarityTest" />
+      <option name="METHOD_NAME" value="testCalculateSimilarity" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.HttpUtil" />
+      <item itemvalue="Application.MonitorAgentApplication" />
+      <item itemvalue="Application.MonitorCenterApplication" />
+      <item itemvalue="JUnit.LevenshteinTest.test" />
+      <item itemvalue="JUnit.TFIDFTextSimilarityTest.testCalculateSimilarity" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.MonitorAgentApplication" />
+        <item itemvalue="Application.HttpUtil" />
         <item itemvalue="Application.MonitorCenterApplication" />
+        <item itemvalue="JUnit.LevenshteinTest.test" />
+        <item itemvalue="JUnit.TFIDFTextSimilarityTest.testCalculateSimilarity" />
       </list>
     </recent_temporary>
   </component>
@@ -131,5 +173,16 @@
       <updated>1695907989173</updated>
     </task>
     <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/config/MonitorConfig.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

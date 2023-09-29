@@ -9,22 +9,13 @@ import java.util.List;
 
 public class MonitorRulesDTO {
 
-    private List<LogMonitoringRuleEntity> logMonitoringRuleEntityList = new ArrayList<>();
-    private List<ProcessMonitoringRuleEntity> processMonitoringRuleEntityList = new ArrayList<>();
+    private List<ServerRulesDTO> serverRulesDTOList;
 
-    public List<LogMonitoringRuleEntity> getLogMonitoringRuleList() {
-        return logMonitoringRuleEntityList;
+    public List<ServerRulesDTO> getServerRulesDTOList() {
+        return serverRulesDTOList;
     }
 
-    public void setLogMonitoringRuleList(List<LogMonitoringRuleEntity> logMonitoringRuleEntityList) {
-        this.logMonitoringRuleEntityList = logMonitoringRuleEntityList;
-    }
-
-    public List<ProcessMonitoringRuleEntity> getProcessMonitoringRuleList() {
-        return processMonitoringRuleEntityList;
-    }
-
-    public void setProcessMonitoringRuleList(List<ProcessMonitoringRuleEntity> processMonitoringRuleEntityList) {
-        this.processMonitoringRuleEntityList = processMonitoringRuleEntityList;
+    public void setServerRulesDTOList(List<ServerRulesDTO> serverRulesDTOList) {
+        this.serverRulesDTOList = serverRulesDTOList;
     }
 }

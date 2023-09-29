@@ -19,7 +19,6 @@
   <modules>
     <module>monitor-center</module>
     <module>monitor-agent</module>
-    <module>monitor-api</module>
   </modules>
 
   <properties>

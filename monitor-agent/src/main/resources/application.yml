@@ -26,10 +26,15 @@ spring:
       enabled: always
 monitor:
   rule:
-    fetch-interval-in-minutes: 10
+    fetch:
+      interval: 10m
   log:
     alert:
-      cool-down-time-in-minutes: 5
+      cool-down-time: 1m
+    monitoring:
+      interval: 5s
   process:
     alert:
-      cool-down-time-in-minutes: 10
+      cool-down-time: 10m
+    monitoring:
+      interval: 5s

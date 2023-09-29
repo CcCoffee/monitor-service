@@ -26,7 +26,6 @@ public class LogMonitoringRuleEntity {
     private String createdBy;
     // 监控规则的创建时间戳
     private Date createdDate;
-    private Date lastAlertTime;
 
     public Integer getId() {
         return id;
@@ -114,13 +113,5 @@ public class LogMonitoringRuleEntity {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
-    }
-
-    public Date getLastAlertTime() {
-        return lastAlertTime;
-    }
-
-    public void setLastAlertTime(Date lastAlertTime) {
-        this.lastAlertTime = lastAlertTime;
     }
 }
