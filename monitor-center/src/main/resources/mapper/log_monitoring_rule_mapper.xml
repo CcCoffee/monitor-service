@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.monitor.mapper.LogMonitoringRuleMapper">
+
+    <resultMap id="BaseResultMap" type="com.study.monitor.entity.LogMonitoringRuleEntity">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="description" property="description" />
+        <result column="enabled" property="enabled" />
+        <result column="threshold" property="threshold" />
+        <result column="interval" property="interval" />
+        <result column="notification_recipients" property="notificationRecipients" typeHandler="com.study.monitor.handler.PgArrayStringTypeHandler" jdbcType="ARRAY"/>
+        <result column="log_file_path" property="logFilePath" />
+        <result column="log_patterns" property="logPatterns" typeHandler="com.study.monitor.handler.PgArrayStringTypeHandler" jdbcType="ARRAY"/>
+        <result column="created_by" property="createdBy" />
+        <result column="updated_by" property="updatedBy" />
+        <result column="create_date" property="createDate" />
+        <result column="update_date" property="updateDate" />
+    </resultMap>
+
+    <insert id="insert" parameterType="com.study.monitor.entity.LogMonitoringRuleEntity">
+        INSERT INTO log_monitoring_rule (name, description, enabled, threshold, interval, notification_recipients, log_file_path, log_patterns, created_by, updated_by, create_date, update_date)
+        VALUES (#{name}, #{description}, #{enabled}, #{threshold}, #{interval}, #{notificationRecipients,jdbcType=ARRAY,typeHandler=com.study.monitor.handler.PgArrayStringTypeHandler}, 
+        #{logFilePath}, #{logPatterns,jdbcType=ARRAY,typeHandler=com.study.monitor.handler.PgArrayStringTypeHandler}, #{createdBy}, #{updatedBy}, #{createDate}, #{updateDate})
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="Integer">
+        SELECT * FROM log_monitoring_rule WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.study.monitor.entity.LogMonitoringRuleEntity">
+        UPDATE log_monitoring_rule
+        SET name = #{name}, description = #{description}, enabled = #{enabled}, threshold = #{threshold}, interval = #{interval},
+            notification_recipients = #{notificationRecipients,jdbcType=ARRAY,typeHandler=com.study.monitor.handler.PgArrayStringTypeHandler}, log_file_path = #{logFilePath}, 
+            log_patterns = #{logPatterns,jdbcType=ARRAY,typeHandler=com.study.monitor.handler.PgArrayStringTypeHandler},
+            created_by = #{createdBy}, updated_by = #{updatedBy}, create_date = #{createDate}, update_date = #{updateDate}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        DELETE FROM log_monitoring_rule WHERE id = #{id}
+    </delete>
+
+</mapper>

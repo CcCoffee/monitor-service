@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.monitor.mapper.ServerMapper">
+
+    <resultMap id="BaseResultMap" type="com.study.monitor.entity.ServerEntity">
+        <id column="id" property="id" />
+        <result column="server_name" property="serverName" />
+        <result column="hostname" property="hostname" />
+        <result column="description" property="description" />
+        <result column="created_by" property="createdBy" />
+        <result column="updated_by" property="updatedBy" />
+        <result column="create_date" property="createDate" />
+        <result column="update_date" property="updateDate" />
+    </resultMap>
+
+    <resultMap id="ServerRulesResultMap" type="com.study.monitor.dto.ServerRulesDTO">
+        <association property="server" column="id" javaType="com.study.monitor.entity.ServerEntity" resultMap="BaseResultMap"/>
+        <collection property="logMonitoringRuleList" ofType="com.study.monitor.entity.LogMonitoringRuleEntity">
+            <id column="l_id" property="id" />
+            <result column="l_name" property="name" />
+            <result column="l_description" property="description" />
+            <result column="l_enabled" property="enabled" />
+            <result column="l_threshold" property="threshold" />
+            <result column="l_interval" property="interval" />
+            <result column="l_notification_recipients" property="notificationRecipients" typeHandler="com.study.monitor.handler.PgArrayStringTypeHandler" jdbcType="ARRAY"/>
+            <result column="l_log_file_path" property="logFilePath" />
+            <result column="l_log_patterns" property="logPatterns" typeHandler="com.study.monitor.handler.PgArrayStringTypeHandler" jdbcType="ARRAY"/>
+            <result column="l_created_by" property="createdBy" />
+            <result column="l_updated_by" property="updatedBy" />
+            <result column="l_create_date" property="createDate" />
+            <result column="l_update_date" property="updateDate" />
+        </collection>
+        <collection property="processMonitoringRuleList" ofType="com.study.monitor.entity.ProcessMonitoringRuleEntity">
+            <id column="p_id" property="id" />
+            <!-- Add other fields of ProcessMonitoringRule here -->
+            <result column="p_name" property="name" />
+            <result column="p_description" property="description" />
+            <result column="p_enabled" property="enabled" />
+            <result column="p_threshold" property="threshold" />
+            <result column="p_interval" property="interval" />
+            <result column="p_notification_recipients" property="notificationRecipients" typeHandler="com.study.monitor.handler.PgArrayStringTypeHandler" jdbcType="ARRAY"/>
+            <result column="p_process_name_regex" property="processNameRegex" />
+            <result column="p_created_by" property="createdBy" />
+            <result column="p_updated_by" property="updatedBy" />
+            <result column="p_create_date" property="createDate" />
+            <result column="p_update_date" property="updateDate" />
+        </collection>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.study.monitor.entity.ServerEntity">
+        INSERT INTO server (server_name, hostname, description, created_by, updated_by, create_date, update_date)
+        VALUES (#{serverName}, #{hostname}, #{description}, #{createdBy}, #{updatedBy}, #{createDate}, #{updateDate})
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="Integer">
+        SELECT * FROM server WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.study.monitor.entity.ServerEntity">
+        UPDATE server
+        SET server_name = #{serverName}, hostname = #{hostname}, description = #{description},
+        created_by = #{createdBy}, updated_by = #{updatedBy}, create_date = #{createDate}, update_date = #{updateDate}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        DELETE FROM server WHERE id = #{id}
+    </delete>
+    <sql id="serverFields">
+        s.id, s.server_name, s.hostname, s.description, s.created_by, s.updated_by, s.create_date, s.update_date
+    </sql>
+
+    <sql id="logMonitoringRuleFields">
+        l.id AS "l_id", l.name AS "l_name", l.description AS "l_description", l.enabled AS "l_enabled", l.threshold AS "l_threshold",
+        l.interval AS "l_interval", l.notification_recipients AS "l_notification_recipients", l.log_file_path AS "l_log_file_path",
+        l.log_patterns AS "l_log_patterns", l.created_by AS "l_created_by", l.updated_by AS "l_updated_by",
+        l.create_date AS "l_create_date", l.update_date AS "l_update_date"
+    </sql>
+
+    <sql id="processMonitoringRuleFields">
+        p.id AS "p_id", p.name AS "p_name", p.description AS "p_description", p.enabled AS "p_enabled", p.threshold AS "p_threshold",
+        p.interval AS "p_interval", p.notification_recipients AS "p_notification_recipients", p.process_name_regex AS "p_process_name_regex",
+        p.created_by AS "p_created_by", p.updated_by AS "p_updated_by", p.create_date AS "p_create_date", p.update_date AS "p_update_date"
+    </sql>
+
+    <select id="selectServerRules" resultMap="ServerRulesResultMap">
+        SELECT
+        <include refid="serverFields" />,
+        <include refid="logMonitoringRuleFields" />,
+        <include refid="processMonitoringRuleFields" />
+        FROM server s
+        LEFT JOIN server_log_monitoring_rule sl ON s.id = sl.server_id
+        LEFT JOIN log_monitoring_rule l ON sl.log_monitoring_rule_id = l.id
+        LEFT JOIN server_process_monitoring_rule sp ON s.id = sp.server_id
+        LEFT JOIN process_monitoring_rule p ON sp.process_monitoring_rule_id = p.id
+    </select>
+
+</mapper>

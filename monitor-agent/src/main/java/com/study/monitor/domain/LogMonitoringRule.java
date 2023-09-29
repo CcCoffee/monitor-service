@@ -23,10 +23,12 @@ public class LogMonitoringRule {
     // 要监控的日志规则
     private List<String> logPatterns;
     // 创建该监控规则的用户或系统的标识符。
+    // 创建该监控规则的用户或系统的标识符。
     private String createdBy;
+    private String updatedBy;
     // 监控规则的创建时间戳
-    private Date createdDate;
-    private Date lastAlertTime;
+    private Date createDate;
+    private Date updateDate;
 
     public Integer getId() {
         return id;
@@ -108,12 +110,28 @@ public class LogMonitoringRule {
         this.createdBy = createdBy;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
+    public String getUpdatedBy() {
+        return updatedBy;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
     @Override
@@ -129,7 +147,9 @@ public class LogMonitoringRule {
                 ", logFilePath='" + logFilePath + '\'' +
                 ", logPatterns=" + logPatterns +
                 ", createdBy='" + createdBy + '\'' +
-                ", createdDate=" + createdDate +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", createDate=" + createDate +
+                ", updateDate=" + updateDate +
                 '}';
     }
 }

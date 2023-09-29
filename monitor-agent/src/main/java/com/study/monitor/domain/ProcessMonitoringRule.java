@@ -22,8 +22,10 @@ public class ProcessMonitoringRule {
     private String processNameRegex;
     // 创建该监控规则的用户或系统的标识符。
     private String createdBy;
+    private String updatedBy;
     // 监控规则的创建时间戳
-    private Date createdDate;
+    private Date createDate;
+    private Date updateDate;
     private Date lastAlertTime;
 
     public Integer getId() {
@@ -98,12 +100,28 @@ public class ProcessMonitoringRule {
         this.createdBy = createdBy;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
+    public String getUpdatedBy() {
+        return updatedBy;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
     public Date getLastAlertTime() {
@@ -126,7 +144,9 @@ public class ProcessMonitoringRule {
                 ", notificationRecipients=" + notificationRecipients +
                 ", processNameRegex='" + processNameRegex + '\'' +
                 ", createdBy='" + createdBy + '\'' +
-                ", createdDate=" + createdDate +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", createDate=" + createDate +
+                ", updateDate=" + updateDate +
                 ", lastAlertTime=" + lastAlertTime +
                 '}';
     }

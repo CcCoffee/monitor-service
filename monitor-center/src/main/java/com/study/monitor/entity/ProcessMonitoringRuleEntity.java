@@ -1,10 +1,17 @@
 package com.study.monitor.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.util.Date;
 import java.util.List;
 
+@TableName("process_monitoring_rule")
 public class ProcessMonitoringRuleEntity {
 
+    @TableId(type = IdType.AUTO)
     private Integer id;
     // 监控规则的名称或标识符
     private String name;
@@ -22,8 +29,11 @@ public class ProcessMonitoringRuleEntity {
     private String processNameRegex;
     // 创建该监控规则的用户或系统的标识符。
     private String createdBy;
+    private String updatedBy;
     // 监控规则的创建时间戳
-    private Date createdDate;
+    private Date createDate;
+    private Date updateDate;
+    @TableField(exist = false)
     private Date lastAlertTime;
 
     public Integer getId() {
@@ -98,12 +108,28 @@ public class ProcessMonitoringRuleEntity {
         this.createdBy = createdBy;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
+    public String getUpdatedBy() {
+        return updatedBy;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
     public Date getLastAlertTime() {
