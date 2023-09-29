@@ -19,6 +19,7 @@
   <modules>
     <module>monitor-center</module>
     <module>monitor-agent</module>
+      <module>monitor-discovery-service</module>
   </modules>
 
   <properties>
