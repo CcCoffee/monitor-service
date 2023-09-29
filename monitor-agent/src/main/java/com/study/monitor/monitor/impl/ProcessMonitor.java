@@ -5,6 +5,8 @@ import com.study.monitor.domain.ProcessMonitoringRule;
 import com.study.monitor.monitor.Monitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +25,12 @@ public class ProcessMonitor implements Monitor {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessMonitor.class);
 
     private final MonitorRulesDTO monitorRulesDTO;
+    private final Integer coolDownTimeInMinutes;
 
-    public ProcessMonitor(MonitorRulesDTO monitorRulesDTO){
+    @Autowired
+    public ProcessMonitor(MonitorRulesDTO monitorRulesDTO, @Value("${monitor.process.alert.cool-down-time-in-minutes}") Integer coolDownTimeInMinutes){
         this.monitorRulesDTO = monitorRulesDTO;
+        this.coolDownTimeInMinutes = coolDownTimeInMinutes;
     }
 
     @Override
@@ -62,10 +67,12 @@ public class ProcessMonitor implements Monitor {
                         LOGGER.warn("Process not found, sending alert...");
                         // Check if enough time has passed since the last alert
                         Date currentTime = new Date();
-                        if (rule.getLastAlertTime() == null || currentTime.getTime() - rule.getLastAlertTime().getTime() >= 10 * 60 * 1000) {
+                        if (rule.getLastAlertTime() == null || currentTime.getTime() - rule.getLastAlertTime().getTime() >= coolDownTimeInMinutes * 60 * 1000) {
                             // Enough time has passed, trigger the alert
                             rule.setLastAlertTime(currentTime);
                             sendAlert(rule); // Add your alert logic here
+                        } else {
+                            LOGGER.warn("Process not found, but still in cool time down, ignore sending alert...");
                         }
                     }
                 } catch (IOException e) {

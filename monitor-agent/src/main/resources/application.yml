@@ -21,6 +21,15 @@ eureka:
 spring:
   application:
     name: monitor-agent
+  output:
+    ansi:
+      enabled: always
 monitor:
   rule:
     fetch-interval-in-minutes: 10
+  log:
+    alert:
+      cool-down-time-in-minutes: 5
+  process:
+    alert:
+      cool-down-time-in-minutes: 10
