@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -36,16 +37,16 @@ public class MonitorConfig {
 
     @Bean
     public ServerRulesDTO serverRules() {
-        AtomicReference<MonitorRulesDTO> monitorRulesDTORef = new AtomicReference<>(resource.fetchMonitorRules());
+        AtomicReference<List<ServerRulesDTO>> monitorRulesDTOListRef = new AtomicReference<>(resource.fetchMonitorRules());
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> {
             LOGGER.info("Fetch monitor rules from monitor-center...");
-            monitorRulesDTORef.set(resource.fetchMonitorRules());
+            monitorRulesDTOListRef.set(resource.fetchMonitorRules());
         }, 0, ruleFetchInterval.toMillis(), TimeUnit.MILLISECONDS);
-        MonitorRulesDTO monitorRulesDTO = monitorRulesDTORef.get();
-        if (monitorRulesDTO != null && monitorRulesDTO.getServerRulesDTOList() != null){
-            return monitorRulesDTO.getServerRulesDTOList().stream()
-                    .filter(serverRulesDTO -> serverRulesDTO.getServer().getHostname().equalsIgnoreCase(HttpUtil.getCurrentHostname()))
+        List<ServerRulesDTO> monitorRulesDTOList = monitorRulesDTOListRef.get();
+        if (monitorRulesDTOList != null && !monitorRulesDTOList.isEmpty()){
+            return monitorRulesDTOList.stream()
+                    .filter(serverRulesDTO -> serverRulesDTO.getHostname().equalsIgnoreCase(HttpUtil.getCurrentHostname()))
                     .findFirst().orElseThrow(()->{
                         return new IllegalArgumentException("No current server config");
                     });

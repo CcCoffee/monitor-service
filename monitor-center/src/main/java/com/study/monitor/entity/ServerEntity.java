@@ -1,10 +1,12 @@
 package com.study.monitor.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.util.Date;
+import java.util.List;
 
 @TableName("server")
 public class ServerEntity {
@@ -18,6 +20,8 @@ public class ServerEntity {
     private String updatedBy;
     private Date createDate;
     private Date updateDate;
+    @TableField(exist = false)
+    private List<MonitoringRuleEntity> monitoringRuleList;
 
     public Integer getId() {
         return id;
@@ -81,6 +85,14 @@ public class ServerEntity {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public List<MonitoringRuleEntity> getMonitoringRuleList() {
+        return monitoringRuleList;
+    }
+
+    public void setMonitoringRuleList(List<MonitoringRuleEntity> monitoringRuleList) {
+        this.monitoringRuleList = monitoringRuleList;
     }
 }
 

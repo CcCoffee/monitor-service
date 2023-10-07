@@ -12,39 +12,22 @@
         <result column="updated_by" property="updatedBy" />
         <result column="create_date" property="createDate" />
         <result column="update_date" property="updateDate" />
-    </resultMap>
-
-    <resultMap id="ServerRulesResultMap" type="com.study.monitor.dto.ServerRulesDTO">
-        <association property="server" column="id" javaType="com.study.monitor.entity.ServerEntity" resultMap="BaseResultMap"/>
-        <collection property="logMonitoringRuleList" ofType="com.study.monitor.entity.LogMonitoringRuleEntity">
-            <id column="l_id" property="id" />
-            <result column="l_name" property="name" />
-            <result column="l_description" property="description" />
-            <result column="l_enabled" property="enabled" />
-            <result column="l_threshold" property="threshold" />
-            <result column="l_interval" property="interval" />
-            <result column="l_notification_recipients" property="notificationRecipients" typeHandler="com.study.monitor.handler.PgArrayStringTypeHandler" jdbcType="ARRAY"/>
-            <result column="l_log_file_path" property="logFilePath" />
-            <result column="l_log_patterns" property="logPatterns" typeHandler="com.study.monitor.handler.PgArrayStringTypeHandler" jdbcType="ARRAY"/>
-            <result column="l_created_by" property="createdBy" />
-            <result column="l_updated_by" property="updatedBy" />
-            <result column="l_create_date" property="createDate" />
-            <result column="l_update_date" property="updateDate" />
-        </collection>
-        <collection property="processMonitoringRuleList" ofType="com.study.monitor.entity.ProcessMonitoringRuleEntity">
-            <id column="p_id" property="id" />
-            <!-- Add other fields of ProcessMonitoringRule here -->
-            <result column="p_name" property="name" />
-            <result column="p_description" property="description" />
-            <result column="p_enabled" property="enabled" />
-            <result column="p_threshold" property="threshold" />
-            <result column="p_interval" property="interval" />
-            <result column="p_notification_recipients" property="notificationRecipients" typeHandler="com.study.monitor.handler.PgArrayStringTypeHandler" jdbcType="ARRAY"/>
-            <result column="p_process_name_regex" property="processNameRegex" />
-            <result column="p_created_by" property="createdBy" />
-            <result column="p_updated_by" property="updatedBy" />
-            <result column="p_create_date" property="createDate" />
-            <result column="p_update_date" property="updateDate" />
+        <collection property="monitoringRuleList" ofType="com.study.monitor.entity.MonitoringRuleEntity">
+            <id column="m_id" property="id" />
+            <result column="m_name" property="name" />
+            <result column="m_type" property="type" />
+            <result column="m_description" property="description" />
+            <result column="m_enabled" property="enabled" />
+            <result column="m_threshold" property="threshold" />
+            <result column="m_interval" property="interval" />
+            <result column="m_notification_recipients" property="notificationRecipients" typeHandler="com.study.monitor.handler.PgArrayStringTypeHandler" jdbcType="ARRAY"/>
+            <result column="m_process_name_regex" property="processNameRegex" />
+            <result column="m_log_file_path" property="logFilePath" />
+            <result column="m_log_patterns" property="logPatterns" typeHandler="com.study.monitor.handler.PgArrayStringTypeHandler" jdbcType="ARRAY"/>
+            <result column="m_created_by" property="createdBy" />
+            <result column="m_updated_by" property="updatedBy" />
+            <result column="m_create_date" property="createDate" />
+            <result column="m_update_date" property="updateDate" />
         </collection>
     </resultMap>
 
@@ -71,29 +54,20 @@
         s.id, s.server_name, s.hostname, s.description, s.created_by, s.updated_by, s.create_date, s.update_date
     </sql>
 
-    <sql id="logMonitoringRuleFields">
-        l.id AS "l_id", l.name AS "l_name", l.description AS "l_description", l.enabled AS "l_enabled", l.threshold AS "l_threshold",
-        l.interval AS "l_interval", l.notification_recipients AS "l_notification_recipients", l.log_file_path AS "l_log_file_path",
-        l.log_patterns AS "l_log_patterns", l.created_by AS "l_created_by", l.updated_by AS "l_updated_by",
-        l.create_date AS "l_create_date", l.update_date AS "l_update_date"
+    <sql id="monitoringRuleFields">
+        m.id AS "m_id", m.name AS "m_name", m.type AS "m_type", m.description AS "m_description", m.enabled AS "m_enabled", m.threshold AS "m_threshold",
+        m.interval AS "m_interval", m.notification_recipients AS "m_notification_recipients", m.process_name_regex AS "m_process_name_regex",
+        m.log_file_path AS "m_log_file_path", m.log_patterns AS "m_log_patterns",
+        m.created_by AS "m_created_by", m.updated_by AS "m_updated_by", m.create_date AS "m_create_date", m.update_date AS "m_update_date"
     </sql>
 
-    <sql id="processMonitoringRuleFields">
-        p.id AS "p_id", p.name AS "p_name", p.description AS "p_description", p.enabled AS "p_enabled", p.threshold AS "p_threshold",
-        p.interval AS "p_interval", p.notification_recipients AS "p_notification_recipients", p.process_name_regex AS "p_process_name_regex",
-        p.created_by AS "p_created_by", p.updated_by AS "p_updated_by", p.create_date AS "p_create_date", p.update_date AS "p_update_date"
-    </sql>
-
-    <select id="selectServerRules" resultMap="ServerRulesResultMap">
+    <select id="selectAll" resultMap="BaseResultMap">
         SELECT
         <include refid="serverFields" />,
-        <include refid="logMonitoringRuleFields" />,
-        <include refid="processMonitoringRuleFields" />
+        <include refid="monitoringRuleFields" />
         FROM server s
-        LEFT JOIN server_log_monitoring_rule sl ON s.id = sl.server_id
-        LEFT JOIN log_monitoring_rule l ON sl.log_monitoring_rule_id = l.id
-        LEFT JOIN server_process_monitoring_rule sp ON s.id = sp.server_id
-        LEFT JOIN process_monitoring_rule p ON sp.process_monitoring_rule_id = p.id
+        LEFT JOIN server_monitoring_rule sm ON s.id = sm.server_id
+        LEFT JOIN monitoring_rule m ON sm.monitoring_rule_id = m.id
     </select>
 
 </mapper>

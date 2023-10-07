@@ -1,39 +1,93 @@
 package com.study.monitor.dto;
 
-import com.study.monitor.domain.LogMonitoringRule;
-import com.study.monitor.domain.ProcessMonitoringRule;
+import com.study.monitor.domain.MonitoringRule;
 import com.study.monitor.domain.Server;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ServerRulesDTO {
 
-    private Server server;
-    private List<LogMonitoringRule> logMonitoringRuleList = new ArrayList<>();
-    private List<ProcessMonitoringRule> processMonitoringRuleList = new ArrayList<>();
+    private Integer id;
+    private String serverName;
+    private String hostname;
+    private String description;
+    private String createdBy;
+    private String updatedBy;
+    private Date createDate;
+    private Date updateDate;
+    private List<MonitoringRule> monitoringRuleList = new ArrayList<>();
 
-    public Server getServer() {
-        return server;
+    public Integer getId() {
+        return id;
     }
 
-    public void setServer(Server server) {
-        this.server = server;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public List<LogMonitoringRule> getLogMonitoringRuleList() {
-        return logMonitoringRuleList;
+    public String getServerName() {
+        return serverName;
     }
 
-    public void setLogMonitoringRuleList(List<LogMonitoringRule> logMonitoringRuleList) {
-        this.logMonitoringRuleList = logMonitoringRuleList;
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
 
-    public List<ProcessMonitoringRule> getProcessMonitoringRuleList() {
-        return processMonitoringRuleList;
+    public String getHostname() {
+        return hostname;
     }
 
-    public void setProcessMonitoringRuleList(List<ProcessMonitoringRule> processMonitoringRuleList) {
-        this.processMonitoringRuleList = processMonitoringRuleList;
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public List<MonitoringRule> getMonitoringRuleList() {
+        return monitoringRuleList;
+    }
+
+    public void setMonitoringRuleList(List<MonitoringRule> monitoringRuleList) {
+        this.monitoringRuleList = monitoringRuleList;
     }
 }

@@ -1,39 +1,93 @@
 package com.study.monitor.dto;
 
-import com.study.monitor.entity.LogMonitoringRuleEntity;
-import com.study.monitor.entity.ProcessMonitoringRuleEntity;
+import com.study.monitor.entity.MonitoringRuleEntity;
 import com.study.monitor.entity.ServerEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ServerRulesDTO {
 
-    private ServerEntity server;
-    private List<LogMonitoringRuleEntity> logMonitoringRuleList = new ArrayList<>();
-    private List<ProcessMonitoringRuleEntity> processMonitoringRuleList = new ArrayList<>();
+    private Integer id;
+    private String serverName;
+    private String hostname;
+    private String description;
+    private String createdBy;
+    private String updatedBy;
+    private Date createDate;
+    private Date updateDate;
+    private List<MonitoringRuleEntity> monitoringRuleList = new ArrayList<>();
 
-    public ServerEntity getServer() {
-        return server;
+    public Integer getId() {
+        return id;
     }
 
-    public void setServer(ServerEntity server) {
-        this.server = server;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public List<LogMonitoringRuleEntity> getLogMonitoringRuleList() {
-        return logMonitoringRuleList;
+    public String getServerName() {
+        return serverName;
     }
 
-    public void setLogMonitoringRuleList(List<LogMonitoringRuleEntity> logMonitoringRuleList) {
-        this.logMonitoringRuleList = logMonitoringRuleList;
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
 
-    public List<ProcessMonitoringRuleEntity> getProcessMonitoringRuleList() {
-        return processMonitoringRuleList;
+    public String getHostname() {
+        return hostname;
     }
 
-    public void setProcessMonitoringRuleList(List<ProcessMonitoringRuleEntity> processMonitoringRuleList) {
-        this.processMonitoringRuleList = processMonitoringRuleList;
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public List<MonitoringRuleEntity> getMonitoringRuleList() {
+        return monitoringRuleList;
+    }
+
+    public void setMonitoringRuleList(List<MonitoringRuleEntity> monitoringRuleList) {
+        this.monitoringRuleList = monitoringRuleList;
     }
 }

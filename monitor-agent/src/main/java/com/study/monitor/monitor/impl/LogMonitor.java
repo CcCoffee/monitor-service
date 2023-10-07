@@ -1,7 +1,6 @@
 package com.study.monitor.monitor.impl;
 
-import com.study.monitor.domain.LogMonitoringRule;
-import com.study.monitor.dto.MonitorRulesDTO;
+import com.study.monitor.domain.MonitoringRule;
 import com.study.monitor.dto.ServerRulesDTO;
 import com.study.monitor.monitor.Monitor;
 import com.study.monitor.util.LevenshteinUtil;
@@ -22,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Component
 public class LogMonitor implements Monitor {
@@ -43,7 +43,7 @@ public class LogMonitor implements Monitor {
 
     @Override
     public void monitor() {
-        List<LogMonitoringRule> ruleList = serverRulesDTO.getLogMonitoringRuleList();
+        List<MonitoringRule> ruleList = serverRulesDTO.getMonitoringRuleList().stream().filter(rule->rule.getType().equals("LOG")).collect(Collectors.toList());;
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         ruleList.forEach(rule -> {
             Path logFile = Path.of(rule.getLogFilePath());
@@ -112,7 +112,7 @@ public class LogMonitor implements Monitor {
         });
     }
 
-    private void sendAlert(LogMonitoringRule rule, String matchedLog) {
+    private void sendAlert(MonitoringRule rule, String matchedLog) {
         LOGGER.error(">>>>> xMatters\n<<<<<<<<<<<< Content: {}", matchedLog);
     }
 }

@@ -1,14 +1,12 @@
 package com.study.monitor.monitor.impl;
 
-import com.study.monitor.dto.MonitorRulesDTO;
-import com.study.monitor.domain.ProcessMonitoringRule;
+import com.study.monitor.domain.MonitoringRule;
 import com.study.monitor.dto.ServerRulesDTO;
 import com.study.monitor.monitor.Monitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -20,6 +18,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Component
 public class ProcessMonitor implements Monitor {
@@ -43,7 +42,7 @@ public class ProcessMonitor implements Monitor {
     public void monitor() {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> {
-            List<ProcessMonitoringRule> ruleList = serverRulesDTO.getProcessMonitoringRuleList(); // Retrieve the monitoring rule for this log
+            List<MonitoringRule> ruleList = serverRulesDTO.getMonitoringRuleList().stream().filter(rule-> rule.getType().equals("PROCESS")).collect(Collectors.toList()); // Retrieve the monitoring rule for this log
             ruleList.forEach(rule->{
                 String os = System.getProperty("os.name").toLowerCase();
 
@@ -88,7 +87,7 @@ public class ProcessMonitor implements Monitor {
         }, 0, heartbeatInterval.toMillis(), TimeUnit.MILLISECONDS);
     }
 
-    private void sendAlert(ProcessMonitoringRule rule) {
+    private void sendAlert(MonitoringRule rule) {
         LOGGER.error("xMatters, rule: {}", rule);
     }
 }

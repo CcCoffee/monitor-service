@@ -1,20 +1,15 @@
-package com.study.monitor.entity;
-
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+package com.study.monitor.domain;
 
 import java.util.Date;
 import java.util.List;
 
-@TableName("process_monitoring_rule")
-public class ProcessMonitoringRuleEntity {
+public class MonitoringRule {
 
-    @TableId(type = IdType.AUTO)
     private Integer id;
     // 监控规则的名称或标识符
     private String name;
+    // PROCESS / LOG
+    private String type;
     // 监控规则的描述，用于说明该规则的作用和目的。
     private String description;
     // 指示监控规则是否启用的标志。
@@ -27,13 +22,16 @@ public class ProcessMonitoringRuleEntity {
     private List<String> notificationRecipients;
     // 要监控的进程的正则表达式
     private String processNameRegex;
+    // 要监控的日志文件地址
+    private String logFilePath;
+    // 要监控的日志规则
+    private List<String> logPatterns;
     // 创建该监控规则的用户或系统的标识符。
     private String createdBy;
     private String updatedBy;
     // 监控规则的创建时间戳
     private Date createDate;
     private Date updateDate;
-    @TableField(exist = false)
     private Date lastAlertTime;
 
     public Integer getId() {
@@ -50,6 +48,14 @@ public class ProcessMonitoringRuleEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getDescription() {
@@ -100,6 +106,22 @@ public class ProcessMonitoringRuleEntity {
         this.processNameRegex = processNameRegex;
     }
 
+    public String getLogFilePath() {
+        return logFilePath;
+    }
+
+    public void setLogFilePath(String logFilePath) {
+        this.logFilePath = logFilePath;
+    }
+
+    public List<String> getLogPatterns() {
+        return logPatterns;
+    }
+
+    public void setLogPatterns(List<String> logPatterns) {
+        this.logPatterns = logPatterns;
+    }
+
     public String getCreatedBy() {
         return createdBy;
     }
@@ -138,5 +160,24 @@ public class ProcessMonitoringRuleEntity {
 
     public void setLastAlertTime(Date lastAlertTime) {
         this.lastAlertTime = lastAlertTime;
+    }
+
+    @Override
+    public String toString() {
+        return "ProcessMonitoringRule{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", enabled=" + enabled +
+                ", threshold=" + threshold +
+                ", interval=" + interval +
+                ", notificationRecipients=" + notificationRecipients +
+                ", processNameRegex='" + processNameRegex + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", createDate=" + createDate +
+                ", updateDate=" + updateDate +
+                ", lastAlertTime=" + lastAlertTime +
+                '}';
     }
 }
