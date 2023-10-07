@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ServerService extends IService<ServerEntity> {
     List<String> getAgentHostNameList();
-
+    List<ServerEntity> listAll();
 }

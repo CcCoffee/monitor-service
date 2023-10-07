@@ -23,8 +23,8 @@ function SidebarMenu() {
         <Accordion.Header><span className='fw-bold'>Alerts</span></Accordion.Header>
         <Accordion.Body>
           <Card.Body className="dashboard-menu">
-            <Link to="/log-rule">Active Alerts</Link>
-            <Link to="/log-rule">Historical Alerts</Link>
+            <Link to="/rule">Active Alerts</Link>
+            <Link to="/rule">Historical Alerts</Link>
           </Card.Body>
         </Accordion.Body>
       </Accordion.Item>
@@ -33,9 +33,9 @@ function SidebarMenu() {
         <Accordion.Header><span className='fw-bold'>Configuration</span></Accordion.Header>
         <Accordion.Body>
           <Card.Body className="dashboard-menu">
-            <Link to="/log-rule">Rule Configuration</Link>
-            <Link to="/log-rule">Notification Settings</Link>
-            <Link to="/log-rule">Threshold Configuration</Link>
+            <Link to="/rule">Rule Configuration</Link>
+            <Link to="/rule">Notification Settings</Link>
+            <Link to="/rule">Threshold Configuration</Link>
           </Card.Body>
         </Accordion.Body>
       </Accordion.Item>

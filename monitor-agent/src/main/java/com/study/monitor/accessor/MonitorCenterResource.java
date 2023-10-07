@@ -10,7 +10,7 @@ import java.util.List;
 @FeignClient("monitor-center")
 public interface MonitorCenterResource {
 
-    @RequestMapping(value = "/rules", consumes = "application/json")
+    @RequestMapping(value = "/server-rules", consumes = "application/json")
     List<ServerRulesDTO> fetchMonitorRules();
 
 }

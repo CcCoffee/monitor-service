@@ -1,5 +1,6 @@
 package com.study.monitor.service.impl;
 
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.monitor.entity.ServerEntity;
 import com.study.monitor.mapper.ServerMapper;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ServerServiceImpl extends ServiceImpl<ServerMapper, ServerEntity> implements ServerService {
@@ -24,5 +26,10 @@ public class ServerServiceImpl extends ServiceImpl<ServerMapper, ServerEntity> i
             hostnameList.add(hostname);
         }
         return hostnameList;
+    }
+
+    @Override
+    public List<ServerEntity> listAll() {
+        return this.baseMapper.selectList(null);
     }
 }

@@ -10,5 +10,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ServerMapper extends BaseMapper<ServerEntity> {
 
-    List<ServerEntity> selectAll();
+    List<ServerEntity> selectAllWithRules();
 }

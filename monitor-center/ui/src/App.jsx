@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import LoginPage from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import AgentStatus from './pages/AgentStatus';
-import ProcessMonitorRule from './pages/ProcessMonitorRule'
+import RulePage from './pages/RulePage'
 
 function App() {
   return (
@@ -19,8 +19,7 @@ function App() {
         >
           <Route index path="/" element={<AgentStatus />}/>
           <Route index path="/agent-status" element={<AgentStatus />}/>
-          <Route path="/process-rule" element={<ProcessMonitorRule />} />
-          <Route path="/log-rule" element={<ProcessMonitorRule />} />
+          <Route path="/rule" element={<RulePage />} />
         </Route>
       </Routes>
     </Router>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Row, Col, Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import './Dashboard.css';
 import SidebarMenu from '../components/SidebarMenu';
@@ -41,7 +41,7 @@ function Dashboard() {
           <Col xs={0} sm={0} md={3} lg={3} xl={3} xxl={3}>
             <SidebarMenu/>
           </Col>
-          <Col xs={12} sm={12} md={9} lg={9} xl={9} xxl={9} className='pt-2 bg-light'>
+          <Col xs={12} sm={12} md={9} lg={9} xl={9} xxl={9} className='pt-2 px-3 bg-light'>
             <Outlet/>
           </Col>
         </Row >

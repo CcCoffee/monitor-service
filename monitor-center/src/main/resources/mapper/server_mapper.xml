@@ -61,7 +61,7 @@
         m.created_by AS "m_created_by", m.updated_by AS "m_updated_by", m.create_date AS "m_create_date", m.update_date AS "m_update_date"
     </sql>
 
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAllWithRules" resultMap="BaseResultMap">
         SELECT
         <include refid="serverFields" />,
         <include refid="monitoringRuleFields" />
