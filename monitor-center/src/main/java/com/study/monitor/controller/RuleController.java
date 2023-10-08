@@ -4,22 +4,27 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.study.monitor.dto.ServerRulesDTO;
 import com.study.monitor.entity.MonitoringRuleEntity;
+import com.study.monitor.entity.ServerEntity;
+import com.study.monitor.entity.ServerMonitoringRuleEntity;
 import com.study.monitor.service.MonitoringRuleService;
+import com.study.monitor.service.ServerMonitoringRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class RuleController {
 
     private final MonitoringRuleService service;
+    private final ServerMonitoringRuleService serverMonitoringRuleService;
 
     @Autowired
-    public RuleController(MonitoringRuleService service){
+    public RuleController(MonitoringRuleService service, ServerMonitoringRuleService serverMonitoringRuleService){
         this.service = service;
+        this.serverMonitoringRuleService = serverMonitoringRuleService;
     }
 
     @RequestMapping("/rules")
@@ -34,4 +39,18 @@ public class RuleController {
         return service.getAllServerRules();
     }
 
+    @PostMapping("/rules")
+    public boolean save(@RequestBody MonitoringRuleEntity rule) {
+        return service.saveOrUpdateEntity(rule);
+    }
+
+    @GetMapping("/rules/{ruleId}")
+    public MonitoringRuleEntity selectWithServersById(@PathVariable(name = "ruleId") Integer ruleId){
+        return service.selectWithServersById(ruleId);
+    }
+
+    @DeleteMapping("/rules/{ruleId}")
+    public boolean deleteById(@PathVariable(name = "ruleId") Integer ruleId){
+        return service.deleteById(ruleId);
+    }
 }

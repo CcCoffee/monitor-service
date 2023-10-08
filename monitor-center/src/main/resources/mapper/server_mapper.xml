@@ -40,6 +40,19 @@
         SELECT * FROM server WHERE id = #{id}
     </select>
 
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="com.study.monitor.qo.ServerQO">
+        SELECT s.* FROM server s
+        <choose>
+            <when test="ruleId != null">
+                LEFT JOIN server_monitoring_rule sm ON s.id = sm.server_id
+                WHERE sm.monitoring_rule_id = #{ruleId}
+            </when>
+            <otherwise>
+                WHERE 1 = 1
+            </otherwise>
+        </choose>
+    </select>
+
     <update id="update" parameterType="com.study.monitor.entity.ServerEntity">
         UPDATE server
         SET server_name = #{serverName}, hostname = #{hostname}, description = #{description},

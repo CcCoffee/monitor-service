@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/Login';
-import Dashboard from './pages/Dashboard';
+import Main from './pages/Main';
 import AgentStatus from './pages/AgentStatus';
 import RulePage from './pages/RulePage'
 
@@ -13,7 +13,7 @@ function App() {
           path="/"
           element={
             <PrivateRoute>
-              <Dashboard />
+              <Main />
             </PrivateRoute>
           }
         >

@@ -5,22 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c06b8968-018b-40ed-8dd1-70e4e90cc5aa" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/config/MybatisPlusConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/ServerController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/entity/ServerMonitoringRuleEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/mapper/ServerMonitoringRuleMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/qo/ServerQO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/ServerMonitoringRuleService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/ServerMonitoringRuleServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/accessor/MonitorCenterResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/accessor/MonitorCenterResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/RuleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/RuleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/ServerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/ServerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/entity/MonitoringRuleEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/entity/MonitoringRuleEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/handler/PgArrayStringTypeHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/handler/PgArrayStringTypeHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/mapper/MonitoringRuleMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/mapper/MonitoringRuleMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/mapper/ServerMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/mapper/ServerMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/MonitoringRuleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/MonitoringRuleService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/ServerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/ServerService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/MonitoringRuleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/MonitoringRuleServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/ServerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/ServerServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/monitoring_rule_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/monitoring_rule_mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/server_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/server_mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/resources/static/sql/03_test.sql" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/static/sql/03_test.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/components/SidebarMenu.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/components/SidebarMenu.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/Dashboard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/ProcessMonitorRule.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/components/SidebarMenu.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/Dashboard.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/Dashboard.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/RulePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/RulePage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,17 +59,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;19 (2)&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/github/monitor-service/monitor-agent/src/main/java/com/study/monitor/dto&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "sidebar",
+    "ignore.virus.scanning.warn.message": "true",
+    "jdk.selected.JAVA_MODULE": "19 (2)",
+    "last_opened_file_path": "C:/Users/Administrator/Documents/github/monitor-service/monitor-agent/src/main/java/com/study/monitor/dto",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Administrator\Documents\github\monitor-service\monitor-agent\src\main\java\com\study\monitor\dto" />
@@ -144,8 +154,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.MonitorCenterApplication" />
-        <item itemvalue="Application.MonitorAgentApplication" />
         <item itemvalue="Application.DiscoveryServiceApplication" />
+        <item itemvalue="Application.MonitorAgentApplication" />
         <item itemvalue="JUnit.LevenshteinTest.test" />
       </list>
     </recent_temporary>
@@ -168,6 +178,11 @@
           <url>file://$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/monitor/impl/LogMonitor.java</url>
           <line>62</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/handler/PgArrayStringTypeHandler.java</url>
+          <line>56</line>
+          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

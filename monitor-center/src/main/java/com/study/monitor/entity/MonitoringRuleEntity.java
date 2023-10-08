@@ -1,14 +1,12 @@
 package com.study.monitor.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import com.study.monitor.handler.PgArrayStringTypeHandler;
 
 import java.util.Date;
 import java.util.List;
 
-@TableName("monitoring_rule")
+@TableName(value = "monitoring_rule", autoResultMap = true)
 public class MonitoringRuleEntity {
 
     @TableId(type = IdType.AUTO)
@@ -26,12 +24,14 @@ public class MonitoringRuleEntity {
     // 监控规则执行的时间间隔，即监控频率。
     private int interval;
     // 接收警报通知的用户或团队的列表。
+    @TableField(typeHandler = PgArrayStringTypeHandler.class)
     private List<String> notificationRecipients;
     // 要监控的进程的正则表达式
     private String processNameRegex;
     // 要监控的日志文件地址
     private String logFilePath;
     // 要监控的日志规则
+    @TableField(typeHandler = PgArrayStringTypeHandler.class)
     private List<String> logPatterns;
     // 创建该监控规则的用户或系统的标识符。
     private String createdBy;
@@ -41,6 +41,8 @@ public class MonitoringRuleEntity {
     private Date updateDate;
     @TableField(exist = false)
     private Date lastAlertTime;
+    @TableField(exist = false)
+    private List<ServerEntity> linkedServers;
 
     public Integer getId() {
         return id;
@@ -168,5 +170,13 @@ public class MonitoringRuleEntity {
 
     public void setLastAlertTime(Date lastAlertTime) {
         this.lastAlertTime = lastAlertTime;
+    }
+
+    public List<ServerEntity> getLinkedServers() {
+        return linkedServers;
+    }
+
+    public void setLinkedServers(List<ServerEntity> linkedServers) {
+        this.linkedServers = linkedServers;
     }
 }

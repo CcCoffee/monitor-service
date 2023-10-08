@@ -19,29 +19,61 @@
         <result column="updated_by" property="updatedBy" />
         <result column="create_date" property="createDate" />
         <result column="update_date" property="updateDate" />
+        <collection property="linkedServers" ofType="com.study.monitor.entity.ServerEntity" >
+            <id column="s_id" property="id" />
+            <result column="s_server_name" property="serverName" />
+            <result column="s_hostname" property="hostname" />
+            <result column="s_description" property="description" />
+            <result column="s_created_by" property="createdBy" />
+            <result column="s_updated_by" property="updatedBy" />
+            <result column="s_create_date" property="createDate" />
+            <result column="s_update_date" property="updateDate" />
+        </collection>
     </resultMap>
 
-    <insert id="insert" parameterType="com.study.monitor.entity.MonitoringRuleEntity">
-        INSERT INTO monitoring_rule (name, type, description, enabled, threshold, interval, notification_recipients, process_name_regex, log_file_path, log_patterns, created_by, updated_by, create_date, update_date)
-        VALUES (#{name}, #{type}, #{description}, #{enabled}, #{threshold}, #{interval}, #{notificationRecipients,jdbcType=ARRAY,typeHandler=com.study.monitor.handler.PgArrayStringTypeHandler}, #{processNameRegex},
-        #{logFilePath}, #{logPatterns,jdbcType=ARRAY,typeHandler=com.study.monitor.handler.PgArrayStringTypeHandler},#{createdBy}, #{updatedBy}, #{createDate}, #{updateDate})
-    </insert>
+<!--    <insert id="insert" parameterType="com.study.monitor.entity.MonitoringRuleEntity">-->
+<!--        INSERT INTO monitoring_rule (name, type, description, enabled, threshold, interval, notification_recipients, process_name_regex, log_file_path, log_patterns, created_by, updated_by, create_date, update_date)-->
+<!--        VALUES (#{name}, #{type}, #{description}, #{enabled}, #{threshold}, #{interval}, #{notificationRecipients,jdbcType=ARRAY,typeHandler=com.study.monitor.handler.PgArrayStringTypeHandler}, #{processNameRegex},-->
+<!--        #{logFilePath}, #{logPatterns,jdbcType=ARRAY,typeHandler=com.study.monitor.handler.PgArrayStringTypeHandler},#{createdBy}, #{updatedBy}, #{createDate}, #{updateDate})-->
+<!--    </insert>-->
 
-    <select id="selectById" resultMap="BaseResultMap" parameterType="Integer">
-        SELECT * FROM monitoring_rule WHERE id = #{id}
+<!--    <select id="selectById" resultMap="BaseResultMap" parameterType="Integer">-->
+<!--        SELECT * FROM monitoring_rule WHERE id = #{id}-->
+<!--    </select>-->
+
+<!--    <update id="update" parameterType="com.study.monitor.entity.MonitoringRuleEntity">-->
+<!--        UPDATE monitoring_rule-->
+<!--        SET name = #{name}, type = #{type}, description = #{description}, enabled = #{enabled}, threshold = #{threshold}, interval = #{interval},-->
+<!--            notification_recipients = #{notificationRecipients,jdbcType=ARRAY,typeHandler=com.study.monitor.handler.PgArrayStringTypeHandler}, process_name_regex = #{processNameRegex},-->
+<!--            log_file_path = #{logFilePath}, log_patterns = #{logPatterns,jdbcType=ARRAY,typeHandler=com.study.monitor.handler.PgArrayStringTypeHandler},-->
+<!--            created_by = #{createdBy}, updated_by = #{updatedBy}, create_date = #{createDate}, update_date = #{updateDate}-->
+<!--        WHERE id = #{id}-->
+<!--    </update>-->
+
+<!--    <delete id="deleteById" parameterType="Integer">-->
+<!--        DELETE FROM monitoring_rule WHERE id = #{id}-->
+<!--    </delete>-->
+
+    <sql id="serverFields">
+        s.id AS s_id, s.server_name AS s_server_name, s.hostname AS s_hostname, s.description AS s_description,
+        s.created_by AS s_created_by, s.updated_by AS s_updated_by, s.create_date AS s_create_date, s.update_date AS s_update_date
+    </sql>
+
+    <sql id="monitoringRuleFields">
+        m.id, m.name, m.type, m.description, m.enabled, m.threshold,
+        m.interval, m.notification_recipients, m.process_name_regex,
+        m.log_file_path, m.log_patterns, m.created_by, m.updated_by, m.create_date, m.update_date
+    </sql>
+
+    <select id="selectWithServersById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="serverFields" />,
+        <include refid="monitoringRuleFields" />
+        FROM monitoring_rule m
+        LEFT JOIN server_monitoring_rule sm ON m.id = sm.monitoring_rule_id
+        LEFT JOIN server s ON sm.server_id = s.id
+        <where>
+            m.id = #{id}
+        </where>
     </select>
-
-    <update id="update" parameterType="com.study.monitor.entity.MonitoringRuleEntity">
-        UPDATE monitoring_rule
-        SET name = #{name}, type = #{type}, description = #{description}, enabled = #{enabled}, threshold = #{threshold}, interval = #{interval},
-            notification_recipients = #{notificationRecipients,jdbcType=ARRAY,typeHandler=com.study.monitor.handler.PgArrayStringTypeHandler}, process_name_regex = #{processNameRegex},
-            log_file_path = #{logFilePath}, log_patterns = #{logPatterns,jdbcType=ARRAY,typeHandler=com.study.monitor.handler.PgArrayStringTypeHandler},
-            created_by = #{createdBy}, updated_by = #{updatedBy}, create_date = #{createDate}, update_date = #{updateDate}
-        WHERE id = #{id}
-    </update>
-
-    <delete id="deleteById" parameterType="Integer">
-        DELETE FROM monitoring_rule WHERE id = #{id}
-    </delete>
-
 </mapper>

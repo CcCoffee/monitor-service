@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Pagination, Form, Button, Modal, Row, Col } from 'react-bootstrap';
+import { Table, Form, Button, Badge, Row, Col } from 'react-bootstrap';
 import MyPagination from '../components/MyPagination';
+import './RulePage.css'
+import RuleModal from '../components/RuleModal';
 
 const RulePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [pages, setPages] = useState();
   const [rules, setRules] = useState([]);
   const [servers, setServers] = useState([]);
@@ -13,11 +15,33 @@ const RulePage = () => {
   const [typeFilter, setTypeFilter] = useState('');
   const [serverFilter, setServerFilter] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [selectedRule, setSelectedRule] = useState({});
   const [newRule, setNewRule] = useState({
-    name: '',
-    type: '',
-    // Add other fields here
+    name: "",
+    type: "",
+    description: "",
+    enabled: true,
+    threshold: null,
+    interval: null,
+    notificationRecipients: [],
+    processNameRegex: "",
+    logFilePath: "",
+    logPatterns: [],
   });
+
+  const handleRuleInputChange = (event) => {
+    const { name, value } = event.target;
+    let newValue;
+    if (name === 'notificationRecipients' || name === 'logPatterns') {
+      newValue = value.split("\n");
+    } else {
+      newValue = value;
+    }
+    setSelectedRule((prevRule) => ({
+      ...prevRule,
+      [name]: newValue,
+    }));
+  };
 
   // Fetch rules and servers from the backend
   useEffect(() => {
@@ -74,22 +98,71 @@ const RulePage = () => {
   };
 
   const handleEditRule = (ruleId) => {
-    // Handle edit rule logic
+    // Find the rule with the given ruleId from the rules state
+    const rule = rules.find((rule) => rule.id === ruleId);
+    // Perform deep cloning of the rule object
+    const clonedRule = JSON.parse(JSON.stringify(rule));
+    setSelectedRule(clonedRule);
+    setShowModal(true);
   };
 
   const handleDeleteRule = (ruleId) => {
-    // Handle delete rule logic
-  };
-
-  const handleNewRuleInputChange = (event) => {
-    setNewRule({
-      ...newRule,
-      [event.target.name]: event.target.value
-    });
+    const url = `http://localhost:8090/rules/${ruleId}`;
+  
+    fetch(url, {
+      method: 'DELETE',
+    })
+      .then(response => {
+        if (response.ok) {
+          // Rule deleted successfully
+          console.log('Rule deleted successfully');
+          // Perform any additional tasks if needed
+          // Refresh the rules list
+          fetchRules(currentPage, pageSize);
+        } else {
+          // Rule deletion failed
+          console.error('Failed to delete rule');
+          // Perform any error handling if needed
+        }
+      })
+      .catch(error => {
+        console.error('An error occurred while deleting rule:', error);
+        // Perform any error handling if needed
+      });
   };
 
   const handleAddRule = () => {
-    // Handle add rule logic
+    setSelectedRule(newRule);
+    setShowModal(true);
+  };
+
+  const handleSaveRule = async () => {
+    console.log("handleSaveRule")
+    try {
+      // 发起保存规则的请求到后端
+      const response = await fetch("http://localhost:8090/rules", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(selectedRule),
+      });
+  
+      if (response.ok) {
+        // 保存成功
+        console.log("Rule saved successfully");
+        setShowModal(false);
+        fetchRules(currentPage, pageSize);
+      } else {
+        // 保存失败
+        console.error("Failed to save rule");
+        // TODO: 可以执行其他操作，如显示错误消息等
+      }
+    } catch (error) {
+      // 处理异常情况
+      console.error("An error occurred while saving rule:", error);
+      // TODO: 可以执行其他操作，如显示错误消息等
+    }
   };
 
   const handleCloseModal = () => {
@@ -124,7 +197,7 @@ const RulePage = () => {
   }, [nameFilter, typeFilter, serverFilter, rules]);
 
   return (
-    <div>
+    <div className='h-100 w-100 px-3'>
       <h1>Rule查询页面</h1>
       <Form>
         <Row className='mb-3'>
@@ -162,7 +235,7 @@ const RulePage = () => {
             </Form.Select>
           </Form.Group>
           <Col className="d-flex justify-content-end align-items-end">
-            <Button variant="primary" onClick={handleOpenModal}>新增</Button>
+            <Button variant="primary" onClick={handleAddRule}>新增</Button>
           </Col>
         </Row>
       </Form>
@@ -173,8 +246,9 @@ const RulePage = () => {
             <th>ID</th>
             <th>Name</th>
             <th>Type</th>
-            <th>Enabled</th>
-            <th>操作</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -183,12 +257,9 @@ const RulePage = () => {
               <td>{rule.id}</td>
               <td>{rule.name}</td>
               <td>{rule.type}</td>
+              <td>{rule.description}</td>
               <td>
-              <Form.Check
-                type="checkbox"
-                checked={rule.enabled}
-                disabled
-              />
+                {rule.enabled?<Badge bg="success">Enabled</Badge>:<Badge bg="secondary">Disabled</Badge>}
               </td>
               {/* Add other table cells */}
               <td>
@@ -197,50 +268,16 @@ const RulePage = () => {
               </td>
             </tr>
           ))}
-          <MyPagination currentPage={currentPage} totalPages={pages} onPageChange={handlePageChange}/>
         </tbody>
       </Table>
-
-
-
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>新增Rule</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="newRuleName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="输入名称"
-                name="name"
-                value={newRule.name}
-                onChange={handleNewRuleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="newRuleType">
-              <Form.Label>Type</Form.Label>
-              <Form.Control
-                as="select"
-                name="type"
-                value={newRule.type}
-                onChange={handleNewRuleInputChange}
-              >
-                <option value="">选择类型</option>
-                <option value="PROCESS">Process</option>
-                <option value="LOG">Log</option>
-                {/* Add other types here */}
-              </Form.Control>
-            </Form.Group>
-            {/* Add other form fields */}
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>取消</Button>
-          <Button variant="primary" onClick={handleAddRule}>保存</Button>
-        </Modal.Footer>
-      </Modal>
+      <MyPagination currentPage={currentPage} totalPages={pages} onPageChange={handlePageChange}/>
+      <RuleModal
+        showModal={showModal}
+        handleCloseModal={() => setShowModal(false)}
+        handleSaveRule={handleSaveRule}
+        rule={selectedRule}
+        handleRuleInputChange={handleRuleInputChange}
+      />
     </div>
   );
 };
