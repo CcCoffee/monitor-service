@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Form, Button, Badge, Row, Col, Container } from 'react-bootstrap';
+import { Table, Form, Button, Badge, Row, Col, Container, Modal, Alert, Card } from 'react-bootstrap';
 import MyPagination from '../components/MyPagination';
 import './ServerPage.css'
 import ServerModal from '../components/ServerModal';
@@ -14,19 +14,13 @@ const ServerPage = () => {
   const [hostnameFilter, setHostnameFilter] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedServer, setSelectedServer] = useState({});
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [deleteServerId, setDeleteServerId] = useState();
   const [newServer, setNewServer] = useState({
     serverName: "",
     hostname: "",
     description: ""
   });
-
-  const handleServerInputChange = (event) => {
-    const { name, value } = event.target;
-    setSelectedServer((prevServer) => ({
-      ...prevServer,
-      [name]: value,
-    }));
-  };
 
   // Fetch servers and servers from the backend
   useEffect(() => {
@@ -66,6 +60,50 @@ const ServerPage = () => {
       });
   };
 
+  const handleServerInputChange = (event) => {
+    const { name, value } = event.target;
+    setSelectedServer((prevServer) => ({
+      ...prevServer,
+      [name]: value,
+    }));
+  };
+
+  const handleShowDeleteConfirmation = (serverId) => {
+    setShowDeleteConfirmation(true);
+    setDeleteServerId(serverId);
+  };
+
+  const handleConfirmDelete = () => {
+    const serverId = deleteServerId;
+    const url = `http://localhost:8090/servers/${serverId}`;
+  
+    fetch(url, {
+      method: 'DELETE',
+    })
+      .then(response => {
+        if (response.ok) {
+          // Server deleted successfully
+          console.log('Server deleted successfully');
+          // Perform any additional tasks if needed
+          // Refresh the servers list
+          fetchServers(currentPage, pageSize);
+        } else {
+          response.json().then(data => {
+            console.error(data.message);
+            // TODO: 处理请求失败的情况，如显示错误消息等
+          });
+        }
+      })
+      .catch(error => {
+        console.error('An error occurred while deleting server:', error);
+        // TODO: 处理异常情况，如显示错误消息等
+      });
+  
+    // 关闭确认框并重置服务器ID
+    setShowDeleteConfirmation(false);
+    setDeleteServerId(null);
+  };
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -91,31 +129,9 @@ const ServerPage = () => {
     setShowModal(true);
   };
 
-const handleDeleteServer = (serverId) => {
-  const url = `http://localhost:8090/servers/${serverId}`;
-
-  fetch(url, {
-    method: 'DELETE',
-  })
-    .then(response => {
-      if (response.ok) {
-        // Server deleted successfully
-        console.log('Server deleted successfully');
-        // Perform any additional tasks if needed
-        // Refresh the servers list
-        fetchServers(currentPage, pageSize);
-      } else {
-        response.json().then(data => {
-          console.error(data.message);
-          // TODO: 处理请求失败的情况，如显示错误消息等
-        });
-      }
-    })
-    .catch(error => {
-      console.error('An error occurred while deleting server:', error);
-      // TODO: 处理异常情况，如显示错误消息等
-    });
-};
+  const handleDeleteServer = (serverId) => {
+    handleShowDeleteConfirmation(serverId);
+  };
 
   const handleAddServer = () => {
     setSelectedServer(newServer);
@@ -153,83 +169,97 @@ const handleDeleteServer = (serverId) => {
     }
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
   return (
-    <>
-      <Container className='h-100 w-100'>
-      <h1>Server Query</h1>
-      <Form>
-        <Row className='mb-3'>
-          <Form.Group as={Col} controlId="serverNameFilter">
-            <Form.Label >Server name filter</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter server name"
-                value={serverNameFilter}
-                onChange={handleServerNameFilterChange}
-              />
-          </Form.Group>
-          <Form.Group as={Col} controlId="hostnameFilter">
-            <Form.Label >Hostname filter</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter hostname"
-                value={hostnameFilter}
-                onChange={handleHostnameFilterChange}
-              />
-          </Form.Group>
-          <Col className="d-flex justify-content-end align-items-end">
-            <Button variant="primary" onClick={handleAddServer}>New</Button>
-          </Col>
-        </Row>
-      </Form>
+      <Container className='h-100 w-100 py-2'>
+        <Card className='h-100 w-100'>
+          <Card.Body>
+            <Card.Title>Server Configuration</Card.Title>
+            <hr/>
+            <Form>
+              <Row className='mb-3'>
+                <Form.Group as={Col} controlId="serverNameFilter">
+                  <Form.Label >Server name filter</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter server name"
+                      value={serverNameFilter}
+                      onChange={handleServerNameFilterChange}
+                    />
+                </Form.Group>
+                <Form.Group as={Col} controlId="hostnameFilter">
+                  <Form.Label >Hostname filter</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter hostname"
+                      value={hostnameFilter}
+                      onChange={handleHostnameFilterChange}
+                    />
+                </Form.Group>
+                <Col className="d-flex justify-content-end align-items-end">
+                  <Button variant="primary" onClick={handleAddServer}>New</Button>
+                </Col>
+              </Row>
+            </Form>
 
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Server name</th>
-            <th>Hostname</th>
-            <th>Description</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredServers.map(server => (
-            <tr key={server.id}>
-              <td>{server.id}</td>
-              <td>{server.serverName}</td>
-              <td>{server.hostname}</td>
-              <td>{server.description}</td>
-              <td>
-                <Button variant="primary" onClick={() => handleEditServer(server.id)}>Edit</Button>{' '}
-                <Button variant="danger" onClick={() => handleDeleteServer(server.id)}>Delete</Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-      {
-        pages > 1?<MyPagination currentPage={currentPage} totalPages={pages} onPageChange={handlePageChange}/>:<></>
-      }
-      <ServerModal
-        showModal={showModal}
-        handleCloseModal={() => setShowModal(false)}
-        handleSaveServer={handleSaveServer}
-        server={selectedServer}
-        handleServerInputChange={handleServerInputChange}
-      />
-
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Server name</th>
+                  <th>Hostname</th>
+                  <th>Description</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredServers.map(server => (
+                  <tr key={server.id}>
+                    <td>{server.id}</td>
+                    <td>{server.serverName}</td>
+                    <td>{server.hostname}</td>
+                    <td>{server.description}</td>
+                    <td>
+                      <Button variant="primary" onClick={() => handleEditServer(server.id)}>Edit</Button>{' '}
+                      <Button variant="danger" onClick={() => handleDeleteServer(server.id)}>Delete</Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+            {
+              pages > 1?<MyPagination currentPage={currentPage} totalPages={pages} onPageChange={handlePageChange}/>:<></>
+            }
+            <ServerModal
+              showModal={showModal}
+              handleCloseModal={() => setShowModal(false)}
+              handleSaveServer={handleSaveServer}
+              server={selectedServer}
+              handleServerInputChange={handleServerInputChange}
+            />
+          {/* 删除确认框 */}
+          <Modal show={showDeleteConfirmation} onHide={() => setShowDeleteConfirmation(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Delete</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Alert variant="warning">
+                <p>
+                  Deleting this server will not delete any associated monitoring rules.
+                </p>
+                <hr/>
+                <p className="mb-0">
+                  Are you sure you want to proceed?
+                </p>
+              </Alert>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowDeleteConfirmation(false)}>Cancel</Button>
+              <Button variant="danger" onClick={handleConfirmDelete}>Delete</Button>
+            </Modal.Footer>
+          </Modal>
+          </Card.Body>
+        </Card>
     </Container>
-    </>
-
   );
 };
 

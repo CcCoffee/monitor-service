@@ -3,8 +3,10 @@ package com.study.monitor.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.study.monitor.modal.entity.ServerEntity;
+import com.study.monitor.modal.entity.ServerMonitoringRuleEntity;
 import com.study.monitor.modal.request.ServerQO;
 import com.study.monitor.modal.response.ApiResponse;
+import com.study.monitor.service.ServerMonitoringRuleService;
 import com.study.monitor.service.ServerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +17,11 @@ import java.util.List;
 public class ServerController {
 
     private final ServerService serverService;
+    private final ServerMonitoringRuleService serverMonitoringRuleService;
 
-    public ServerController(ServerService serverService){
+    public ServerController(ServerService serverService, ServerMonitoringRuleService serverMonitoringRuleService){
         this.serverService = serverService;
+        this.serverMonitoringRuleService = serverMonitoringRuleService;
     }
 
     @GetMapping({"", "/"})
@@ -37,11 +41,11 @@ public class ServerController {
         return ApiResponse.success(serverService.saveOrUpdateEntity(serverEntity));
     }
 
-//    @DeleteMapping("/{serverId}")
-//    public boolean deleteById(@PathVariable(name = "serverId") Integer serverId){
-//        return serverService.deleteById(ruleId);
-//    }
-
+    @DeleteMapping("/{serverId}")
+    public ApiResponse<Boolean> deleteById(@PathVariable(name = "serverId") Integer serverId){
+        serverMonitoringRuleService.lambdaUpdate().eq(ServerMonitoringRuleEntity::getServerId, serverId).remove();
+        return ApiResponse.success(serverService.removeById(serverId));
+    }
 
     @GetMapping("/all")
     public ApiResponse<List<ServerEntity>> findAll(@RequestParam(name = "ruleId", required = false) Integer ruleId) {

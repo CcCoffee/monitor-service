@@ -57,42 +57,6 @@ public class AgentHealthCheckController {
                         statusMap.put("status", entry.getValue());
                         statusList.add(statusMap);
                     }
-                    for(Map.Entry<String, String> entry : healthStatus.entrySet()) {
-                        Map<String, String> statusMap = new HashMap<>();
-                        statusMap.put("hostname", entry.getKey());
-                        statusMap.put("status", entry.getValue());
-                        statusList.add(statusMap);
-                    }
-                    for(Map.Entry<String, String> entry : healthStatus.entrySet()) {
-                        Map<String, String> statusMap = new HashMap<>();
-                        statusMap.put("hostname", entry.getKey());
-                        statusMap.put("status", entry.getValue());
-                        statusList.add(statusMap);
-                    }
-                    for(Map.Entry<String, String> entry : healthStatus.entrySet()) {
-                        Map<String, String> statusMap = new HashMap<>();
-                        statusMap.put("hostname", entry.getKey());
-                        statusMap.put("status", entry.getValue());
-                        statusList.add(statusMap);
-                    }
-                    for(Map.Entry<String, String> entry : healthStatus.entrySet()) {
-                        Map<String, String> statusMap = new HashMap<>();
-                        statusMap.put("hostname", entry.getKey());
-                        statusMap.put("status", entry.getValue());
-                        statusList.add(statusMap);
-                    }
-                    for(Map.Entry<String, String> entry : healthStatus.entrySet()) {
-                        Map<String, String> statusMap = new HashMap<>();
-                        statusMap.put("hostname", entry.getKey());
-                        statusMap.put("status", entry.getValue());
-                        statusList.add(statusMap);
-                    }
-                    for(Map.Entry<String, String> entry : healthStatus.entrySet()) {
-                        Map<String, String> statusMap = new HashMap<>();
-                        statusMap.put("hostname", entry.getKey());
-                        statusMap.put("status", entry.getValue());
-                        statusList.add(statusMap);
-                    }
                     try {
                         return new ObjectMapper().writeValueAsString(statusList);
                     } catch (JsonProcessingException e) {

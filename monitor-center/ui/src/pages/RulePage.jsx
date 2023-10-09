@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Form, Button, Badge, Row, Col, Container } from 'react-bootstrap';
+import { Table, Form, Button, Badge, Row, Col, Container, Modal, Alert, Card } from 'react-bootstrap';
 import MyPagination from '../components/MyPagination';
 import './RulePage.css'
 import RuleModal from '../components/RuleModal';
-import Footer from '../components/Footer';
 
 const RulePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,6 +16,8 @@ const RulePage = () => {
   const [serverFilter, setServerFilter] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedRule, setSelectedRule] = useState({});
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [deleteRuleId, setDeleteRuleId] = useState();
   const [newRule, setNewRule] = useState({
     name: "",
     type: "",
@@ -31,20 +32,6 @@ const RulePage = () => {
     linkedServers: []
   });
 
-  const handleRuleInputChange = (event) => {
-    const { name, value } = event.target;
-    let newValue;
-    if (name === 'notificationRecipients' || name === 'logPatterns') {
-      newValue = value.split("\n");
-    } else {
-      newValue = value;
-    }
-    setSelectedRule((prevRule) => ({
-      ...prevRule,
-      [name]: newValue,
-    }));
-  };
-
   // Fetch rules and servers from the backend
   useEffect(() => {
     fetchRules(currentPage, pageSize);
@@ -54,6 +41,7 @@ const RulePage = () => {
   useEffect(() => {
     fetchRules(currentPage, pageSize);
   }, [currentPage, pageSize, nameFilter, typeFilter, serverFilter]);
+
 
   const fetchRules = (currentPage, pageSize) => {
     let url = `http://localhost:8090/rules?pageNum=${currentPage}&pageSize=${pageSize}`;
@@ -108,6 +96,60 @@ const RulePage = () => {
       });
   };
 
+  const handleRuleInputChange = (event) => {
+    const { name, value } = event.target;
+    let newValue;
+    if (name === 'notificationRecipients' || name === 'logPatterns') {
+      newValue = value.split("\n");
+    } else {
+      newValue = value;
+    }
+    setSelectedRule((prevRule) => ({
+      ...prevRule,
+      [name]: newValue,
+    }));
+  };
+
+  const handleShowDeleteConfirmation = (ruleId) => {
+    setShowDeleteConfirmation(true);
+    setDeleteRuleId(ruleId);
+  };
+
+  const handleConfirmDelete = () => {
+    const ruleId = deleteRuleId;
+    const url = `http://localhost:8090/rules/${ruleId}`;
+  
+    fetch(url, {
+      method: 'DELETE',
+    })
+      .then(response => {
+        if (response.ok) {
+          // Server deleted successfully
+          console.log('Rule deleted successfully');
+          // Perform any additional tasks if needed
+          // Refresh the rules list
+          fetchRules(currentPage, pageSize);
+        } else {
+          response.json().then(data => {
+            console.error(data.message);
+            // TODO: 处理请求失败的情况，如显示错误消息等
+          });
+        }
+      })
+      .catch(error => {
+        console.error('An error occurred while deleting rule:', error);
+        // TODO: 处理异常情况，如显示错误消息等
+      });
+  
+    // 关闭确认框并重置服务器ID
+    setShowDeleteConfirmation(false);
+    setDeleteRuleId(null);
+  };
+
+  const handleDeleteRule = (ruleId) => {
+    handleShowDeleteConfirmation(ruleId);
+  };
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -135,31 +177,6 @@ const RulePage = () => {
     const clonedRule = JSON.parse(JSON.stringify(rule));
     setSelectedRule(clonedRule);
     setShowModal(true);
-  };
-
-  const handleDeleteRule = (ruleId) => {
-    const url = `http://localhost:8090/rules/${ruleId}`;
-  
-    fetch(url, {
-      method: 'DELETE',
-    })
-      .then(response => {
-        if (response.ok) {
-          // Rule deleted successfully
-          console.log('Rule deleted successfully');
-          // Perform any additional tasks if needed
-          // Refresh the rules list
-          fetchRules(currentPage, pageSize);
-        } else {
-          // Rule deletion failed
-          console.error('Failed to delete rule');
-          // Perform any error handling if needed
-        }
-      })
-      .catch(error => {
-        console.error('An error occurred while deleting rule:', error);
-        // Perform any error handling if needed
-      });
   };
 
   const handleAddRule = () => {
@@ -200,103 +217,110 @@ const RulePage = () => {
     }
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
   return (
-    <>
-      <Container className='h-100 w-100'>
-      <h1>Monitoring Rule Query</h1>
-      <Form>
-        <Row className='mb-3'>
-          <Form.Group as={Col} controlId="nameFilter">
-            <Form.Label >Name filter</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter name"
-                value={nameFilter}
-                onChange={handleNameFilterChange}
-              />
-          </Form.Group>
-          <Form.Group as={Col} controlId="typeFilter">
-            <Form.Label>Type filter</Form.Label>
-            <Form.Select
-              value={typeFilter}
-              onChange={handleTypeFilterChange}
-            >
-              <option value="">All</option>
-              <option value="PROCESS">Process</option>
-              <option value="LOG">Log</option>
-              {/* Add other types here */}
-            </Form.Select>
-          </Form.Group>
-          <Form.Group as={Col} controlId="serverFilter">
-            <Form.Label>Server filter</Form.Label>
-            <Form.Select
-              value={serverFilter}
-              onChange={handleServerFilterChange}
-            >
-              <option value="">All</option>
-              {servers.map(server => (
-                <option value={server.id} key={server.id}>{server.serverName}</option>
+    <Container className='h-100 w-100 py-2'>
+      <Card className='h-100 w-100'>
+        <Card.Body>
+          <Card.Title>Monitoring Rule Configuration</Card.Title>
+          <hr/>
+          <Form>
+          <Row className='mb-3'>
+            <Form.Group as={Col} controlId="nameFilter">
+              <Form.Label >Name filter</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter name"
+                  value={nameFilter}
+                  onChange={handleNameFilterChange}
+                />
+            </Form.Group>
+            <Form.Group as={Col} controlId="typeFilter">
+              <Form.Label>Type filter</Form.Label>
+              <Form.Select
+                value={typeFilter}
+                onChange={handleTypeFilterChange}
+              >
+                <option value="">All</option>
+                <option value="PROCESS">Process</option>
+                <option value="LOG">Log</option>
+                {/* Add other types here */}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group as={Col} controlId="serverFilter">
+              <Form.Label>Server filter</Form.Label>
+              <Form.Select
+                value={serverFilter}
+                onChange={handleServerFilterChange}
+              >
+                <option value="">All</option>
+                {servers.map(server => (
+                  <option value={server.id} key={server.id}>{server.serverName}</option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            <Col className="d-flex justify-content-end align-items-end">
+              <Button variant="primary" onClick={handleAddRule}>New</Button>
+            </Col>
+          </Row>
+          </Form>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredRules.map(rule => (
+                <tr key={rule.id}>
+                  <td>{rule.id}</td>
+                  <td>{rule.name}</td>
+                  <td>{rule.type}</td>
+                  <td>{rule.description}</td>
+                  <td>
+                    {rule.enabled?<Badge bg="success">Enabled</Badge>:<Badge bg="secondary">Disabled</Badge>}
+                  </td>
+                  {/* Add other table cells */}
+                  <td>
+                    <Button variant="primary" onClick={() => handleEditRule(rule.id)}>Edit</Button>{' '}
+                    <Button variant="danger" onClick={() => handleDeleteRule(rule.id)}>Delete</Button>
+                  </td>
+                </tr>
               ))}
-            </Form.Select>
-          </Form.Group>
-          <Col className="d-flex justify-content-end align-items-end">
-            <Button variant="primary" onClick={handleAddRule}>New</Button>
-          </Col>
-        </Row>
-      </Form>
-
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredRules.map(rule => (
-            <tr key={rule.id}>
-              <td>{rule.id}</td>
-              <td>{rule.name}</td>
-              <td>{rule.type}</td>
-              <td>{rule.description}</td>
-              <td>
-                {rule.enabled?<Badge bg="success">Enabled</Badge>:<Badge bg="secondary">Disabled</Badge>}
-              </td>
-              {/* Add other table cells */}
-              <td>
-                <Button variant="primary" onClick={() => handleEditRule(rule.id)}>Edit</Button>{' '}
-                <Button variant="danger" onClick={() => handleDeleteRule(rule.id)}>Delete</Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-      {
-        pages > 1?<MyPagination currentPage={currentPage} totalPages={pages} onPageChange={handlePageChange}/>:<></>
-      }
-      <RuleModal
-        showModal={showModal}
-        handleCloseModal={() => setShowModal(false)}
-        handleSaveRule={handleSaveRule}
-        rule={selectedRule}
-        handleRuleInputChange={handleRuleInputChange}
-      />
-
+            </tbody>
+          </Table>
+          {
+            pages > 1?<MyPagination currentPage={currentPage} totalPages={pages} onPageChange={handlePageChange}/>:<></>
+          }
+          <RuleModal
+            showModal={showModal}
+            handleCloseModal={() => setShowModal(false)}
+            handleSaveRule={handleSaveRule}
+            rule={selectedRule}
+            handleRuleInputChange={handleRuleInputChange}
+          />
+          {/* 删除确认框 */}
+          <Modal show={showDeleteConfirmation} onHide={() => setShowDeleteConfirmation(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Delete</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Alert variant="warning">
+                Are you sure you want to delete this rule?
+              </Alert>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowDeleteConfirmation(false)}>Cancel</Button>
+              <Button variant="danger" onClick={handleConfirmDelete}>Delete</Button>
+            </Modal.Footer>
+          </Modal>
+        </Card.Body>
+      </Card>
     </Container>
-    </>
-
   );
 };
 
