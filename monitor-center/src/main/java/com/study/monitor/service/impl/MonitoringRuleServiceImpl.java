@@ -1,15 +1,15 @@
 package com.study.monitor.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.study.monitor.dto.ServerRulesDTO;
-import com.study.monitor.entity.MonitoringRuleEntity;
-import com.study.monitor.entity.ServerEntity;
-import com.study.monitor.entity.ServerMonitoringRuleEntity;
+import com.study.monitor.modal.dto.ServerRulesDTO;
+import com.study.monitor.modal.entity.MonitoringRuleEntity;
+import com.study.monitor.modal.entity.ServerEntity;
+import com.study.monitor.modal.entity.ServerMonitoringRuleEntity;
 import com.study.monitor.mapper.MonitoringRuleMapper;
 import com.study.monitor.mapper.ServerMapper;
+import com.study.monitor.modal.request.RuleQO;
 import com.study.monitor.service.MonitoringRuleService;
 import com.study.monitor.service.ServerMonitoringRuleService;
 import org.springframework.beans.BeanUtils;
@@ -44,13 +44,6 @@ public class MonitoringRuleServiceImpl extends ServiceImpl<MonitoringRuleMapper,
     }
 
     @Override
-    public IPage<MonitoringRuleEntity> selectPage(IPage<MonitoringRuleEntity> page) {
-//        LambdaQueryWrapper<MonitoringRuleEntity> queryWrapper = Wrappers.<MonitoringRuleEntity>lambdaQuery();
-//        queryWrapper.orderByAsc(MonitoringRuleEntity::getId);
-        return this.baseMapper.selectPage(page, new LambdaQueryWrapper<MonitoringRuleEntity>().orderByDesc(MonitoringRuleEntity::getId));
-    }
-
-    @Override
     public MonitoringRuleEntity selectWithServersById(Integer ruleId) {
         return this.baseMapper.selectWithServersById(ruleId);
     }
@@ -74,6 +67,12 @@ public class MonitoringRuleServiceImpl extends ServiceImpl<MonitoringRuleMapper,
             rule.setCreateDate(now);
             rule.setUpdateDate(now);
         }
+        if(rule.getType().equals("PROCESS")) {
+            rule.setLogFilePath(null);
+            rule.setLogPatterns(null);
+        } else {
+            rule.setProcessNameRegex(null);
+        }
         this.saveOrUpdate(rule);
         List<ServerEntity> linkedServers = rule.getLinkedServers();
         List<ServerMonitoringRuleEntity> serverMonitoringRuleEntities = linkedServers.stream().map(server -> {
@@ -94,5 +93,10 @@ public class MonitoringRuleServiceImpl extends ServiceImpl<MonitoringRuleMapper,
     public boolean deleteById(Integer ruleId) {
         serverMonitoringRuleService.lambdaUpdate().eq(ServerMonitoringRuleEntity::getMonitoringRuleId, ruleId).remove();
         return this.removeById(ruleId);
+    }
+
+    @Override
+    public IPage<MonitoringRuleEntity> selectMyPage(Page<MonitoringRuleEntity> page, RuleQO ruleQO) {
+        return this.baseMapper.selectMyPage(page, ruleQO);
     }
 }

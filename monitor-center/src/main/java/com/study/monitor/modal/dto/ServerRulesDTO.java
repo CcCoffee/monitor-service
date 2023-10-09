@@ -1,7 +1,6 @@
-package com.study.monitor.dto;
+package com.study.monitor.modal.dto;
 
-import com.study.monitor.entity.MonitoringRuleEntity;
-import com.study.monitor.entity.ServerEntity;
+import com.study.monitor.modal.entity.MonitoringRuleEntity;
 
 import java.util.ArrayList;
 import java.util.Date;

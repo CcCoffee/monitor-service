@@ -1,7 +1,7 @@
 package com.study.monitor.monitor.impl;
 
 import com.study.monitor.domain.MonitoringRule;
-import com.study.monitor.dto.ServerRulesDTO;
+import com.study.monitor.modal.dto.ServerRulesDTO;
 import com.study.monitor.monitor.Monitor;
 import com.study.monitor.util.LevenshteinUtil;
 import org.slf4j.Logger;

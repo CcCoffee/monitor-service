@@ -8,7 +8,11 @@ function Main() {
   return (
     <Stack className='h-100' direction="horizontal" gap={0}>
       <Sidebar/>
-      <Outlet/>
+      <div className='h-100 w-100'>
+        <Outlet/>
+
+      </div>
+      
     </Stack>
   );
 }

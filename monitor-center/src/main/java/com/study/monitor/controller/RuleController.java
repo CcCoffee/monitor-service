@@ -2,18 +2,16 @@ package com.study.monitor.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.study.monitor.dto.ServerRulesDTO;
-import com.study.monitor.entity.MonitoringRuleEntity;
-import com.study.monitor.entity.ServerEntity;
-import com.study.monitor.entity.ServerMonitoringRuleEntity;
+import com.study.monitor.modal.dto.ServerRulesDTO;
+import com.study.monitor.modal.entity.MonitoringRuleEntity;
+import com.study.monitor.modal.request.RuleQO;
+import com.study.monitor.modal.response.ApiResponse;
 import com.study.monitor.service.MonitoringRuleService;
 import com.study.monitor.service.ServerMonitoringRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class RuleController {
@@ -28,29 +26,36 @@ public class RuleController {
     }
 
     @RequestMapping("/rules")
-    public IPage<MonitoringRuleEntity> list(@RequestParam(defaultValue = "1") Integer pageNum,
-                                            @RequestParam(defaultValue = "10") Integer pageSize) {
+    public ApiResponse<IPage<MonitoringRuleEntity>> list(@RequestParam(defaultValue = "1") Integer pageNum,
+                                            @RequestParam(defaultValue = "10") Integer pageSize,
+                                            @RequestParam(required = false) String nameFilter,
+                                            @RequestParam(required = false) String typeFilter,
+                                            @RequestParam(required = false) Integer serverFilter) {
         Page<MonitoringRuleEntity> page = new Page<>(pageNum, pageSize);
-        return service.selectPage(page);
+        RuleQO ruleQO = new RuleQO();
+        ruleQO.setNameFilter(nameFilter);
+        ruleQO.setTypeFilter(typeFilter);
+        ruleQO.setServerFilter(serverFilter);
+        return ApiResponse.success(service.selectMyPage(page, ruleQO));
     }
 
     @RequestMapping({"/server-rules"})
-    public List<ServerRulesDTO> getAllServerRules(){
-        return service.getAllServerRules();
+    public ApiResponse<List<ServerRulesDTO>> getAllServerRules(){
+        return ApiResponse.success(service.getAllServerRules());
     }
 
     @PostMapping("/rules")
-    public boolean save(@RequestBody MonitoringRuleEntity rule) {
-        return service.saveOrUpdateEntity(rule);
+    public ApiResponse<Boolean> save(@RequestBody MonitoringRuleEntity rule) {
+        return ApiResponse.success(service.saveOrUpdateEntity(rule));
     }
 
     @GetMapping("/rules/{ruleId}")
-    public MonitoringRuleEntity selectWithServersById(@PathVariable(name = "ruleId") Integer ruleId){
-        return service.selectWithServersById(ruleId);
+    public ApiResponse<MonitoringRuleEntity> selectWithServersById(@PathVariable(name = "ruleId") Integer ruleId){
+        return ApiResponse.success(service.selectWithServersById(ruleId));
     }
 
     @DeleteMapping("/rules/{ruleId}")
-    public boolean deleteById(@PathVariable(name = "ruleId") Integer ruleId){
-        return service.deleteById(ruleId);
+    public ApiResponse<Boolean> deleteById(@PathVariable(name = "ruleId") Integer ruleId){
+        return ApiResponse.success(service.deleteById(ruleId));
     }
 }

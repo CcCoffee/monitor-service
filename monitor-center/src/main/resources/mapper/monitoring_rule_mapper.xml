@@ -3,7 +3,7 @@
 
 <mapper namespace="com.study.monitor.mapper.MonitoringRuleMapper">
 
-    <resultMap id="BaseResultMap" type="com.study.monitor.entity.MonitoringRuleEntity">
+    <resultMap id="BaseResultMap" type="com.study.monitor.modal.entity.MonitoringRuleEntity">
         <id column="id" property="id" />
         <result column="name" property="name" />
         <result column="type" property="type" />
@@ -19,7 +19,7 @@
         <result column="updated_by" property="updatedBy" />
         <result column="create_date" property="createDate" />
         <result column="update_date" property="updateDate" />
-        <collection property="linkedServers" ofType="com.study.monitor.entity.ServerEntity" >
+        <collection property="linkedServers" ofType="com.study.monitor.modal.entity.ServerEntity" >
             <id column="s_id" property="id" />
             <result column="s_server_name" property="serverName" />
             <result column="s_hostname" property="hostname" />
@@ -75,5 +75,24 @@
         <where>
             m.id = #{id}
         </where>
+    </select>
+
+    <select id="selectMyPage" resultMap="BaseResultMap" parameterType="com.study.monitor.modal.request.RuleQO">
+        select
+        <include refid="monitoringRuleFields" />
+        FROM monitoring_rule m
+        LEFT JOIN server_monitoring_rule sm ON m.id = sm.monitoring_rule_id
+        <where>
+            <if test="ruleQO.serverFilter != null">
+                and sm.server_id = #{ruleQO.serverFilter}
+            </if>
+            <if test="ruleQO.nameFilter != null and ruleQO.nameFilter != ''">
+                and m.name like concat('%', #{ruleQO.nameFilter}, '%')
+            </if>
+            <if test="ruleQO.typeFilter != null and ruleQO.typeFilter != ''">
+                and m.type = #{ruleQO.typeFilter}
+            </if>
+        </where>
+        ORDER BY m.id desc
     </select>
 </mapper>

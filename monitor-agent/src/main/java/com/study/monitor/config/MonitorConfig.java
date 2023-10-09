@@ -1,8 +1,7 @@
 package com.study.monitor.config;
 
 import com.study.monitor.accessor.MonitorCenterResource;
-import com.study.monitor.dto.MonitorRulesDTO;
-import com.study.monitor.dto.ServerRulesDTO;
+import com.study.monitor.modal.dto.ServerRulesDTO;
 import com.study.monitor.monitor.impl.ProcessMonitor;
 import com.study.monitor.util.HttpUtil;
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -37,11 +35,11 @@ public class MonitorConfig {
 
     @Bean
     public ServerRulesDTO serverRules() {
-        AtomicReference<List<ServerRulesDTO>> monitorRulesDTOListRef = new AtomicReference<>(resource.fetchMonitorRules());
+        AtomicReference<List<ServerRulesDTO>> monitorRulesDTOListRef = new AtomicReference<>(resource.fetchMonitorRules().getData());
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> {
             LOGGER.info("Fetch monitor rules from monitor-center...");
-            monitorRulesDTOListRef.set(resource.fetchMonitorRules());
+            monitorRulesDTOListRef.set(resource.fetchMonitorRules().getData());
         }, 0, ruleFetchInterval.toMillis(), TimeUnit.MILLISECONDS);
         List<ServerRulesDTO> monitorRulesDTOList = monitorRulesDTOListRef.get();
         if (monitorRulesDTOList != null && !monitorRulesDTOList.isEmpty()){

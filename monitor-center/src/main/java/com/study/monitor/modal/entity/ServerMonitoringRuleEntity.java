@@ -1,4 +1,4 @@
-package com.study.monitor.entity;
+package com.study.monitor.modal.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 

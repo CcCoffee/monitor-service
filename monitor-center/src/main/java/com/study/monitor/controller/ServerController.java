@@ -1,12 +1,12 @@
 package com.study.monitor.controller;
 
-import com.study.monitor.entity.ServerEntity;
-import com.study.monitor.qo.ServerQO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.study.monitor.modal.entity.ServerEntity;
+import com.study.monitor.modal.request.ServerQO;
+import com.study.monitor.modal.response.ApiResponse;
 import com.study.monitor.service.ServerService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,16 +20,33 @@ public class ServerController {
         this.serverService = serverService;
     }
 
-//    @GetMapping({"", "/"})
-//    public List<ServerEntity> listAll(){
-//        return serverService.listAll();
+    @GetMapping({"", "/"})
+    public ApiResponse<IPage<ServerEntity>> list(@RequestParam(defaultValue = "1") Integer pageNum,
+                                                @RequestParam(defaultValue = "10") Integer pageSize,
+                                                @RequestParam(required = false) String serverNameFilter,
+                                                @RequestParam(required = false) String hostnameFilter) {
+        Page<ServerEntity> page = new Page<>(pageNum, pageSize);
+        ServerQO serverQO = new ServerQO();
+        serverQO.setServerNameFilter(serverNameFilter);
+        serverQO.setHostnameFilter(hostnameFilter);
+        return ApiResponse.success(serverService.selectMyPage(page, serverQO));
+    }
+
+    @PostMapping({"", "/"})
+    public ApiResponse<Boolean> save(@RequestBody ServerEntity serverEntity) {
+        return ApiResponse.success(serverService.saveOrUpdateEntity(serverEntity));
+    }
+
+//    @DeleteMapping("/{serverId}")
+//    public boolean deleteById(@PathVariable(name = "serverId") Integer serverId){
+//        return serverService.deleteById(ruleId);
 //    }
 
 
-    @GetMapping({"", "/"})
-    public List<ServerEntity> findByParams(@RequestParam(name = "ruleId", required = false) Integer ruleId) {
+    @GetMapping("/all")
+    public ApiResponse<List<ServerEntity>> findAll(@RequestParam(name = "ruleId", required = false) Integer ruleId) {
         ServerQO serverQO = new ServerQO();
         serverQO.setRuleId(ruleId);
-        return serverService.findByParams(serverQO);
+        return ApiResponse.success(serverService.findByParams(serverQO));
     }
 }

@@ -14,36 +14,52 @@ const RuleModal = ({
     const [selectedServerOptions, setSelectedServerOptions] = useState([]);
 
     const generateServerOptions = () => {
-        return fetch('http://localhost:8090/servers')
+        return fetch('http://localhost:8090/servers/all')
           .then(response => response.json())
           .then(data => {
-            const options = data.map(item => ({
-              label: item.serverName,
-              value: item.id,
-            }));
-            setLinkedServerOptions(options);
-            return options;
+            if (data.code === 200) {
+              const options = data.data.map(item => ({
+                label: item.serverName,
+                value: item.id,
+              }));
+              setLinkedServerOptions(options);
+              return options;
+            } else {
+              console.error(data.message);
+              // TODO: 处理保存失败的情况，如显示错误消息等
+              return [];
+            }
           })
           .catch(error => {
-            console.error(error);
+            console.error("An error occurred while generating server options:", error);
+            // TODO: 可以执行其他操作，如显示错误消息等
           });
       };
 
       const querySelectedServerOptions = () => {
         if(rule.id) {
-            fetch(`http://localhost:8090/servers?ruleId=${rule.id}`)
+            fetch(`http://localhost:8090/servers/all?ruleId=${rule.id}`)
             .then(response => response.json())
             .then(data => {
-              const options = data.map(item => ({
-                label: item.serverName,
-                value: item.id,
-                }));
-              setSelectedServerOptions(options);
-              handleRuleInputChange({target: {name: 'linkedServers', value: options.map(option=>{
-                return {id: option.value}
-            })}})
+              if (data.code === 200) {
+                const options = data.data.map(item => ({
+                  label: item.serverName,
+                  value: item.id,
+                  }));
+                setSelectedServerOptions(options);
+                handleRuleInputChange({target: {name: 'linkedServers', value: options.map(option=>{
+                  return {id: option.value}
+                })}})
+              } else {
+                console.error(data.message);
+                // TODO: 处理保存失败的情况，如显示错误消息等
+                return [];
+              }
             })
-            .catch(error => console.error(error));
+            .catch(error => {
+              console.error("An error occurred while querying selected server options:", error);
+              // TODO: 可以执行其他操作，如显示错误消息等
+            });
         }
       }
 
@@ -67,7 +83,7 @@ const RuleModal = ({
   return (
     <Modal show={showModal} onHide={handleCloseModal}>
       <Modal.Header closeButton>
-        <Modal.Title>{rule.id ? '编辑 Rule' : '新增 Rule'}</Modal.Title>
+        <Modal.Title>{rule.id ? 'Edit Rule' : 'Insert Rule'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
@@ -75,7 +91,7 @@ const RuleModal = ({
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="输入名称"
+                placeholder="Input name"
                 name="name"
                 defaultValue={rule.name}
                 onChange={handleRuleInputChange}
@@ -90,7 +106,7 @@ const RuleModal = ({
                 onChange={handleRuleInputChange}
                 required
               >
-                <option value="">选择类型</option>
+                <option value="">Please select</option>
                 <option value="PROCESS">Process</option>
                 <option value="LOG">Log</option>
               </Form.Select>
@@ -187,7 +203,7 @@ const RuleModal = ({
                 options={linkedServerOptions}
                 value={selectedServerOptions}
                 onChange={handleSelectChange}
-                placeholder="选择选项..."
+                placeholder="Please select"
                 isSearchable
                 />
             </Form.Group>
@@ -195,10 +211,10 @@ const RuleModal = ({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleCloseModal}>
-          取消
+          Cancel
         </Button>
         <Button type="submit" variant="primary" onClick={()=>handleSaveRule(rule)}>
-          保存
+          Save
         </Button>
       </Modal.Footer>
     </Modal>

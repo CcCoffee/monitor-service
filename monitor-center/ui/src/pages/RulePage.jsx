@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Form, Button, Badge, Row, Col } from 'react-bootstrap';
+import { Table, Form, Button, Badge, Row, Col, Container } from 'react-bootstrap';
 import MyPagination from '../components/MyPagination';
 import './RulePage.css'
 import RuleModal from '../components/RuleModal';
+import Footer from '../components/Footer';
 
 const RulePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,7 +27,8 @@ const RulePage = () => {
     notificationRecipients: [],
     processNameRegex: "",
     logFilePath: "",
-    logPatterns: [],
+    logPatterns: null,
+    linkedServers: []
   });
 
   const handleRuleInputChange = (event) => {
@@ -51,30 +53,59 @@ const RulePage = () => {
 
   useEffect(() => {
     fetchRules(currentPage, pageSize);
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, nameFilter, typeFilter, serverFilter]);
 
   const fetchRules = (currentPage, pageSize) => {
-    const url = `http://localhost:8090/rules?pageNum=${currentPage}&pageSize=${pageSize}`;
+    let url = `http://localhost:8090/rules?pageNum=${currentPage}&pageSize=${pageSize}`;
+  
+    if (nameFilter !== '') {
+      url += `&nameFilter=${encodeURIComponent(nameFilter)}`;
+    }
+  
+    if (typeFilter !== '') {
+      url += `&typeFilter=${encodeURIComponent(typeFilter)}`;
+    }
+  
+    if (serverFilter !== '') {
+      url += `&serverFilter=${encodeURIComponent(serverFilter)}`;
+    }
   
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        setRules(data.records);
-        setFilteredRules(data.records);
-        setPages(data.pages);
+        if (data.code === 200) {
+          setRules(data.data.records);
+          setFilteredRules(data.data.records);
+          setPages(data.data.pages);
+        } else {
+          console.error(data.message);
+          // TODO: 处理请求失败的情况，如显示错误消息等
+        }
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error('An error occurred while fetching rules:', error);
+        // TODO: 处理异常情况，如显示错误消息等
+      });
   };
 
   const fetchServers = () => {
     // Fetch servers from the backend and set the 'servers' state
     // Example:
-    fetch('http://localhost:8090/servers')
+    fetch('http://localhost:8090/servers/all')
       .then(response => response.json())
       .then(data => {
-        setServers(data);
+        if (data.code === 200) {
+          setServers(data.data);
+        } else {
+          console.error(data.message);
+          // TODO: 处理请求失败的情况，如显示错误消息等
+        }
+        
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error('An error occurred while fetching servers:', error);
+        // TODO: 处理异常情况，如显示错误消息等
+      });
   };
 
   const handlePageChange = (page) => {
@@ -149,19 +180,23 @@ const RulePage = () => {
       });
   
       if (response.ok) {
-        // 保存成功
-        console.log("Rule saved successfully");
-        setShowModal(false);
-        fetchRules(currentPage, pageSize);
+        const data = await response.json();
+        if (data.code === 200) {
+          console.log("Rule saved successfully");
+          setShowModal(false);
+          fetchRules(currentPage, pageSize);
+        } else {
+          console.error(data.message);
+          // TODO: 处理保存失败的情况，如显示错误消息等
+        }
       } else {
         // 保存失败
         console.error("Failed to save rule");
         // TODO: 可以执行其他操作，如显示错误消息等
       }
     } catch (error) {
-      // 处理异常情况
       console.error("An error occurred while saving rule:", error);
-      // TODO: 可以执行其他操作，如显示错误消息等
+      // TODO: 处理异常情况，如显示错误消息等
     }
   };
 
@@ -173,69 +208,47 @@ const RulePage = () => {
     setShowModal(true);
   };
 
-  // Apply filters to the rules list
-  useEffect(() => {
-    let filtered = rules;
-
-    if (nameFilter !== '') {
-      filtered = filtered.filter(rule => rule.name.includes(nameFilter));
-    }
-
-    if (typeFilter !== '') {
-      filtered = filtered.filter(rule => rule.type === typeFilter);
-    }
-
-    if (serverFilter !== '') {
-      filtered = filtered.filter(rule => {
-        // Check if the rule is associated with the selected server
-        const associatedServers = rule.servers.map(server => server.id);
-        return associatedServers.includes(parseInt(serverFilter));
-      });
-    }
-
-    setFilteredRules(filtered);
-  }, [nameFilter, typeFilter, serverFilter, rules]);
-
   return (
-    <div className='h-100 w-100 px-3'>
-      <h1>Rule查询页面</h1>
+    <>
+      <Container className='h-100 w-100'>
+      <h1>Monitoring Rule Query</h1>
       <Form>
         <Row className='mb-3'>
           <Form.Group as={Col} controlId="nameFilter">
-            <Form.Label >Name过滤器</Form.Label>
+            <Form.Label >Name filter</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="输入名称"
+                placeholder="Enter name"
                 value={nameFilter}
                 onChange={handleNameFilterChange}
               />
           </Form.Group>
           <Form.Group as={Col} controlId="typeFilter">
-            <Form.Label>Type过滤器</Form.Label>
+            <Form.Label>Type filter</Form.Label>
             <Form.Select
               value={typeFilter}
               onChange={handleTypeFilterChange}
             >
-              <option value="">全部</option>
+              <option value="">All</option>
               <option value="PROCESS">Process</option>
               <option value="LOG">Log</option>
               {/* Add other types here */}
             </Form.Select>
           </Form.Group>
           <Form.Group as={Col} controlId="serverFilter">
-            <Form.Label>Server过滤器</Form.Label>
+            <Form.Label>Server filter</Form.Label>
             <Form.Select
               value={serverFilter}
               onChange={handleServerFilterChange}
             >
-              <option value="">全部</option>
+              <option value="">All</option>
               {servers.map(server => (
                 <option value={server.id} key={server.id}>{server.serverName}</option>
               ))}
             </Form.Select>
           </Form.Group>
           <Col className="d-flex justify-content-end align-items-end">
-            <Button variant="primary" onClick={handleAddRule}>新增</Button>
+            <Button variant="primary" onClick={handleAddRule}>New</Button>
           </Col>
         </Row>
       </Form>
@@ -263,14 +276,16 @@ const RulePage = () => {
               </td>
               {/* Add other table cells */}
               <td>
-                <Button variant="primary" onClick={() => handleEditRule(rule.id)}>修改</Button>{' '}
-                <Button variant="danger" onClick={() => handleDeleteRule(rule.id)}>删除</Button>
+                <Button variant="primary" onClick={() => handleEditRule(rule.id)}>Edit</Button>{' '}
+                <Button variant="danger" onClick={() => handleDeleteRule(rule.id)}>Delete</Button>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
-      <MyPagination currentPage={currentPage} totalPages={pages} onPageChange={handlePageChange}/>
+      {
+        pages > 1?<MyPagination currentPage={currentPage} totalPages={pages} onPageChange={handlePageChange}/>:<></>
+      }
       <RuleModal
         showModal={showModal}
         handleCloseModal={() => setShowModal(false)}
@@ -278,7 +293,10 @@ const RulePage = () => {
         rule={selectedRule}
         handleRuleInputChange={handleRuleInputChange}
       />
-    </div>
+
+    </Container>
+    </>
+
   );
 };
 

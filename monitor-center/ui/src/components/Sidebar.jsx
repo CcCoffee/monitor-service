@@ -1,5 +1,5 @@
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { ClockHistory, Speedometer2, Activity, Mailbox, Gear, SearchHeartFill } from 'react-bootstrap-icons';
+import { ClockHistory, Speedometer2, Activity, Mailbox, Gear, SearchHeartFill, PcDisplayHorizontal } from 'react-bootstrap-icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -48,6 +48,12 @@ const Sidebar = () => {
           <Nav.Link href="/rule" className={`nav-link text-white d-flex align-items-center ${isNavLinkActive('/rule')}`} tabIndex={3}>
             <Gear className="bi pe-none me-2" size={16} />
             Rule Configuration
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link href="/server" className={`nav-link text-white d-flex align-items-center ${isNavLinkActive('/server')}`} tabIndex={3}>
+            <PcDisplayHorizontal className="bi pe-none me-2" size={16} />
+            Server Configuration
           </Nav.Link>
         </Nav.Item>
         {/* 提供有关警报通知的详细信息，例如通知类型、通知方式等。 */}

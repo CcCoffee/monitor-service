@@ -1,4 +1,4 @@
-package com.study.monitor.dto;
+package com.study.monitor.modal.dto;
 
 
 import java.util.List;

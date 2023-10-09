@@ -1,14 +1,17 @@
-package com.study.monitor.dto;
+package com.study.monitor.modal.entity;
 
-import com.study.monitor.domain.MonitoringRule;
-import com.study.monitor.domain.Server;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ServerRulesDTO {
+@TableName("server")
+public class ServerEntity {
 
+    @TableId(type = IdType.AUTO)
     private Integer id;
     private String serverName;
     private String hostname;
@@ -17,7 +20,8 @@ public class ServerRulesDTO {
     private String updatedBy;
     private Date createDate;
     private Date updateDate;
-    private List<MonitoringRule> monitoringRuleList = new ArrayList<>();
+    @TableField(exist = false)
+    private List<MonitoringRuleEntity> monitoringRuleList;
 
     public Integer getId() {
         return id;
@@ -83,11 +87,12 @@ public class ServerRulesDTO {
         this.updateDate = updateDate;
     }
 
-    public List<MonitoringRule> getMonitoringRuleList() {
+    public List<MonitoringRuleEntity> getMonitoringRuleList() {
         return monitoringRuleList;
     }
 
-    public void setMonitoringRuleList(List<MonitoringRule> monitoringRuleList) {
+    public void setMonitoringRuleList(List<MonitoringRuleEntity> monitoringRuleList) {
         this.monitoringRuleList = monitoringRuleList;
     }
 }
+

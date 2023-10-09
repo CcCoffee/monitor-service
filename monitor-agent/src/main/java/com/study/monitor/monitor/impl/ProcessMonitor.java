@@ -1,7 +1,7 @@
 package com.study.monitor.monitor.impl;
 
 import com.study.monitor.domain.MonitoringRule;
-import com.study.monitor.dto.ServerRulesDTO;
+import com.study.monitor.modal.dto.ServerRulesDTO;
 import com.study.monitor.monitor.Monitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +69,7 @@ public class ProcessMonitor implements Monitor {
                     reader.close();
                     if (!processFound) {
                         // Process not found, send alert
-                        LOGGER.warn("Process not found, sending alert...");
+                        LOGGER.warn("Process '{}' not found, sending alert...", rule.getProcessNameRegex());
                         // Check if enough time has passed since the last alert
                         Date currentTime = new Date();
                         if (rule.getLastAlertTime() == null || currentTime.getTime() - rule.getLastAlertTime().getTime() >= coolDownTime.toMillis()) {
@@ -77,7 +77,7 @@ public class ProcessMonitor implements Monitor {
                             rule.setLastAlertTime(currentTime);
                             sendAlert(rule); // Add your alert logic here
                         } else {
-                            LOGGER.debug("Process not found, but still in cool time down, ignore sending alert...");
+                            LOGGER.debug("Process '{}' not found, but still in cool time down, ignore sending alert...", rule.getProcessNameRegex());
                         }
                     }
                 } catch (IOException e) {

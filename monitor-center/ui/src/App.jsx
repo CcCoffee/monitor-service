@@ -3,6 +3,7 @@ import LoginPage from './pages/Login';
 import Main from './pages/Main';
 import AgentStatus from './pages/AgentStatus';
 import RulePage from './pages/RulePage'
+import ServerPage from './pages/ServerPage'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route index path="/" element={<AgentStatus />}/>
           <Route index path="/agent-status" element={<AgentStatus />}/>
           <Route path="/rule" element={<RulePage />} />
+          <Route path="/server" element={<ServerPage />} />
         </Route>
       </Routes>
     </Router>
