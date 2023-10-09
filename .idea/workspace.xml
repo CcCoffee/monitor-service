@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c06b8968-018b-40ed-8dd1-70e4e90cc5aa" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/AgentHealthCheckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/AgentHealthCheckController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/ServerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/ServerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/RulePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/RulePage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/ServerPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/ServerPage.jsx" afterDir="false" />
-    </list>
+    <list default="true" id="c06b8968-018b-40ed-8dd1-70e4e90cc5aa" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
