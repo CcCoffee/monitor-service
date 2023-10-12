@@ -10,7 +10,6 @@ import java.util.List;
 
 public interface ServerService extends IService<ServerEntity> {
     List<String> getAgentHostNameList();
-    List<ServerEntity> listAll();
     List<ServerEntity> findByParams(ServerQO serverQO);
     IPage<ServerEntity> selectMyPage(Page<ServerEntity> page, ServerQO serverQO);
 

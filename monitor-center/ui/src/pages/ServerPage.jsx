@@ -3,6 +3,7 @@ import { Table, Form, Button, Badge, Row, Col, Container, Modal, Alert, Card } f
 import MyPagination from '../components/MyPagination';
 import './ServerPage.css'
 import ServerModal from '../components/ServerModal';
+import {notifyFailure, notifySuccess} from '../utils/ToastUtil'
 
 const ServerPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -84,6 +85,7 @@ const ServerPage = () => {
         if (response.ok) {
           // Server deleted successfully
           console.log('Server deleted successfully');
+          notifySuccess();
           // Perform any additional tasks if needed
           // Refresh the servers list
           fetchServers(currentPage, pageSize);
@@ -91,12 +93,14 @@ const ServerPage = () => {
           response.json().then(data => {
             console.error(data.message);
             // TODO: 处理请求失败的情况，如显示错误消息等
+            notifyFailure("Delete server Failed", data.message);
           });
         }
       })
       .catch(error => {
         console.error('An error occurred while deleting server:', error);
         // TODO: 处理异常情况，如显示错误消息等
+        notifyFailure();
       });
   
     // 关闭确认框并重置服务器ID
@@ -153,19 +157,23 @@ const ServerPage = () => {
         const data = await response.json();
         if (data.code === 200) {
           console.log("Server saved successfully");
+          notifySuccess()
           setShowModal(false);
           fetchServers(currentPage, pageSize);
         } else {
           console.error(data.message);
           // TODO: 处理保存失败的情况，如显示错误消息等
+          notifyFailure("Save server Failed", data.message);
         }
       } else {
         console.error("Failed to save server");
         // TODO: 处理保存失败的情况，如显示错误消息等
+        notifyFailure();
       }
     } catch (error) {
       console.error("An error occurred while saving server:", error);
       // TODO: 处理异常情况，如显示错误消息等
+      notifyFailure();
     }
   };
 

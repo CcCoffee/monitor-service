@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.monitor.mapper.ChannelMapper">
+
+    <resultMap id="BaseResultMap" type="com.study.monitor.modal.entity.ChannelEntity">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="type" column="type"/>
+        <result property="description" column="description"/>
+        <result property="configuration" column="configuration" javaType="java.util.Map" jdbcType="OTHER" typeHandler="com.study.monitor.handler.JsonTypeHandler"/>
+        <result property="enabled" column="enabled"/>
+        <result column="created_by" property="createdBy" />
+        <result column="updated_by" property="updatedBy" />
+        <result property="createDate" column="create_date"/>
+        <result property="updateDate" column="update_date"/>
+    </resultMap>
+
+    <sql id="channelFields">
+        a.id, a.name, a.type, a.description, a.configuration, a.enabled, a.created_by, a.updated_by, a.create_date, a.update_date
+    </sql>
+
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="com.study.monitor.modal.request.ChannelQO">
+        select
+        <include refid="channelFields" />
+        FROM channel a
+        <where>
+            <if test="channelQO.nameFilter != null and channelQO.nameFilter != ''">
+                and a.name like concat('%', #{channelQO.nameFilter}, '%')
+            </if>
+            <if test="channelQO.typeFilter != null and channelQO.typeFilter != ''">
+                and a.type = #{channelQO.typeFilter}
+            </if>
+        </where>
+        ORDER BY a.id desc
+    </select>
+
+    <select id="selectMyPage" resultMap="BaseResultMap" parameterType="com.study.monitor.modal.request.ChannelQO">
+        select
+        <include refid="channelFields" />
+        FROM channel a
+        <where>
+            <if test="channelQO.nameFilter != null and channelQO.nameFilter != ''">
+                and a.name like concat('%', #{channelQO.nameFilter}, '%')
+            </if>
+            <if test="channelQO.typeFilter != null and channelQO.typeFilter != ''">
+                and a.type = #{channelQO.typeFilter}
+            </if>
+        </where>
+        ORDER BY a.id desc
+    </select>
+
+    <insert id="insertChannel" parameterType="com.study.monitor.modal.entity.ChannelEntity">
+        INSERT INTO channel (name, type, description, configuration, enabled, created_by, updated_by, create_date, update_date)
+        VALUES (#{name}, #{type}, #{description}, #{configuration,jdbcType=OTHER,typeHandler=com.study.monitor.handler.JsonTypeHandler}, #{enabled}, #{createdBy}, #{updatedBy}, #{createDate}, #{updateDate})
+    </insert>
+
+</mapper>

@@ -58,9 +58,9 @@ const Sidebar = () => {
         </Nav.Item>
         {/* 提供有关警报通知的详细信息，例如通知类型、通知方式等。 */}
         <Nav.Item>
-          <Nav.Link href="/rule4" className={`nav-link text-white d-flex align-items-center ${isNavLinkActive('/rule4')}`} tabIndex={4}>
+          <Nav.Link href="/channel" className={`nav-link text-white d-flex align-items-center ${isNavLinkActive('/channel')}`} tabIndex={4}>
             <Mailbox className="bi pe-none me-2" size={16} />
-            Notification Settings
+            Notification Channel
           </Nav.Link>
         </Nav.Item>
       </Nav>

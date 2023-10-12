@@ -3,6 +3,7 @@ import { Table, Form, Button, Badge, Row, Col, Container, Modal, Alert, Card } f
 import MyPagination from '../components/MyPagination';
 import './RulePage.css'
 import RuleModal from '../components/RuleModal';
+import {notifyFailure, notifySuccess} from '../utils/ToastUtil'
 
 const RulePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -126,6 +127,7 @@ const RulePage = () => {
         if (response.ok) {
           // Server deleted successfully
           console.log('Rule deleted successfully');
+          notifySuccess();
           // Perform any additional tasks if needed
           // Refresh the rules list
           fetchRules(currentPage, pageSize);
@@ -133,12 +135,14 @@ const RulePage = () => {
           response.json().then(data => {
             console.error(data.message);
             // TODO: 处理请求失败的情况，如显示错误消息等
+            notifyFailure("Delete rule Failed", data.message);
           });
         }
       })
       .catch(error => {
         console.error('An error occurred while deleting rule:', error);
         // TODO: 处理异常情况，如显示错误消息等
+        notifyFailure();
       });
   
     // 关闭确认框并重置服务器ID
@@ -200,20 +204,24 @@ const RulePage = () => {
         const data = await response.json();
         if (data.code === 200) {
           console.log("Rule saved successfully");
+          notifySuccess()
           setShowModal(false);
           fetchRules(currentPage, pageSize);
         } else {
           console.error(data.message);
           // TODO: 处理保存失败的情况，如显示错误消息等
+          notifyFailure("Save rule Failed", data.message);
         }
       } else {
         // 保存失败
         console.error("Failed to save rule");
         // TODO: 可以执行其他操作，如显示错误消息等
+        notifyFailure();
       }
     } catch (error) {
       console.error("An error occurred while saving rule:", error);
       // TODO: 处理异常情况，如显示错误消息等
+      notifyFailure();
     }
   };
 

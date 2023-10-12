@@ -24,3 +24,13 @@ VALUES
 INSERT INTO server_monitoring_rule (server_id, monitoring_rule_id, create_date, update_date)
 VALUES
     (1, 2, current_timestamp, current_timestamp);
+
+INSERT INTO alert_channel (name, type, description, configuration, created_by, updated_by)
+VALUES ('Email Channel 1', 'EMAIL', 'test', '{"emailAddress": ["example1@example.com","example2@example.com"], "emailTemplate": "template1"}', 'admin', 'admin');
+
+INSERT INTO alert_channel (name, type, description, configuration, created_by, updated_by)
+VALUES ('Email Channel 2', 'EMAIL', 'test','{"emailAddress": ["example1@example.com","example2@example.com"], "emailTemplate": "template1"}', 'admin', 'admin');
+
+INSERT INTO alert_channel (name, type, description, configuration, created_by, updated_by)
+VALUES ('Email Channel 3', 'EMAIL', 'test','{"emailAddress": ["example1@example.com","example2@example.com"], "emailTemplate": "template1"}', 'admin', 'admin');
+

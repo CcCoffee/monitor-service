@@ -31,11 +31,6 @@ public class ServerServiceImpl extends ServiceImpl<ServerMapper, ServerEntity> i
     }
 
     @Override
-    public List<ServerEntity> listAll() {
-        return this.baseMapper.selectList(null);
-    }
-
-    @Override
     public List<ServerEntity> findByParams(ServerQO serverQO) {
         return this.baseMapper.findByParams(serverQO);
     }
