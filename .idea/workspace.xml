@@ -5,23 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c06b8968-018b-40ed-8dd1-70e4e90cc5aa" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/monitor-center/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/ChannelController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/handler/JsonTypeHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/mapper/ChannelMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/entity/ChannelEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/json/EmailChannelConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/request/ChannelQO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/ChannelService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/ChannelServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/channel_mapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/mapper/MonitoringRuleChannelMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/entity/MonitoringRuleChannelEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/MonitoringRuleChannelService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/MonitoringRuleChannelServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/ServerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/ServerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/ServerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/ServerServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/ChannelController.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/ChannelController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/entity/MonitoringRuleEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/entity/MonitoringRuleEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/request/ChannelQO.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/request/ChannelQO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/MonitoringRuleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/MonitoringRuleServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/channel_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/channel_mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/monitor-center/src/main/resources/static/sql/01_ddl.sql" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/static/sql/01_ddl.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/resources/static/sql/03_test.sql" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/static/sql/03_test.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/components/Sidebar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/components/Sidebar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/components/RuleModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/components/RuleModal.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,10 +74,11 @@
       <recent name="com.study.monitor.modal.response" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.study.monitor.mapper" />
+      <recent name="com.study.monitor.service" />
+      <recent name="com.study.monitor.modal.entity" />
       <recent name="com.study.monitor.controller" />
       <recent name="com.study.monitor.modal.request" />
-      <recent name="com.study.monitor.mapper" />
-      <recent name="com.study.monitor.model" />
     </key>
   </component>
   <component name="RunDashboard">

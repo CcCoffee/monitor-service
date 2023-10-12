@@ -43,6 +43,8 @@ public class MonitoringRuleEntity {
     private Date lastAlertTime;
     @TableField(exist = false)
     private List<ServerEntity> linkedServers;
+    @TableField(exist = false)
+    private List<Integer> channelIds;
 
     public Integer getId() {
         return id;
@@ -176,7 +178,17 @@ public class MonitoringRuleEntity {
         return linkedServers;
     }
 
+    public List<Integer> getChannelIds() {
+        return channelIds;
+    }
+
+    public void setChannelIds(List<Integer> channelIds) {
+        this.channelIds = channelIds;
+    }
+
     public void setLinkedServers(List<ServerEntity> linkedServers) {
+
+
         this.linkedServers = linkedServers;
     }
 }

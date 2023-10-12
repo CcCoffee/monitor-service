@@ -3,7 +3,7 @@ package com.study.monitor.modal.request;
 public class ChannelQO {
     private String nameFilter;
     private String typeFilter;
-
+    private Integer ruleId;
     public String getNameFilter() {
         return nameFilter;
     }
@@ -18,5 +18,13 @@ public class ChannelQO {
 
     public void setTypeFilter(String typeFilter) {
         this.typeFilter = typeFilter;
+    }
+
+    public Integer getRuleId() {
+        return ruleId;
+    }
+
+    public void setRuleId(Integer ruleId) {
+        this.ruleId = ruleId;
     }
 }

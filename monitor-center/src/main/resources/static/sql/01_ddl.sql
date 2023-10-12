@@ -60,6 +60,14 @@ CREATE TABLE alert_channel (
     PRIMARY KEY (alert_id, channel_id)
 );
 
+CREATE TABLE monitoring_rule_channel (
+    monitoring_rule_id INT REFERENCES monitoring_rule(id),
+    channel_id INT REFERENCES channel (id),
+    PRIMARY KEY (monitoring_rule_id, channel_id),
+    create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 -- 如何确定两条Alert相同，可以给repeat_count + 1
 -- 1. status 为 OPEN
 -- 2. 相同 source

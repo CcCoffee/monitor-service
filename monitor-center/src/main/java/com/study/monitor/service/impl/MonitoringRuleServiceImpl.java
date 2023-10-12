@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.monitor.modal.dto.ServerRulesDTO;
+import com.study.monitor.modal.entity.MonitoringRuleChannelEntity;
 import com.study.monitor.modal.entity.MonitoringRuleEntity;
 import com.study.monitor.modal.entity.ServerEntity;
 import com.study.monitor.modal.entity.ServerMonitoringRuleEntity;
 import com.study.monitor.mapper.MonitoringRuleMapper;
 import com.study.monitor.mapper.ServerMapper;
 import com.study.monitor.modal.request.RuleQO;
+import com.study.monitor.service.MonitoringRuleChannelService;
 import com.study.monitor.service.MonitoringRuleService;
 import com.study.monitor.service.ServerMonitoringRuleService;
 import org.springframework.beans.BeanUtils;
@@ -26,11 +28,14 @@ public class MonitoringRuleServiceImpl extends ServiceImpl<MonitoringRuleMapper,
 
     private final ServerMapper serverMapper;
     private final ServerMonitoringRuleService serverMonitoringRuleService;
+    private final MonitoringRuleChannelService monitoringRuleChannelService;
 
     @Autowired
-    public MonitoringRuleServiceImpl(ServerMapper serverMapper, ServerMonitoringRuleService serverMonitoringRuleService){
+    public MonitoringRuleServiceImpl(ServerMapper serverMapper, ServerMonitoringRuleService serverMonitoringRuleService,
+                                     MonitoringRuleChannelService monitoringRuleChannelService){
         this.serverMapper = serverMapper;
         this.serverMonitoringRuleService = serverMonitoringRuleService;
+        this.monitoringRuleChannelService = monitoringRuleChannelService;
     }
 
     @Override
@@ -85,6 +90,17 @@ public class MonitoringRuleServiceImpl extends ServiceImpl<MonitoringRuleMapper,
         }).collect(Collectors.toList());
         serverMonitoringRuleService.lambdaUpdate().eq(ServerMonitoringRuleEntity::getMonitoringRuleId, rule.getId()).remove();
         serverMonitoringRuleService.saveBatch(serverMonitoringRuleEntities);
+
+        List<MonitoringRuleChannelEntity> monitoringRuleChannelEntities = rule.getChannelIds().stream().map(channelId -> {
+            MonitoringRuleChannelEntity monitoringRuleChannelEntity = new MonitoringRuleChannelEntity();
+            monitoringRuleChannelEntity.setChannelId(channelId);
+            monitoringRuleChannelEntity.setMonitoringRuleId(rule.getId());
+            monitoringRuleChannelEntity.setCreateDate(now);
+            monitoringRuleChannelEntity.setUpdateDate(now);
+            return monitoringRuleChannelEntity;
+        }).collect(Collectors.toList());
+        monitoringRuleChannelService.lambdaUpdate().eq(MonitoringRuleChannelEntity::getMonitoringRuleId, rule.getId()).remove();
+        monitoringRuleChannelService.saveBatch(monitoringRuleChannelEntities);
         return true;
     }
 

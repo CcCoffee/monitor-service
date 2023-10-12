@@ -24,12 +24,16 @@
         select
         <include refid="channelFields" />
         FROM channel a
+        <if test="ruleId != null">
+            LEFT JOIN monitoring_rule_channel rc ON a.id = rc.channel_id
+            WHERE rc.monitoring_rule_id = #{ruleId}
+        </if>
         <where>
-            <if test="channelQO.nameFilter != null and channelQO.nameFilter != ''">
-                and a.name like concat('%', #{channelQO.nameFilter}, '%')
+            <if test="nameFilter != null and nameFilter != ''">
+                and a.name like concat('%', #{nameFilter}, '%')
             </if>
-            <if test="channelQO.typeFilter != null and channelQO.typeFilter != ''">
-                and a.type = #{channelQO.typeFilter}
+            <if test="typeFilter != null and typeFilter != ''">
+                and a.type = #{typeFilter}
             </if>
         </where>
         ORDER BY a.id desc

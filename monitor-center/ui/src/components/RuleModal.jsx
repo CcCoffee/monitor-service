@@ -10,75 +10,136 @@ const RuleModal = ({
   rule,
   handleRuleInputChange,
 }) => {
-    const [linkedServerOptions, setLinkedServerOptions] = useState([]);
-    const [selectedServerOptions, setSelectedServerOptions] = useState([]);
+  const [linkedServerOptions, setLinkedServerOptions] = useState([]);
+  const [selectedServerOptions, setSelectedServerOptions] = useState([]);
 
-    const generateServerOptions = () => {
-        return fetch('http://localhost:8090/servers/all')
-          .then(response => response.json())
-          .then(data => {
-            if (data.code === 200) {
-              const options = data.data.map(item => ({
-                label: item.serverName,
-                value: item.id,
+  const [linkedChannelOptions, setLinkedChannelOptions] = useState([]);
+  const [selectedChannelOptions, setSelectedChannelOptions] = useState([]);
+
+  const generateServerOptions = () => {
+    return fetch('http://localhost:8090/servers/all')
+      .then(response => response.json())
+      .then(data => {
+        if (data.code === 200) {
+          const options = data.data.map(item => ({
+            label: item.serverName,
+            value: item.id,
+          }));
+          setLinkedServerOptions(options);
+          return options;
+        } else {
+          console.error(data.message);
+          // TODO: 处理保存失败的情况，如显示错误消息等
+          return [];
+        }
+      })
+      .catch(error => {
+        console.error("An error occurred while generating server options:", error);
+        // TODO: 可以执行其他操作，如显示错误消息等
+      });
+  };
+
+  const generateChannelOptions = () => {
+    return fetch('http://localhost:8090/channels/all')
+      .then(response => response.json())
+      .then(data => {
+        if (data.code === 200) {
+          const options = data.data.map(item => ({
+            label: item.name,
+            value: item.id,
+          }));
+          setLinkedChannelOptions(options);
+          return options;
+        } else {
+          console.error(data.message);
+          // TODO: 处理保存失败的情况，如显示错误消息等
+          return [];
+        }
+      })
+      .catch(error => {
+        console.error("An error occurred while generating server options:", error);
+        // TODO: 可以执行其他操作，如显示错误消息等
+      });
+  };
+
+  const querySelectedServerOptions = () => {
+    if(rule.id) {
+        fetch(`http://localhost:8090/servers/all?ruleId=${rule.id}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.code === 200) {
+            const options = data.data.map(item => ({
+              label: item.serverName,
+              value: item.id,
               }));
-              setLinkedServerOptions(options);
-              return options;
-            } else {
-              console.error(data.message);
-              // TODO: 处理保存失败的情况，如显示错误消息等
-              return [];
-            }
-          })
-          .catch(error => {
-            console.error("An error occurred while generating server options:", error);
-            // TODO: 可以执行其他操作，如显示错误消息等
-          });
-      };
+            setSelectedServerOptions(options);
+            handleRuleInputChange({target: {name: 'linkedServers', value: options.map(option=>{
+              return {id: option.value}
+            })}})
+          } else {
+            console.error(data.message);
+            // TODO: 处理保存失败的情况，如显示错误消息等
+            return [];
+          }
+        })
+        .catch(error => {
+          console.error("An error occurred while querying selected server options:", error);
+          // TODO: 可以执行其他操作，如显示错误消息等
+        });
+    }
+  }
 
-      const querySelectedServerOptions = () => {
-        if(rule.id) {
-            fetch(`http://localhost:8090/servers/all?ruleId=${rule.id}`)
-            .then(response => response.json())
-            .then(data => {
-              if (data.code === 200) {
-                const options = data.data.map(item => ({
-                  label: item.serverName,
-                  value: item.id,
-                  }));
-                setSelectedServerOptions(options);
-                handleRuleInputChange({target: {name: 'linkedServers', value: options.map(option=>{
-                  return {id: option.value}
-                })}})
-              } else {
-                console.error(data.message);
-                // TODO: 处理保存失败的情况，如显示错误消息等
-                return [];
-              }
-            })
-            .catch(error => {
-              console.error("An error occurred while querying selected server options:", error);
-              // TODO: 可以执行其他操作，如显示错误消息等
-            });
-        }
-      }
+  const querySelectedChannelOptions = () => {
+    if(rule.id) {
+        fetch(`http://localhost:8090/channels/all?ruleId=${rule.id}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.code === 200) {
+            const options = data.data.map(item => ({
+              label: item.name,
+              value: item.id,
+              }));
+            setSelectedChannelOptions(options);
+            handleRuleInputChange({target: {name: 'channelIds', value: options.map(option=>{
+              return option.value
+            })}})
+          } else {
+            console.error(data.message);
+            // TODO: 处理保存失败的情况，如显示错误消息等
+            return [];
+          }
+        })
+        .catch(error => {
+          console.error("An error occurred while querying selected channel options:", error);
+          // TODO: 可以执行其他操作，如显示错误消息等
+        });
+    }
+  }
 
-      useEffect(() => {
-        if(showModal) {
-            generateServerOptions();
-            querySelectedServerOptions();
-        }
-      }, [showModal]);
+  useEffect(() => {
+    if(showModal) {
+        generateServerOptions();
+        querySelectedServerOptions();
+        generateChannelOptions();
+        querySelectedChannelOptions();
+    }
+  }, [showModal]);
 
-    
-      const handleSelectChange = (selectedOptions) => {
-        console.log("handleSelectChange", selectedOptions)
-        setSelectedServerOptions(selectedOptions);
-        handleRuleInputChange({target: {name: 'linkedServers', value: selectedOptions.map(option=>{
-            return {id: option.value}
-        })}})
-      };
+  const handleSelectServerChange = (selectedOptions) => {
+    console.log("handleSelectChange", selectedOptions)
+    setSelectedServerOptions(selectedOptions);
+    handleRuleInputChange({target: {name: 'linkedServers', value: selectedOptions.map(option=>{
+        return {id: option.value}
+    })}})
+  };
 
+  const handleSelectChannelChange = (selectedOptions) => {
+    console.log("handleSelectChange", selectedOptions)
+    setSelectedChannelOptions(selectedOptions);
+    handleRuleInputChange({target: {name: 'channelIds', value: selectedOptions.map(option=>{
+        return option.value
+    })}})
+  };
       
   return (
     <Modal show={showModal} onHide={handleCloseModal}>
@@ -202,9 +263,22 @@ const RuleModal = ({
                 isMulti
                 options={linkedServerOptions}
                 value={selectedServerOptions}
-                onChange={handleSelectChange}
+                onChange={handleSelectServerChange}
                 placeholder="Please select"
                 isSearchable
+                required
+                />
+            </Form.Group>
+            <Form.Group controlId="newRuleChannels" className='mb-1'>
+              <Form.Label>Notification channels</Form.Label>
+              <Select
+                isMulti
+                options={linkedChannelOptions}
+                value={selectedChannelOptions}
+                onChange={handleSelectChannelChange}
+                placeholder="Please select"
+                isSearchable
+                required
                 />
             </Form.Group>
           </Form>

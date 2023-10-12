@@ -33,10 +33,12 @@ public class ChannelController {
 
     @GetMapping("/all")
     public ApiResponse<List<ChannelEntity>> findAll(@RequestParam(required = false) String nameFilter,
-                                                    @RequestParam(required = false) String typeFilter) {
+                                                    @RequestParam(required = false) String typeFilter,
+                                                    @RequestParam(required = false) Integer ruleId) {
         ChannelQO channelQO = new ChannelQO();
         channelQO.setNameFilter(nameFilter);
         channelQO.setTypeFilter(typeFilter);
+        channelQO.setRuleId(ruleId);
         return ApiResponse.success(channelService.findByParams(channelQO));
     }
 
