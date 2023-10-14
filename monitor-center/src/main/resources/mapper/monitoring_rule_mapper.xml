@@ -7,11 +7,13 @@
         <id column="id" property="id" />
         <result column="name" property="name" />
         <result column="type" property="type" />
+        <result column="application" property="application" />
         <result column="description" property="description" />
         <result column="enabled" property="enabled" />
         <result column="threshold" property="threshold" />
         <result column="interval" property="interval" />
         <result column="notification_recipients" property="notificationRecipients" typeHandler="com.study.monitor.handler.PgArrayStringTypeHandler" jdbcType="ARRAY"/>
+        <result column="severity" property="severity" />
         <result column="process_name_regex" property="processNameRegex" />
         <result column="log_file_path" property="logFilePath" />
         <result column="log_patterns" property="logPatterns" typeHandler="com.study.monitor.handler.PgArrayStringTypeHandler" jdbcType="ARRAY"/>
@@ -60,9 +62,9 @@
     </sql>
 
     <sql id="monitoringRuleFields">
-        m.id, m.name, m.type, m.description, m.enabled, m.threshold,
+        m.id, m.name, m.type, m.application, m.description, m.enabled, m.threshold,
         m.interval, m.notification_recipients, m.process_name_regex,
-        m.log_file_path, m.log_patterns, m.created_by, m.updated_by, m.create_date, m.update_date
+        m.log_file_path, m.log_patterns, m.severity, m.created_by, m.updated_by, m.create_date, m.update_date
     </sql>
 
     <select id="selectWithServersById" resultMap="BaseResultMap">
@@ -92,7 +94,34 @@
             <if test="ruleQO.typeFilter != null and ruleQO.typeFilter != ''">
                 and m.type = #{ruleQO.typeFilter}
             </if>
+            <if test="ruleQO.applicationFilter != null and ruleQO.applicationFilter != ''">
+                and m.application = #{ruleQO.applicationFilter}
+            </if>
         </where>
         ORDER BY m.id desc
     </select>
+
+    <select id="getAllApplicationName" resultType="String" parameterType="com.study.monitor.modal.request.RuleQO">
+        select
+        distinct m.application
+        FROM monitoring_rule m
+        LEFT JOIN server_monitoring_rule sm ON m.id = sm.monitoring_rule_id
+        <where>
+            m.application notnull
+            <if test="serverFilter != null">
+                and sm.server_id = #{serverFilter}
+            </if>
+            <if test="nameFilter != null and nameFilter != ''">
+                and m.name like concat('%', #{nameFilter}, '%')
+            </if>
+            <if test="typeFilter != null and typeFilter != ''">
+                and m.type = #{typeFilter}
+            </if>
+            <if test="applicationFilter != null and applicationFilter != ''">
+                and m.application = #{applicationFilter}
+            </if>
+        </where>
+        ORDER BY m.application
+    </select>
+
 </mapper>

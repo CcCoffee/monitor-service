@@ -23,4 +23,7 @@ public interface MonitoringRuleService extends IService<MonitoringRuleEntity> {
     boolean deleteById(Integer ruleId);
 
     IPage<MonitoringRuleEntity> selectMyPage(Page<MonitoringRuleEntity> page, RuleQO ruleQO);
+
+    List<String> getAllApplicationName(RuleQO ruleQO);
+
 }

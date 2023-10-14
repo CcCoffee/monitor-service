@@ -1,6 +1,9 @@
 package com.study.monitor.modal.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.study.monitor.handler.PgArrayStringTypeHandler;
 
 import java.util.Date;
@@ -15,6 +18,7 @@ public class MonitoringRuleEntity {
     private String name;
     // PROCESS / LOG
     private String type;
+    private String application;
     // 监控规则的描述，用于说明该规则的作用和目的。
     private String description;
     // 指示监控规则是否启用的标志。
@@ -33,6 +37,7 @@ public class MonitoringRuleEntity {
     // 要监控的日志规则
     @TableField(typeHandler = PgArrayStringTypeHandler.class)
     private List<String> logPatterns;
+    private String severity;
     // 创建该监控规则的用户或系统的标识符。
     private String createdBy;
     private String updatedBy;
@@ -68,6 +73,14 @@ public class MonitoringRuleEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getApplication() {
+        return application;
+    }
+
+    public void setApplication(String application) {
+        this.application = application;
     }
 
     public String getDescription() {
@@ -132,6 +145,14 @@ public class MonitoringRuleEntity {
 
     public void setLogPatterns(List<String> logPatterns) {
         this.logPatterns = logPatterns;
+    }
+
+    public String getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(String severity) {
+        this.severity = severity;
     }
 
     public String getCreatedBy() {

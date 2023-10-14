@@ -1,6 +1,8 @@
 package com.study.monitor.monitor.impl;
 
+import com.study.monitor.accessor.MonitorCenterResource;
 import com.study.monitor.domain.MonitoringRule;
+import com.study.monitor.modal.dto.AlertDTO;
 import com.study.monitor.modal.dto.ServerRulesDTO;
 import com.study.monitor.monitor.Monitor;
 import com.study.monitor.util.LevenshteinUtil;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -31,14 +34,17 @@ public class LogMonitor implements Monitor {
     private final ServerRulesDTO serverRulesDTO;
     private final Duration coolDownTime;
     private final Duration monitoringInterval;
+    private final MonitorCenterResource monitorCenterResource;
 
     @Autowired
     public LogMonitor(ServerRulesDTO serverRulesDTO,
                       @Value("${monitor.log.alert.cool-down-time}") Duration coolDownTime,
-                      @Value("${monitor.log.monitoring.interval}") Duration monitoringInterval) {
+                      @Value("${monitor.log.monitoring.interval}") Duration monitoringInterval,
+                      MonitorCenterResource monitorCenterResource) {
         this.serverRulesDTO = serverRulesDTO;
         this.coolDownTime = coolDownTime;
         this.monitoringInterval = monitoringInterval;
+        this.monitorCenterResource = monitorCenterResource;
     }
 
     @Override
@@ -114,5 +120,13 @@ public class LogMonitor implements Monitor {
 
     private void sendAlert(MonitoringRule rule, String matchedLog) {
         LOGGER.error(">>>>> xMatters\n<<<<<<<<<<<< Content: {}", matchedLog);
+        AlertDTO alert = new AlertDTO();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String alertReason = "Log matched";
+        alert.setName(String.format("[%s][%s][%s] - %s", simpleDateFormat.format(new Date()), serverRulesDTO.getHostname(), rule.getApplication(), alertReason));
+        alert.setDescription(String.format("[%s][%s][%s] - %s", simpleDateFormat.format(new Date()), serverRulesDTO.getHostname(), rule.getApplication(), alertReason));
+        alert.setHostname(serverRulesDTO.getHostname());
+        alert.setRuleId(rule.getId());
+        monitorCenterResource.createAlert(alert);
     }
 }

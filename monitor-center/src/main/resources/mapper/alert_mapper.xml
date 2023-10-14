@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.monitor.mapper.AlertMapper">
+
+    <resultMap id="BaseResultMap" type="com.study.monitor.modal.entity.AlertEntity">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="severity" column="severity"/>
+        <result property="type" column="type"/>
+        <result property="hostname" column="hostname"/>
+        <result property="application" column="application"/>
+        <result property="status" column="status"/>
+        <result property="repeatCount" column="repeat_count"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="acknowledgedBy" column="acknowledged_by"/>
+        <result property="ruleId" column="rule_id"/>
+        <result property="action" column="action"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateDate" column="update_date"/>
+    </resultMap>
+
+    <sql id="alertFields">
+        a.id, a.name, a.description, a.severity, a.type, a.hostname, a.application, a.status, a.repeat_count, a.start_time, a.end_time,
+        a.acknowledged_by, a.rule_id, a.action, a.create_date, a.update_date
+    </sql>
+
+    <select id="selectMyPage" resultMap="BaseResultMap" parameterType="com.study.monitor.modal.request.AlertQO">
+        select
+        <include refid="alertFields" />
+        FROM alert a
+        <where>
+            <if test="alertQO.nameFilter != null and alertQO.nameFilter != ''">
+                and a.name like concat('%', #{alertQO.nameFilter}, '%')
+            </if>
+            <if test="alertQO.severityFilter != null and alertQO.severityFilter != ''">
+                and a.severity = #{alertQO.severityFilter}
+            </if>
+            <if test="alertQO.typeFilter != null and alertQO.typeFilter != ''">
+                and a.type = #{alertQO.typeFilter}
+            </if>
+            <if test="alertQO.applicationFilter != null and alertQO.applicationFilter != ''">
+                and a.application = #{alertQO.applicationFilter}
+            </if>
+            <if test="alertQO.statusFilter != null and alertQO.statusFilter != ''">
+                and a.status = #{alertQO.statusFilter}
+            </if>
+        </where>
+        ORDER BY a.id desc
+    </select>
+
+    <select id="getAllApplicationName" resultType="String" parameterType="com.study.monitor.modal.request.AlertQO">
+        select
+        distinct a.application
+        FROM alert a
+        <where>
+            a.application notnull
+            <if test="nameFilter != null and nameFilter != ''">
+                and a.name like concat('%', #{nameFilter}, '%')
+            </if>
+            <if test="severityFilter != null and severityFilter != ''">
+                and a.severity = #{severityFilter}
+            </if>
+            <if test="typeFilter != null and typeFilter != ''">
+                and a.type = #{typeFilter}
+            </if>
+            <if test="statusFilter != null and statusFilter != ''">
+                and a.status = #{statusFilter}
+            </if>
+            <if test="applicationFilter != null and applicationFilter != ''">
+                and a.application = #{applicationFilter}
+            </if>
+        </where>
+        ORDER BY a.application
+    </select>
+
+</mapper>

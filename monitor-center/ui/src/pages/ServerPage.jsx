@@ -17,6 +17,7 @@ const ServerPage = () => {
   const [selectedServer, setSelectedServer] = useState({});
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [deleteServerId, setDeleteServerId] = useState();
+  const [resetFilters, setResetFilters] = useState(false);
   const [newServer, setNewServer] = useState({
     serverName: "",
     hostname: "",
@@ -30,7 +31,12 @@ const ServerPage = () => {
 
   useEffect(() => {
     fetchServers(currentPage, pageSize);
-  }, [currentPage, pageSize, serverNameFilter, hostnameFilter]);
+    if (resetFilters) {
+      setHostnameFilter('');
+      setServerNameFilter('');
+      setResetFilters(false);
+    }
+  }, [currentPage, pageSize, resetFilters, serverNameFilter, hostnameFilter]);
 
   const fetchServers = (currentPage, pageSize) => {
     let url = `http://localhost:8090/servers?pageNum=${currentPage}&pageSize=${pageSize}`;
@@ -110,18 +116,22 @@ const ServerPage = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    setResetFilters(false);
   };
   
   const handlePageSizeChange = (event) => {
     setPageSize(event.target.value);
+    setResetFilters(false);
   };
 
   const handleServerNameFilterChange = (event) => {
     setServerNameFilter(event.target.value);
+    setResetFilters(false);
   };
 
   const handleHostnameFilterChange = (event) => {
     setHostnameFilter(event.target.value);
+    setResetFilters(false);
   };
 
   const handleEditServer = (serverId) => {
@@ -203,7 +213,8 @@ const ServerPage = () => {
                       onChange={handleHostnameFilterChange}
                     />
                 </Form.Group>
-                <Col className="d-flex justify-content-end align-items-end">
+                <Col className="d-flex justify-content-between align-items-end">
+                  <Button variant="secondary" onClick={() => setResetFilters(true)}>Reset</Button>
                   <Button variant="primary" onClick={handleAddServer}>New</Button>
                 </Col>
               </Row>

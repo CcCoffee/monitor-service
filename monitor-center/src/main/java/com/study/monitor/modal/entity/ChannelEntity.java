@@ -1,6 +1,8 @@
 package com.study.monitor.modal.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.study.monitor.handler.JsonTypeHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -10,6 +12,7 @@ import java.util.Map;
 
 @TableName(value = "channel", autoResultMap = true)
 public class ChannelEntity {
+    @TableId(type = IdType.AUTO)
     private Long id;
     private String name;
     private String type;

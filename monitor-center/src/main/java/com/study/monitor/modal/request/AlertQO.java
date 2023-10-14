@@ -1,11 +1,12 @@
 package com.study.monitor.modal.request;
 
-public class RuleQO {
+public class AlertQO {
 
     private String nameFilter;
+    private String severityFilter;
     private String typeFilter;
     private String applicationFilter;
-    private Integer serverFilter;
+    private String statusFilter;
 
     public String getNameFilter() {
         return nameFilter;
@@ -13,6 +14,14 @@ public class RuleQO {
 
     public void setNameFilter(String nameFilter) {
         this.nameFilter = nameFilter;
+    }
+
+    public String getSeverityFilter() {
+        return severityFilter;
+    }
+
+    public void setSeverityFilter(String severityFilter) {
+        this.severityFilter = severityFilter;
     }
 
     public String getTypeFilter() {
@@ -31,11 +40,11 @@ public class RuleQO {
         this.applicationFilter = applicationFilter;
     }
 
-    public Integer getServerFilter() {
-        return serverFilter;
+    public String getStatusFilter() {
+        return statusFilter;
     }
 
-    public void setServerFilter(Integer serverFilter) {
-        this.serverFilter = serverFilter;
+    public void setStatusFilter(String statusFilter) {
+        this.statusFilter = statusFilter;
     }
 }

@@ -227,6 +227,16 @@ const RuleModal = ({
                 required
               />
             </Form.Group>
+            <Form.Group controlId="newRuleApplication" className='mb-1'>
+              <Form.Label>Application Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter application name"
+                name="application"
+                defaultValue={rule.application}
+                onChange={handleRuleInputChange}
+              />
+            </Form.Group>
             <Form.Group controlId="newRuleProcessNameRegex" className='mb-1'>
               <Form.Label>Process Name Regex</Form.Label>
               <Form.Control

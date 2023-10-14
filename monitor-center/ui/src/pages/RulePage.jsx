@@ -11,14 +11,17 @@ const RulePage = () => {
   const [pages, setPages] = useState();
   const [rules, setRules] = useState([]);
   const [servers, setServers] = useState([]);
+  const [applications, setApplications] = useState([]);
   const [filteredRules, setFilteredRules] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
+  const [applicationFilter, setApplicationFilter] = useState('');
   const [serverFilter, setServerFilter] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedRule, setSelectedRule] = useState({});
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [deleteRuleId, setDeleteRuleId] = useState();
+  const [resetFilters, setResetFilters] = useState(false);
   const [newRule, setNewRule] = useState({
     name: "",
     type: "",
@@ -27,6 +30,7 @@ const RulePage = () => {
     threshold: null,
     interval: null,
     notificationRecipients: [],
+    application: "",
     processNameRegex: "",
     logFilePath: "",
     logPatterns: null,
@@ -36,29 +40,41 @@ const RulePage = () => {
   // Fetch rules and servers from the backend
   useEffect(() => {
     fetchRules(currentPage, pageSize);
+    fetchApplications();
     fetchServers();
   }, []);
 
   useEffect(() => {
     fetchRules(currentPage, pageSize);
-  }, [currentPage, pageSize, nameFilter, typeFilter, serverFilter]);
+    if (resetFilters) {
+      setNameFilter('');
+      setTypeFilter('');
+      setApplicationFilter('');
+      setServerFilter('');
+      setResetFilters(false);
+    }
+  }, [currentPage, pageSize, resetFilters, nameFilter, typeFilter, applicationFilter, serverFilter]);
 
 
   const fetchRules = (currentPage, pageSize) => {
     let url = `http://localhost:8090/rules?pageNum=${currentPage}&pageSize=${pageSize}`;
-  
+
     if (nameFilter !== '') {
       url += `&nameFilter=${encodeURIComponent(nameFilter)}`;
     }
-  
+
     if (typeFilter !== '') {
       url += `&typeFilter=${encodeURIComponent(typeFilter)}`;
     }
-  
+
+    if (applicationFilter !== '') {
+      url += `&applicationFilter=${encodeURIComponent(applicationFilter)}`;
+    }
+
     if (serverFilter !== '') {
       url += `&serverFilter=${encodeURIComponent(serverFilter)}`;
     }
-  
+
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -77,6 +93,25 @@ const RulePage = () => {
       });
   };
 
+  const fetchApplications = () => {
+    // Fetch servers from the backend and set the 'servers' state
+    // Example:
+    fetch('http://localhost:8090/rules/applications')
+      .then(response => response.json())
+      .then(data => {
+        if (data.code === 200) {
+          setApplications(data.data);
+        } else {
+          console.error(data.message);
+          // TODO: 处理请求失败的情况，如显示错误消息等
+        }
+      })
+      .catch(error => {
+        console.error('An error occurred while fetching servers:', error);
+        // TODO: 处理异常情况，如显示错误消息等
+      });
+  };
+
   const fetchServers = () => {
     // Fetch servers from the backend and set the 'servers' state
     // Example:
@@ -89,7 +124,6 @@ const RulePage = () => {
           console.error(data.message);
           // TODO: 处理请求失败的情况，如显示错误消息等
         }
-        
       })
       .catch(error => {
         console.error('An error occurred while fetching servers:', error);
@@ -119,7 +153,7 @@ const RulePage = () => {
   const handleConfirmDelete = () => {
     const ruleId = deleteRuleId;
     const url = `http://localhost:8090/rules/${ruleId}`;
-  
+
     fetch(url, {
       method: 'DELETE',
     })
@@ -144,7 +178,7 @@ const RulePage = () => {
         // TODO: 处理异常情况，如显示错误消息等
         notifyFailure();
       });
-  
+
     // 关闭确认框并重置服务器ID
     setShowDeleteConfirmation(false);
     setDeleteRuleId(null);
@@ -156,22 +190,32 @@ const RulePage = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    setResetFilters(false);
   };
-  
+
   const handlePageSizeChange = (event) => {
     setPageSize(event.target.value);
+    setResetFilters(false);
   };
 
   const handleNameFilterChange = (event) => {
     setNameFilter(event.target.value);
+    setResetFilters(false);
   };
 
   const handleTypeFilterChange = (event) => {
     setTypeFilter(event.target.value);
+    setResetFilters(false);
+  }
+
+  const handleApplicationFilterChange = (event) => {
+    setApplicationFilter(event.target.value);
+    setResetFilters(false);
   };
 
   const handleServerFilterChange = (event) => {
     setServerFilter(event.target.value);
+    setResetFilters(false);
   };
 
   const handleEditRule = (ruleId) => {
@@ -199,7 +243,7 @@ const RulePage = () => {
         },
         body: JSON.stringify(selectedRule),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         if (data.code === 200) {
@@ -248,10 +292,22 @@ const RulePage = () => {
                 value={typeFilter}
                 onChange={handleTypeFilterChange}
               >
-                <option value="">All</option>
+                <option value="">-- All --</option>
                 <option value="PROCESS">Process</option>
                 <option value="LOG">Log</option>
                 {/* Add other types here */}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group as={Col} controlId="applicationFilter">
+              <Form.Label>Applicatoin filter</Form.Label>
+              <Form.Select
+                value={applicationFilter}
+                onChange={handleApplicationFilterChange}
+              >
+                <option value="">-- All --</option>
+                {applications.map(application => (
+                  <option value={application} key={application}>{application}</option>
+                ))}
               </Form.Select>
             </Form.Group>
             <Form.Group as={Col} controlId="serverFilter">
@@ -260,13 +316,14 @@ const RulePage = () => {
                 value={serverFilter}
                 onChange={handleServerFilterChange}
               >
-                <option value="">All</option>
+                <option value="">-- All --</option>
                 {servers.map(server => (
                   <option value={server.id} key={server.id}>{server.serverName}</option>
                 ))}
               </Form.Select>
             </Form.Group>
-            <Col className="d-flex justify-content-end align-items-end">
+            <Col className="d-flex justify-content-between align-items-end">
+              <Button variant="secondary" onClick={() => setResetFilters(true)}>Reset</Button>
               <Button variant="primary" onClick={handleAddRule}>New</Button>
             </Col>
           </Row>
@@ -277,6 +334,7 @@ const RulePage = () => {
                 <th>ID</th>
                 <th>Name</th>
                 <th>Type</th>
+                <th>Application</th>
                 <th>Description</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -288,6 +346,7 @@ const RulePage = () => {
                   <td>{rule.id}</td>
                   <td>{rule.name}</td>
                   <td>{rule.type}</td>
+                  <td>{rule.application}</td>
                   <td>{rule.description}</td>
                   <td>
                     {rule.enabled?<Badge bg="success">Enabled</Badge>:<Badge bg="secondary">Disabled</Badge>}

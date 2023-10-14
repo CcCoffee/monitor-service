@@ -17,6 +17,7 @@ const NotificationChannelPage = () => {
   const [selectedChannel, setSelectedChannel] = useState({});
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [deleteChannelId, setDeleteChannelId] = useState();
+  const [resetFilters, setResetFilters] = useState(false);
   const [newChannel, setNewChannel] = useState({
     name: "",
     type: "",
@@ -32,7 +33,12 @@ const NotificationChannelPage = () => {
 
   useEffect(() => {
     fetchChannels(currentPage, pageSize);
-  }, [currentPage, pageSize, nameFilter, typeFilter]);
+    if (resetFilters) {
+      setNameFilter('');
+      setTypeFilter('');
+      setResetFilters(false);
+    }
+  }, [currentPage, pageSize, resetFilters, nameFilter, typeFilter]);
 
   const fetchChannels = (currentPage, pageSize) => {
     let url = `http://localhost:8090/channels?pageNum=${currentPage}&pageSize=${pageSize}`;
@@ -112,18 +118,22 @@ const NotificationChannelPage = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    setResetFilters(false);
   };
   
   const handlePageSizeChange = (event) => {
     setPageSize(event.target.value);
+    setResetFilters(false);
   };
 
   const handleNameFilterChange = (event) => {
     setNameFilter(event.target.value);
+    setResetFilters(false);
   };
 
   const handleTypeFilterChange = (event) => {
     setTypeFilter(event.target.value);
+    setResetFilters(false);
   };
 
   const handleEditChannel = (channelId) => {
@@ -207,11 +217,12 @@ const NotificationChannelPage = () => {
                     value={typeFilter}
                     onChange={handleTypeFilterChange}
                   >
-                    <option value="">All</option>
+                    <option value="">-- All --</option>
                     <option value="EMAIL">Email</option>
                   </Form.Select>
                 </Form.Group>
-                <Col className="d-flex justify-content-end align-items-end">
+                <Col className="d-flex justify-content-between align-items-end">
+                  <Button variant="secondary" onClick={() => setResetFilters(true)}>Reset</Button>
                   <Button variant="primary" onClick={handleAddChannel}>New</Button>
                 </Col>
               </Row>

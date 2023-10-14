@@ -115,4 +115,9 @@ public class MonitoringRuleServiceImpl extends ServiceImpl<MonitoringRuleMapper,
     public IPage<MonitoringRuleEntity> selectMyPage(Page<MonitoringRuleEntity> page, RuleQO ruleQO) {
         return this.baseMapper.selectMyPage(page, ruleQO);
     }
+
+    @Override
+    public List<String> getAllApplicationName(RuleQO ruleQO) {
+        return this.baseMapper.getAllApplicationName(ruleQO);
+    }
 }

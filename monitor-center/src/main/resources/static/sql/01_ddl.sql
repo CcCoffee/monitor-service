@@ -2,6 +2,7 @@ CREATE TABLE monitoring_rule (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     type VARCHAR(20) NOT NULL,
+    application VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
     enabled BOOLEAN NOT NULL,
     threshold INTEGER,
@@ -10,6 +11,7 @@ CREATE TABLE monitoring_rule (
     process_name_regex VARCHAR(255),
     log_file_path VARCHAR(255),
     log_patterns TEXT[],
+    severity VARCHAR(20) NOT NULL,
     created_by VARCHAR(255) NOT NULL,
     updated_by VARCHAR(255) NOT NULL,
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -54,11 +56,11 @@ CREATE TABLE channel (
     update_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE alert_channel (
-    alert_id INT REFERENCES alert (id),
-    channel_id INT REFERENCES channel (id),
-    PRIMARY KEY (alert_id, channel_id)
-);
+--CREATE TABLE alert_channel (
+--    alert_id INT REFERENCES alert (id),
+--    channel_id INT REFERENCES channel (id),
+--    PRIMARY KEY (alert_id, channel_id)
+--);
 
 CREATE TABLE monitoring_rule_channel (
     monitoring_rule_id INT REFERENCES monitoring_rule(id),
@@ -77,15 +79,15 @@ CREATE TABLE alert (
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
     severity VARCHAR(20) NOT NULL,
-    type VARCHAR(50) NOT NULL,
-    source VARCHAR(100),
-    status VARCHAR(20) NOT NULL,
-    repeat_count INT DEFAULT 0,
-    start_time TIMESTAMP,
+    type VARCHAR(50) NOT NULL, -- LOG_ALERT, PROCESS_ALERT
+    hostname VARCHAR(100) NOT NULL,
+    application VARCHAR(255) NOT NULL,
+    status VARCHAR(20) NOT NULL, -- Open、Closed、Acknowledged
+    repeat_count INT DEFAULT 0 NOT NULL,
+    start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP,
     acknowledged_by VARCHAR(100),
-    rule_id INT,
-    channel_id INT[] NOT NULL,
+    rule_id INT NOT NULL,
     action VARCHAR(100),
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -98,7 +100,7 @@ CREATE TABLE alert (
 --| 1  | 101      | 201        | 2023-10-10 10:30:00 UTC | Success | 200           | Notification sent successfully.      |
 --| 2  | 102      | 202        | 2023-10-10 12:45:00 UTC | Failure | 500           | Internal server error. Please try again. |
 --| 3  | 103      | 201        | 2023-10-11 09:15:00 UTC | Success | 200           | Notification sent successfully.      |
-CREATE TABLE alert_notification_history (
+CREATE TABLE notification (
     id SERIAL PRIMARY KEY,
     alert_id INT NOT NULL,
     channel_messages JSONB, --[{channel_id: xx, message: xx}]

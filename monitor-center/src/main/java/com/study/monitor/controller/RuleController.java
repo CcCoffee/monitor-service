@@ -28,20 +28,27 @@ public class RuleController {
     @RequestMapping("/rules")
     public ApiResponse<IPage<MonitoringRuleEntity>> list(@RequestParam(defaultValue = "1") Integer pageNum,
                                             @RequestParam(defaultValue = "10") Integer pageSize,
-                                            @RequestParam(required = false) String nameFilter,
-                                            @RequestParam(required = false) String typeFilter,
-                                            @RequestParam(required = false) Integer serverFilter) {
+                                            RuleQO ruleQO) {
         Page<MonitoringRuleEntity> page = new Page<>(pageNum, pageSize);
-        RuleQO ruleQO = new RuleQO();
-        ruleQO.setNameFilter(nameFilter);
-        ruleQO.setTypeFilter(typeFilter);
-        ruleQO.setServerFilter(serverFilter);
+//        RuleQO ruleQO = new RuleQO();
+//        ruleQO.setNameFilter(nameFilter);
+//        ruleQO.setTypeFilter(typeFilter);
+//        ruleQO.setServerFilter(serverFilter);
         return ApiResponse.success(service.selectMyPage(page, ruleQO));
     }
 
     @RequestMapping({"/server-rules"})
     public ApiResponse<List<ServerRulesDTO>> getAllServerRules(){
         return ApiResponse.success(service.getAllServerRules());
+    }
+
+    @RequestMapping({"/rules/applications"})
+    public ApiResponse<List<String>> getAllApplicationName(RuleQO ruleQO){
+//        RuleQO ruleQO = new RuleQO();
+//        ruleQO.setNameFilter(nameFilter);
+//        ruleQO.setTypeFilter(typeFilter);
+//        ruleQO.setServerFilter(serverFilter);
+        return ApiResponse.success(service.getAllApplicationName(ruleQO));
     }
 
     @PostMapping("/rules")

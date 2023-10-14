@@ -32,7 +32,7 @@ const Sidebar = () => {
         </Nav.Item>
         {/* 显示当前活动的警报列表，包括警报级别、时间戳和其他详细信息。 */}
         <Nav.Item>
-          <Nav.Link href="/rule1" className={`nav-link text-white d-flex align-items-center ${isNavLinkActive('/rule1')}`} tabIndex={1}>
+          <Nav.Link href="/alert" className={`nav-link text-white d-flex align-items-center ${isNavLinkActive('/alert')}`} tabIndex={1}>
             <Activity className="bi pe-none me-2" size={16} />
             Active Alerts
           </Nav.Link>

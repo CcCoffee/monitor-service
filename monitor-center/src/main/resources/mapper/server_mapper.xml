@@ -16,6 +16,7 @@
             <id column="m_id" property="id" />
             <result column="m_name" property="name" />
             <result column="m_type" property="type" />
+            <result column="m_application" property="application" />
             <result column="m_description" property="description" />
             <result column="m_enabled" property="enabled" />
             <result column="m_threshold" property="threshold" />
@@ -68,7 +69,7 @@
     </sql>
 
     <sql id="monitoringRuleFields">
-        m.id AS "m_id", m.name AS "m_name", m.type AS "m_type", m.description AS "m_description", m.enabled AS "m_enabled", m.threshold AS "m_threshold",
+        m.id AS "m_id", m.name AS "m_name", m.type AS "m_type", m.application AS "m_application", m.description AS "m_description", m.enabled AS "m_enabled", m.threshold AS "m_threshold",
         m.interval AS "m_interval", m.notification_recipients AS "m_notification_recipients", m.process_name_regex AS "m_process_name_regex",
         m.log_file_path AS "m_log_file_path", m.log_patterns AS "m_log_patterns",
         m.created_by AS "m_created_by", m.updated_by AS "m_updated_by", m.create_date AS "m_create_date", m.update_date AS "m_update_date"
