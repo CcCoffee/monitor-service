@@ -34,7 +34,7 @@ const Sidebar = () => {
         <Nav.Item>
           <Nav.Link href="/alert" className={`nav-link text-white d-flex align-items-center ${isNavLinkActive('/alert')}`} tabIndex={1}>
             <Activity className="bi pe-none me-2" size={16} />
-            Active Alerts
+           Alerts Management
           </Nav.Link>
         </Nav.Item>
         {/* 显示历史的警报列表，包括警报级别、时间戳和其他详细信息。 */}

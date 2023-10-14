@@ -30,7 +30,7 @@ public class MonitorAgentApplication implements CommandLineRunner {
 		SpringApplication.run(MonitorAgentApplication.class, args);
 	}
 	
-	@Scheduled(fixedRate = 1000)
+	@Scheduled(fixedRate = 60000)
 	private void appendRandomStringInTestFile(){
 		String filePath = "test.log";
 		try {
@@ -42,11 +42,12 @@ public class MonitorAgentApplication implements CommandLineRunner {
 			String pattern = "yyyy-MM-dd HH:mm:ss.SSS";
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 			Random random = new Random();
-			if(System.currentTimeMillis()%8 == 0){
+//			if(System.currentTimeMillis()%8 == 0){
 //				writer.write(simpleDateFormat.format(new Date()) + " ERROR "+ random.nextInt(25692) +" --- [ool-"+ random.nextInt(17) +"-thread-1] c.s.monitor.monitor.impl.ProcessMonitor  : NullPointerException e\n");
-			} else if(System.currentTimeMillis()%7 == 0){
-//                writer.write(simpleDateFormat.format(new Date()) + " ERROR "+ random.nextInt(25692) +" --- [ool-"+ random.nextInt(17) +"-thread-1] c.s.monitor.monitor.MonitorAgentApplication  : test e\n");
-			} else if(System.currentTimeMillis()%6 == 0 || System.currentTimeMillis()%5 == 0){
+//			} else
+			if(random.nextInt(2) == 1){
+                writer.write(simpleDateFormat.format(new Date()) + " ERROR "+ random.nextInt(25692) +" --- [ool-"+ random.nextInt(17) +"-thread-1] c.s.monitor.monitor.MonitorAgentApplication  : test e\n");
+			} else {
                 writer.write(simpleDateFormat.format(new Date()) + " ERROR "+ random.nextInt(25692) +" --- [nio-8090-exec-4] o.a.coyote.http11.Http11NioProtocol      : Error reading request, ignored\n" +
 						"\n" +
 						"java.lang.NullPointerException: Cannot invoke \"org.apache.catalina.Context.decrementInProgressAsyncCount()\" because \"this.context\" is null\n" +
@@ -62,8 +63,6 @@ public class MonitorAgentApplication implements CommandLineRunner {
 						"\tat org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.80.jar:9.0.80]\n" +
 						"\tat java.base/java.lang.Thread.run(Thread.java:1589) ~[na:na]\n" +
 						"\n");
-			}else {
-				writer.write(UUID.randomUUID().toString() + "\n");
 			}
 			writer.close();
 		} catch (IOException e) {

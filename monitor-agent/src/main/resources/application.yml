@@ -32,9 +32,9 @@ monitor:
     alert:
       cool-down-time: 30s
     monitoring:
-      interval: 5s
+      interval: 1s
   process:
     alert:
       cool-down-time: 30s
     monitoring:
-      interval: 5s
+      interval: 1s

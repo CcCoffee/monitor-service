@@ -103,14 +103,15 @@ CREATE TABLE alert (
 CREATE TABLE notification (
     id SERIAL PRIMARY KEY,
     alert_id INT NOT NULL,
-    channel_messages JSONB, --[{channel_id: xx, message: xx}]
+    channel_id INT NOT NULL,
+    content JSONB NOT NULL,
     notification_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    status VARCHAR(50) NOT NULL,
     response_code INT,
     response_message TEXT,
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (alert_id) REFERENCES alert (id)
+    FOREIGN KEY (alert_id) REFERENCES alert (id),
+    FOREIGN KEY (channel_id) REFERENCES channel (id)
 );
 
 CREATE OR REPLACE FUNCTION update_repeat_count()
