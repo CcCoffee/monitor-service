@@ -2,6 +2,7 @@ package com.study.monitor.monitor.impl;
 
 import com.study.monitor.accessor.MonitorCenterResource;
 import com.study.monitor.domain.MonitoringRule;
+import com.study.monitor.exception.BreakLoopException;
 import com.study.monitor.modal.dto.AlertDTO;
 import com.study.monitor.modal.dto.ServerRulesDTO;
 import com.study.monitor.monitor.Monitor;
@@ -70,15 +71,38 @@ public class LogMonitor implements Monitor {
                     AtomicBoolean matchPattern = new AtomicBoolean(false);
                     AtomicReference<List<String>> matchedLogList = new AtomicReference<>(new ArrayList<>());
 
+                    AtomicLong outerAdditionalLinesToSkip = new AtomicLong(0);
+                    AtomicLong innerLoopAdditionalLinesToSkip = new AtomicLong(0);
                     Files.lines(logFile)
                             .skip(linesToSkip)
                             .forEach(line -> {
+                                outerAdditionalLinesToSkip.incrementAndGet();
                                 for (String pattern : logPatterns) {
                                     if (line.matches(pattern)) {
+                                        innerLoopAdditionalLinesToSkip.set(outerAdditionalLinesToSkip.get());
 //                                        LOGGER.warn("Log pattern matched, rule: {}, raw message: {}", pattern, line);
                                         matchPattern.compareAndSet(false, true);
+
+                                        StringBuffer exceptionLogSnippet = new StringBuffer();
+                                        exceptionLogSnippet.append(line);
+                                        try {
+                                            String logDateTimePattern = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}.*";
+                                            Files.lines(logFile)
+                                                    .skip(linesToSkip + innerLoopAdditionalLinesToSkip.getAndIncrement())
+                                                    .forEach(l -> {
+                                                        if (!l.matches(logDateTimePattern)) {
+                                                            exceptionLogSnippet.append(l).append("\n");
+                                                        } else {
+                                                            throw new BreakLoopException();
+                                                        }
+                                                    });
+                                        } catch (IOException e) {
+                                            throw new RuntimeException(e);
+                                        } catch (BreakLoopException ignored){
+                                            innerLoopAdditionalLinesToSkip.set(outerAdditionalLinesToSkip.get());
+                                        }
                                         List<String> logList = matchedLogList.get();
-                                        logList.add(line);
+                                        logList.add(exceptionLogSnippet.toString());
                                         matchedLogList.set(logList);
                                         break;
                                     }
@@ -113,7 +137,7 @@ public class LogMonitor implements Monitor {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }, 0, monitoringInterval.toMillis(), TimeUnit.MILLISECONDS);
+            }, 0, monitoringInterval.toSeconds(), TimeUnit.SECONDS);
 
         });
     }
@@ -124,7 +148,7 @@ public class LogMonitor implements Monitor {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String alertReason = "Log matched";
         alert.setName(String.format("[%s][%s][%s] - %s", simpleDateFormat.format(new Date()), serverRulesDTO.getHostname(), rule.getApplication(), alertReason));
-        alert.setDescription(String.format("[%s][%s][%s] - %s", simpleDateFormat.format(new Date()), serverRulesDTO.getHostname(), rule.getApplication(), alertReason));
+        alert.setContent(matchedLog);
         alert.setHostname(serverRulesDTO.getHostname());
         alert.setRuleId(rule.getId());
         monitorCenterResource.createAlert(alert);

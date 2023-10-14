@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="com.study.monitor.modal.entity.AlertEntity">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
-        <result property="description" column="description"/>
+        <result property="content" column="content"/>
         <result property="severity" column="severity"/>
         <result property="type" column="type"/>
         <result property="hostname" column="hostname"/>
@@ -23,7 +23,7 @@
     </resultMap>
 
     <sql id="alertFields">
-        a.id, a.name, a.description, a.severity, a.type, a.hostname, a.application, a.status, a.repeat_count, a.start_time, a.end_time,
+        a.id, a.name, a.content, a.severity, a.type, a.hostname, a.application, a.status, a.repeat_count, a.start_time, a.end_time,
         a.acknowledged_by, a.rule_id, a.action, a.create_date, a.update_date
     </sql>
 

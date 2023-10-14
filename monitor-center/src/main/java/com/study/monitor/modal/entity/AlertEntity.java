@@ -12,7 +12,7 @@ public class AlertEntity {
     @TableId(type = IdType.AUTO)
     private Integer id;
     private String name;
-    private String description;
+    private String content;
     private String severity;
     private String type;
     private String hostname;
@@ -43,12 +43,12 @@ public class AlertEntity {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getContent() {
+        return content;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getSeverity() {

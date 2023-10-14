@@ -77,7 +77,7 @@ CREATE TABLE monitoring_rule_channel (
 CREATE TABLE alert (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    description VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
     severity VARCHAR(20) NOT NULL,
     type VARCHAR(50) NOT NULL, -- LOG_ALERT, PROCESS_ALERT
     hostname VARCHAR(100) NOT NULL,

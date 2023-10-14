@@ -338,7 +338,6 @@ const AlertPage = () => {
                   <th>Type</th>
                   <th>Hostname</th>
                   <th>Application</th>
-                  <th>Description</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -354,7 +353,6 @@ const AlertPage = () => {
                     <td>{alert.type}</td>
                     <td>{alert.hostname}</td>
                     <td>{alert.application}</td>
-                    <td>{alert.description}</td>
                     <td>{alert.status}</td>
                     <td>
                       <Button variant="primary" onClick={() => handleEditAlert(alert.id)}>View</Button>{' '}

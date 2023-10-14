@@ -5,38 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c06b8968-018b-40ed-8dd1-70e4e90cc5aa" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/modal/dto/AlertDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/AlertController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/mapper/AlertMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/entity/AlertEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/request/AlertQO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/AlertService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/AlertServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/alert_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/exception/BreakLoopException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/util/LevenshteinUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/accessor/MonitorCenterResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/accessor/MonitorCenterResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/domain/MonitoringRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/domain/MonitoringRule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/MonitorAgentApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/MonitorAgentApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/modal/dto/AlertDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/modal/dto/AlertDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/monitor/impl/LogMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/monitor/impl/LogMonitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/monitor/impl/ProcessMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/java/com/study/monitor/monitor/impl/ProcessMonitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/RuleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/RuleController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/mapper/MonitoringRuleMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/mapper/MonitoringRuleMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/entity/ChannelEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/entity/ChannelEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/entity/MonitoringRuleEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/entity/MonitoringRuleEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/request/RuleQO.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/request/RuleQO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/MonitoringRuleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/MonitoringRuleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/MonitoringRuleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/MonitoringRuleServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/monitoring_rule_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/monitoring_rule_mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/server_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/server_mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-agent/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-agent/src/test/java/com/study/monitor/LevenshteinTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-agent/src/test/java/com/study/monitor/LevenshteinTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/entity/AlertEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/entity/AlertEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/AlertServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/AlertServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/alert_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/alert_mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/monitor-center/src/main/resources/static/sql/01_ddl.sql" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/static/sql/01_ddl.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/resources/static/sql/03_test.sql" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/static/sql/03_test.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/components/RuleModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/components/RuleModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/components/Sidebar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/components/Sidebar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/NotificationChannelPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/NotificationChannelPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/RulePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/RulePage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/ServerPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/ServerPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/AlertPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/AlertPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/Main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/Main.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,11 +78,11 @@
       <recent name="com.study.monitor.modal.response" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.study.monitor.util" />
       <recent name="com.study.monitor.modal.dto" />
       <recent name="com.study.monitor.modal.request" />
       <recent name="com.study.monitor.controller" />
       <recent name="com.study.monitor.service" />
-      <recent name="com.study.monitor.mapper" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -109,7 +93,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Application.DiscoveryServiceApplication">
+  <component name="RunManager" selected="JUnit.LevenshteinTest.testLongLog">
     <configuration name="DiscoveryServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.study.discovery.DiscoveryServiceApplication" />
       <module name="monitor-discovery-service" />
@@ -149,7 +133,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LevenshteinTest.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="LevenshteinTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="monitor-agent" />
       <extension name="coverage">
         <pattern>
@@ -159,7 +143,23 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.study.monitor" />
       <option name="MAIN_CLASS_NAME" value="com.study.monitor.LevenshteinTest" />
-      <option name="METHOD_NAME" value="test" />
+      <option name="METHOD_NAME" value="testLongLog" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LevenshteinTest.testLongLog" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="monitor-agent" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.study.monitor.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.study.monitor" />
+      <option name="MAIN_CLASS_NAME" value="com.study.monitor.LevenshteinTest" />
+      <option name="METHOD_NAME" value="testLongLog" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -169,14 +169,16 @@
       <item itemvalue="Application.DiscoveryServiceApplication" />
       <item itemvalue="Application.MonitorAgentApplication" />
       <item itemvalue="Application.MonitorCenterApplication" />
-      <item itemvalue="JUnit.LevenshteinTest.test" />
+      <item itemvalue="JUnit.LevenshteinTest" />
+      <item itemvalue="JUnit.LevenshteinTest.testLongLog" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.MonitorAgentApplication" />
         <item itemvalue="Application.MonitorCenterApplication" />
+        <item itemvalue="JUnit.LevenshteinTest.testLongLog" />
+        <item itemvalue="JUnit.LevenshteinTest" />
         <item itemvalue="Application.DiscoveryServiceApplication" />
-        <item itemvalue="JUnit.LevenshteinTest.test" />
       </list>
     </recent_temporary>
   </component>

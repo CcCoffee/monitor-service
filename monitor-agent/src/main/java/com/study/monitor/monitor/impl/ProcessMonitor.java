@@ -98,7 +98,7 @@ public class ProcessMonitor implements Monitor {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String alertReason = "Process not exists";
         alert.setName(String.format("[%s][%s][%s] - %s", simpleDateFormat.format(new Date()), serverRulesDTO.getHostname(), rule.getApplication(), alertReason));
-        alert.setDescription(String.format("[%s][%s][%s] - %s", simpleDateFormat.format(new Date()), serverRulesDTO.getHostname(), rule.getApplication(), alertReason));
+        alert.setContent(String.format("[%s][%s][%s] - %s", simpleDateFormat.format(new Date()), serverRulesDTO.getHostname(), rule.getApplication(), alertReason));
         alert.setHostname(serverRulesDTO.getHostname());
         alert.setRuleId(rule.getId());
         monitorCenterResource.createAlert(alert);
