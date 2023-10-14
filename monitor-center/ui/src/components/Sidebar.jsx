@@ -12,7 +12,7 @@ const Sidebar = () => {
   }
 
   const isNavLinkActive = (path) => {
-    return location.pathname === path ? 'active' : '';
+    return location.pathname.startsWith(path) ? 'active' : '';
   }
 
   return (
@@ -38,12 +38,12 @@ const Sidebar = () => {
           </Nav.Link>
         </Nav.Item>
         {/* 显示历史的警报列表，包括警报级别、时间戳和其他详细信息。 */}
-        <Nav.Item>
+        {/* <Nav.Item>
           <Nav.Link href="/rule2" className={`nav-link text-white d-flex align-items-center ${isNavLinkActive('/rule2')}`} tabIndex={2}>
             <ClockHistory className="bi pe-none me-2" size={16} />
             Historical Alerts
           </Nav.Link>
-        </Nav.Item>
+        </Nav.Item> */}
         <Nav.Item>
           <Nav.Link href="/rule" className={`nav-link text-white d-flex align-items-center ${isNavLinkActive('/rule')}`} tabIndex={3}>
             <Gear className="bi pe-none me-2" size={16} />

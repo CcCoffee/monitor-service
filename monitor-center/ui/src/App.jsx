@@ -6,6 +6,7 @@ import RulePage from './pages/RulePage'
 import ServerPage from './pages/ServerPage'
 import NotificationChannelPage from './pages/NotificationChannelPage'
 import AlertPage from './pages/AlertPage'
+import AlertViewPage from './pages/AlertViewPage'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/server" element={<ServerPage />} />
           <Route path="/channel" element={<NotificationChannelPage />} />
           <Route path="/alert" element={<AlertPage />} />
+          <Route path="/alert/:id" element={<AlertViewPage />} />
         </Route>
       </Routes>
     </Router>

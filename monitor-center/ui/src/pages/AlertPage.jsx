@@ -4,6 +4,7 @@ import MyPagination from '../components/MyPagination';
 import './AlertPage.css'
 // import AlertModal from '../components/AlertModal';
 import {notifyFailure, notifySuccess} from '../utils/ToastUtil'
+import { useNavigate } from 'react-router-dom';
 
 const AlertPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,6 +28,8 @@ const AlertPage = () => {
     hostname: "",
     description: ""
   });
+
+  const navigate = useNavigate();
 
   // Fetch alerts and alerts from the backend
   useEffect(() => {
@@ -103,19 +106,6 @@ const AlertPage = () => {
         console.error('An error occurred while fetching servers:', error);
         // TODO: 处理异常情况，如显示错误消息等
       });
-  };
-
-  const handleAlertInputChange = (event) => {
-    const { name, value } = event.target;
-    setSelectedAlert((prevAlert) => ({
-      ...prevAlert,
-      [name]: value,
-    }));
-  };
-
-  const handleShowDeleteConfirmation = (alertId) => {
-    setShowDeleteConfirmation(true);
-    setDeleteAlertId(alertId);
   };
 
   const handleConfirmDelete = () => {
@@ -202,58 +192,9 @@ const AlertPage = () => {
     setResetFilters(false);
   };
 
-  const handleEditAlert = (alertId) => {
-    // Find the alert with the given alertId from the alerts state
-    const alert = alerts.find((alert) => alert.id === alertId);
-    // Perform deep cloning of the alert object
-    const clonedAlert = JSON.parse(JSON.stringify(alert));
-    setSelectedAlert(clonedAlert);
-    setShowModal(true);
-  };
-
-  const handleDeleteAlert = (alertId) => {
-    handleShowDeleteConfirmation(alertId);
-  };
-
-  const handleAddAlert = () => {
-    setSelectedAlert(newAlert);
-    setShowModal(true);
-  };
-
-  const handleSaveAlert = async () => {
-    console.log("handleSaveAlert");
-    try {
-      const response = await fetch("http://localhost:8090/alerts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(selectedAlert),
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        if (data.code === 200) {
-          console.log("Alert saved successfully");
-          notifySuccess()
-          setShowModal(false);
-          fetchAlerts(currentPage, pageSize);
-        } else {
-          console.error(data.message);
-          // TODO: 处理保存失败的情况，如显示错误消息等
-          notifyFailure("Save alert Failed", data.message);
-        }
-      } else {
-        console.error("Failed to save alert");
-        // TODO: 处理保存失败的情况，如显示错误消息等
-        notifyFailure();
-      }
-    } catch (error) {
-      console.error("An error occurred while saving alert:", error);
-      // TODO: 处理异常情况，如显示错误消息等
-      notifyFailure();
-    }
-  };
+  const navigateToAlertViewPage = (alert) => {
+    navigate(`/alert/${alert.id}`);
+  }
 
   return (
       <Container className='h-100 w-100 py-2'>
@@ -355,10 +296,9 @@ const AlertPage = () => {
                     <td>{alert.application}</td>
                     <td>{alert.status}</td>
                     <td>
-                      <Button variant="primary" onClick={() => handleEditAlert(alert.id)}>View</Button>{' '}
-                      {alert.status === 'Open'?<Button variant="success" onClick={() => handleDeleteAlert(alert.id)}>Ackownleage</Button>:<></>}
-                      {alert.status === 'Acknowledged'?<Button variant="danger" onClick={() => handleDeleteAlert(alert.id)}>Close</Button>:<></>}
-                      
+                      <Button variant="primary" onClick={() => navigateToAlertViewPage(alert)}>View</Button>{' '}
+                      {alert.status === 'Open'?<Button variant="success" onClick={() =>{}}>Ackownleage</Button>:<></>}
+                      {alert.status === 'Acknowledged'?<Button variant="danger" onClick={() => {}}>Close</Button>:<></>}
                     </td>
                   </tr>
                 ))}
