@@ -3,7 +3,6 @@ package com.study.monitor.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.monitor.mapper.AlertMapper;
 import com.study.monitor.modal.entity.*;
 import com.study.monitor.modal.json.EmailNotificationContent;
@@ -16,30 +15,31 @@ import com.study.monitor.service.NotificationService;
 import com.study.monitor.util.LevenshteinUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class AlertServiceImpl  extends ServiceImpl<AlertMapper, AlertEntity> implements AlertService {
+public class AlertServiceImpl extends ServiceImpl<AlertMapper, AlertEntity> implements AlertService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AlertServiceImpl.class);
 
     private final MonitoringRuleService monitoringRuleService;
     private final ChannelService channelService;
     private final NotificationService notificationService;
-    private final ObjectMapper objectMapper;
 
     public AlertServiceImpl(MonitoringRuleService monitoringRuleService, ChannelService channelService,
-                            NotificationService notificationService, ObjectMapper objectMapper) {
+                            NotificationService notificationService) {
         this.monitoringRuleService = monitoringRuleService;
         this.channelService = channelService;
         this.notificationService = notificationService;
-        this.objectMapper = objectMapper;
     }
+
     @Override
     public IPage<AlertEntity> selectMyPage(Page<ServerEntity> page, AlertQO alertQO) {
         return this.baseMapper.selectMyPage(page, alertQO);
@@ -80,7 +80,7 @@ public class AlertServiceImpl  extends ServiceImpl<AlertMapper, AlertEntity> imp
                 populateAndInsertAlert(alert, rule);
                 sendNotification(alert, rule);
                 // TODO send notification and save the notification entity
-                 return true;
+                return true;
             }
         }
     }
@@ -111,7 +111,7 @@ public class AlertServiceImpl  extends ServiceImpl<AlertMapper, AlertEntity> imp
         notificationEntity.setAlertId(alert.getId());
         notificationEntity.setChannelId(channelId);
         Map<String, Object> content = new LinkedHashMap<>();
-        if(channelType.equals("EMAIL")) {
+        if (channelType.equals("EMAIL")) {
             content.put("toEmailAddressList", emailNotificationContent.getToEmailAddressList());
             content.put("ccEmailAddressList", emailNotificationContent.getCcEmailAddressList());
             content.put("subject", emailNotificationContent.getSubject());
@@ -138,7 +138,7 @@ public class AlertServiceImpl  extends ServiceImpl<AlertMapper, AlertEntity> imp
         return ResponseEntity.ok().build();
     }
 
-    private AlertEntity populateAndInsertAlert(AlertEntity alert, MonitoringRuleEntity rule) {
+    private void populateAndInsertAlert(AlertEntity alert, MonitoringRuleEntity rule) {
         Date now = new Date();
         alert.setId(null);
         alert.setStatus("Open");
@@ -151,11 +151,20 @@ public class AlertServiceImpl  extends ServiceImpl<AlertMapper, AlertEntity> imp
         alert.setCreateDate(now);
         alert.setUpdateDate(now);
         this.save(alert);
-        return alert;
     }
 
     @Override
     public List<String> getAllApplicationName(AlertQO alertQO) {
         return this.baseMapper.getAllApplicationName(alertQO);
+    }
+
+    @Override
+    public Boolean updateStatus(Integer alertId, String status) {
+        AlertEntity alertEntity = this.getById(alertId);
+        alertEntity.setStatus(status);
+        if (status.equalsIgnoreCase("Acknowledged")) {
+            alertEntity.setAcknowledgedBy("admin");
+        }
+        return this.saveOrUpdate(alertEntity);
     }
 }

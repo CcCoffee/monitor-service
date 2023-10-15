@@ -4,7 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c06b8968-018b-40ed-8dd1-70e4e90cc5aa" name="Changes" comment="" />
+    <list default="true" id="c06b8968-018b-40ed-8dd1-70e4e90cc5aa" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/NotificationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/ui/src/components/NotificationModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/AlertViewPage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/AlertController.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/controller/AlertController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/mapper/NotificationMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/mapper/NotificationMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/entity/NotificationEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/entity/NotificationEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/request/NotificationQO.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/modal/request/NotificationQO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/AlertService.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/AlertService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/NotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/NotificationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/AlertServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/AlertServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/NotificationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/java/com/study/monitor/service/impl/NotificationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/notification_mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/src/main/resources/mapper/notification_mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/components/ChannelModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/components/ChannelModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/components/RuleModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/components/RuleModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/AlertPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/AlertPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/AlertViewPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/AlertViewPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/NotificationChannelPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/NotificationChannelPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/RulePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/RulePage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor-center/ui/src/pages/ServerPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/monitor-center/ui/src/pages/ServerPage.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -157,8 +179,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MonitorAgentApplication" />
         <item itemvalue="Application.MonitorCenterApplication" />
+        <item itemvalue="Application.MonitorAgentApplication" />
         <item itemvalue="JUnit.LevenshteinTest.testLongLog" />
         <item itemvalue="JUnit.LevenshteinTest" />
         <item itemvalue="Application.DiscoveryServiceApplication" />

@@ -15,6 +15,8 @@ public interface NotificationService extends IService<NotificationEntity> {
 
     IPage<NotificationEntity> selectMyPage(Page<NotificationEntity> page, NotificationQO notificationQO);
 
+    List<String> selectNotificationChannelTypes(Integer alertId);
+
 //    Boolean saveOrUpdateEntity(NotificationEntity alertEntity);
 
 }

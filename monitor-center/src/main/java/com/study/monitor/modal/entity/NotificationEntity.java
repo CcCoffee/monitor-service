@@ -42,6 +42,9 @@ public class NotificationEntity {
     @TableField("update_date")
     private Date updateDate;
 
+    @TableField(value = "channel", exist = false)
+    private ChannelEntity channel;
+
     public Long getId() {
         return id;
     }
@@ -112,6 +115,14 @@ public class NotificationEntity {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public ChannelEntity getChannel() {
+        return channel;
+    }
+
+    public void setChannel(ChannelEntity channel) {
+        this.channel = channel;
     }
 
     @Override

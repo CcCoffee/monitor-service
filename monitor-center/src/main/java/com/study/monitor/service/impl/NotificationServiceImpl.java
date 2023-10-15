@@ -9,10 +9,17 @@ import com.study.monitor.modal.request.NotificationQO;
 import com.study.monitor.service.NotificationService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, NotificationEntity> implements NotificationService {
     @Override
     public IPage<NotificationEntity> selectMyPage(Page<NotificationEntity> page, NotificationQO notificationQO) {
-        return null;
+        return this.baseMapper.selectMyPage(page, notificationQO);
+    }
+
+    @Override
+    public List<String> selectNotificationChannelTypes(Integer alertId) {
+        return this.baseMapper.selectNotificationChannelTypes(alertId);
     }
 }

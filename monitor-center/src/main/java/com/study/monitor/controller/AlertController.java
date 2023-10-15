@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.study.monitor.modal.entity.AlertEntity;
 import com.study.monitor.modal.entity.ServerEntity;
-import com.study.monitor.modal.entity.ServerMonitoringRuleEntity;
 import com.study.monitor.modal.request.AlertQO;
-import com.study.monitor.modal.request.RuleQO;
-import com.study.monitor.modal.request.ServerQO;
 import com.study.monitor.modal.response.ApiResponse;
 import com.study.monitor.service.AlertService;
 import org.springframework.web.bind.annotation.*;
@@ -42,16 +39,17 @@ public class AlertController {
         return ApiResponse.success(alertService.getAllApplicationName(alertQO));
     }
 
-//    @DeleteMapping("/{serverId}")
-//    public ApiResponse<Boolean> deleteById(@PathVariable(name = "serverId") Integer serverId){
-//        serverMonitoringRuleService.lambdaUpdate().eq(ServerMonitoringRuleEntity::getServerId, serverId).remove();
-//        return ApiResponse.success(serverService.removeById(serverId));
-//    }
-//
-//    @GetMapping("/all")
-//    public ApiResponse<List<ServerEntity>> findAll(@RequestParam(name = "ruleId", required = false) Integer ruleId) {
-//        ServerQO serverQO = new ServerQO();
-//        serverQO.setRuleId(ruleId);
-//        return ApiResponse.success(serverService.findByParams(serverQO));
-//    }
+    @GetMapping("/{alertId}")
+    public ApiResponse<AlertEntity> getById(@PathVariable(name = "alertId") Integer alertId){
+        return ApiResponse.success(alertService.getById(alertId));
+    }
+
+    @PatchMapping("/{alertId}/status")
+    public ApiResponse<Boolean> updateStatus(@PathVariable(name = "alertId") Integer alertId,
+                                             @RequestParam(name = "status") String status){
+        if (!status.equalsIgnoreCase("Acknowledged")  && !status.equalsIgnoreCase("Closed")) {
+            return ApiResponse.badRequest("Invalid status");
+        }
+        return ApiResponse.success(alertService.updateStatus(alertId, status));
+    }
 }

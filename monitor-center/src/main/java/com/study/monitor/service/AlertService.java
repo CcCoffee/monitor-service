@@ -17,4 +17,5 @@ public interface AlertService extends IService<AlertEntity> {
 
     List<String> getAllApplicationName(AlertQO alertQO);
 
+    Boolean updateStatus(Integer alertId, String status);
 }

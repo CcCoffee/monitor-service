@@ -15,7 +15,53 @@
         <result column="response_message" property="responseMessage" />
         <result column="create_date" property="createDate" />
         <result column="update_date" property="updateDate" />
+        <association property="channel" javaType="com.study.monitor.modal.entity.ChannelEntity" >
+            <id column="c_id" property="id" />
+            <result column="c_name" property="name" />
+            <result column="c_type" property="type" />
+            <result column="c_enabled" property="enabled" />
+        </association >
     </resultMap>
+
+    <sql id="notificationFields">
+        n.id, n.alert_id, n.channel_id, n.content, n.notification_time, n.response_code, n.response_message, n.create_date, n.update_date
+    </sql>
+
+    <select id="selectMyPage" resultMap="BaseResultMap" parameterType="com.study.monitor.modal.request.NotificationQO">
+        select
+        <include refid="notificationFields" />,
+        c.id as c_id, c.name as c_name, c.type as c_type, c.enabled as c_enabled
+        FROM notification n
+        LEFT JOIN channel c ON n.channel_id = c.id
+        <where>
+            <if test="notificationQO.alertId != null" >
+                and n.alert_id = #{notificationQO.alertId}
+            </if>
+            <if test="notificationQO.channelType != null and notificationQO.channelType != ''" >
+                and c.type = #{notificationQO.channelType}
+            </if>
+        </where>
+        ORDER BY n.notification_time desc
+    </select>
+
+    <select id="selectNotificationChannelTypes" resultType="String" parameterType="Integer">
+        select
+        distinct c.type
+        FROM notification n
+        LEFT JOIN channel c ON n.channel_id = c.id
+        <where>
+            <choose>
+                <when test="alertId != null">
+                    and n.alert_id = #{alertId}
+                </when>
+                <otherwise>
+                    and 1 = 0
+                </otherwise>
+            </choose>
+        </where>
+        ORDER BY c.type
+    </select>
+
 
 <!--    <insert id="insert" parameterType="com.study.monitor.modal.entity.NotificationEntity">-->
 <!--        INSERT INTO notification (alert_id, channel_contents, notification_time, response_code, response_message, create_date, update_date)-->

@@ -1,7 +1,12 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from './pages/Login';
-import Main from './pages/Main';
-import AgentStatus from './pages/AgentStatus';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom'
+import LoginPage from './pages/Login'
+import Main from './pages/Main'
+import AgentStatus from './pages/AgentStatus'
 import RulePage from './pages/RulePage'
 import ServerPage from './pages/ServerPage'
 import NotificationChannelPage from './pages/NotificationChannelPage'
@@ -19,10 +24,9 @@ function App() {
             <PrivateRoute>
               <Main />
             </PrivateRoute>
-          }
-        >
-          <Route index path="/" element={<AgentStatus />}/>
-          <Route index path="/agent-status" element={<AgentStatus />}/>
+          }>
+          <Route index path="/" element={<AgentStatus />} />
+          <Route index path="/agent-status" element={<AgentStatus />} />
           <Route path="/rule" element={<RulePage />} />
           <Route path="/server" element={<ServerPage />} />
           <Route path="/channel" element={<NotificationChannelPage />} />
@@ -31,17 +35,16 @@ function App() {
         </Route>
       </Routes>
     </Router>
-  );
+  )
 }
 
 const PrivateRoute = ({ children }) => {
-  const isAuthenticated = useAuth();
-  return isAuthenticated ? children : <Navigate to="/login" />;
-};
-
-function useAuth() {
-  console.log(localStorage.getItem('isLoggedIn') === 'true')
-  return localStorage.getItem('isLoggedIn') === 'true';
+  const isAuthenticated = useAuth()
+  return isAuthenticated ? children : <Navigate to="/login" />
 }
 
-export default App;
+function useAuth() {
+  return localStorage.getItem('isLoggedIn') === 'true'
+}
+
+export default App
