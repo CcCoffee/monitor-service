@@ -1,21 +1,26 @@
 import React, { useState } from 'react'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Alert } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios' // 确保已安装 axios
+// 导入图标库
+import { FaUser, FaLock, FaSignInAlt } from 'react-icons/fa'
+import './Login.css' // 新增：导入自定义CSS文件
 
 function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
   const navigate = useNavigate()
 
   const handleLogin = async (e) => {
     e.preventDefault()
+    setError('')
     try {
       const response = await axios.post('http://localhost:8090/login', {
         username,
         password,
       })
-      if (response.data.message === 'Login successful') {
+      if (response.status === 200) {
         localStorage.setItem('isLoggedIn', 'true')
         localStorage.setItem('username', response.data.username)
         navigate('/')
@@ -25,51 +30,57 @@ function Login() {
         'Login failed:',
         error.response?.data?.message || error.message
       )
-      // 这里可以添加错误提示给用户
+      setError('登录失败，请检查您的用户名和密码。')
     }
   }
 
   return (
-    <div>
-      <div className="d-flex justify-content-center align-items-center h-screen bg-gray-200 dark:bg-gray-900">
-        <div className="w-80 p-6 bg-white rounded-md shadow-md dark:bg-gray-800">
-          <h1 className="text-2xl font-bold text-center mb-4 dark:text-white">
-            Login
-          </h1>
-          <Form className="space-y-4" onSubmit={handleLogin}>
-            <Form.Group className="space-y-2">
-              <Form.Label htmlFor="adUsername" style={{ fontWeight: 'bold' }}>
-                AD Username
-              </Form.Label>
+    <div className="login-container">
+      <div className="login-form">
+        <h1 className="login-title">欢迎回来</h1>
+        {error && (
+          <Alert variant="danger" className="mb-4">
+            {error}
+          </Alert>
+        )}
+        <Form className="login-inputs" onSubmit={handleLogin}>
+          <Form.Group className="mb-3">
+            <div className="input-icon-wrapper">
+              <FaUser className="input-icon" />
               <Form.Control
                 id="adUsername"
-                placeholder="Enter your AD username"
+                placeholder="AD用户名"
                 required
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
-            </Form.Group>
-            <Form.Group className="space-y-2">
-              <Form.Label htmlFor="adPassword" style={{ fontWeight: 'bold' }}>
-                AD Password
-              </Form.Label>
+            </div>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <div className="input-icon-wrapper">
+              <FaLock className="input-icon" />
               <Form.Control
                 id="adPassword"
+                placeholder="AD密码"
                 required
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-            </Form.Group>
-            <Button
-              className="w-full mt-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200"
-              type="submit"
-              style={{ fontWeight: 'bold' }}>
-              Login
-            </Button>
-          </Form>
-        </div>
+            </div>
+          </Form.Group>
+          <Button className="login-button" type="submit">
+            <FaSignInAlt className="mr-2" />
+            登录
+          </Button>
+        </Form>
+        <p className="support-text">
+          遇到问题？{' '}
+          <a href="#" className="support-link">
+            联系IT支持
+          </a>
+        </p>
       </div>
     </div>
   )
