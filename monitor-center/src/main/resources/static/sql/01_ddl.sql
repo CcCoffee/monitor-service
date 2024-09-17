@@ -33,7 +33,7 @@ CREATE TABLE server_monitoring_rule (
     server_id INTEGER,
     monitoring_rule_id INTEGER,
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    update_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (server_id, monitoring_rule_id),
     FOREIGN KEY (server_id) REFERENCES server (id),
     FOREIGN KEY (monitoring_rule_id) REFERENCES monitoring_rule (id)
