@@ -4,7 +4,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: '*'
   endpoint:
     health:
       enabled: true
@@ -32,6 +32,9 @@ spring:
       map-underscore-to-camel-case: true
       cache-enabled: false
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  ldap:
+    urls: ldap://your-ad-server:389
+    base: dc=your-domain,dc=com
 logging:
   level:
     ROOT: INFO

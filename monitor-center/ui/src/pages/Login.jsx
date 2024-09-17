@@ -1,16 +1,32 @@
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios' // 确保已安装 axios
 
 function Login() {
-  useEffect(() => {
-    handleLogin()
-  }, [])
-
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const navigate = useNavigate()
-  const handleLogin = () => {
-    localStorage.setItem('isLoggedIn', 'true')
-    navigate('/')
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await axios.post('http://localhost:8090/login', {
+        username,
+        password,
+      })
+      if (response.data.message === 'Login successful') {
+        localStorage.setItem('isLoggedIn', 'true')
+        localStorage.setItem('username', response.data.username)
+        navigate('/')
+      }
+    } catch (error) {
+      console.error(
+        'Login failed:',
+        error.response?.data?.message || error.message
+      )
+      // 这里可以添加错误提示给用户
+    }
   }
 
   return (
@@ -20,7 +36,7 @@ function Login() {
           <h1 className="text-2xl font-bold text-center mb-4 dark:text-white">
             Login
           </h1>
-          <Form className="space-y-4">
+          <Form className="space-y-4" onSubmit={handleLogin}>
             <Form.Group className="space-y-2">
               <Form.Label htmlFor="adUsername" style={{ fontWeight: 'bold' }}>
                 AD Username
@@ -30,13 +46,21 @@ function Login() {
                 placeholder="Enter your AD username"
                 required
                 type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="space-y-2">
               <Form.Label htmlFor="adPassword" style={{ fontWeight: 'bold' }}>
                 AD Password
               </Form.Label>
-              <Form.Control id="adPassword" required type="password" />
+              <Form.Control
+                id="adPassword"
+                required
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Form.Group>
             <Button
               className="w-full mt-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200"
