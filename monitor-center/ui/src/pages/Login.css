@@ -20,11 +20,22 @@
 }
 
 .login-title {
-  font-size: 1.875rem;
+  font-size: 2.5rem;
   font-weight: bold;
-  text-align: center;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.login-subtitle {
+  font-size: 1rem;
+  color: #666;
   margin-bottom: 1.5rem;
-  color: #1f2937;
+}
+
+.welcome-back {
+  font-size: 1.5rem;
+  color: #444;
+  margin-bottom: 1rem;
 }
 
 .login-inputs {

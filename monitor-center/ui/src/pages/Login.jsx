@@ -37,7 +37,9 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-form">
-        <h1 className="login-title">欢迎回来</h1>
+        <h1 className="login-title">Smartwatch</h1>
+        <p className="login-subtitle">智能应用进程和日志监控平台</p>
+        <h2 className="welcome-back">欢迎回来</h2>
         {error && (
           <Alert variant="danger" className="mb-4">
             {error}
