@@ -5,31 +5,25 @@ import { Eye, EyeOff, Activity } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
+  const [staffAD, setStaffAD] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [errors, setErrors] = useState({ email: '', password: '' })
+  const [errors, setErrors] = useState({ staffAD: '', password: '' })
 
   const validateForm = () => {
     let isValid = true
-    const newErrors = { email: '', password: '' }
+    const newErrors = { staffAD: '', password: '' }
 
-    if (!email) {
-      newErrors.email = 'Email is required'
-      isValid = false
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Email is invalid'
+    if (!staffAD) {
+      newErrors.staffAD = 'Staff AD is required'
       isValid = false
     }
 
     if (!password) {
       newErrors.password = 'Password is required'
-      isValid = false
-    } else if (password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters'
       isValid = false
     }
 
@@ -41,7 +35,7 @@ export default function LoginPage() {
     e.preventDefault()
     if (validateForm()) {
       // Implement login logic here
-      console.log('Login submitted', { email, password })
+      console.log('Login submitted', { staffAD, password })
     }
   }
 
@@ -67,20 +61,20 @@ export default function LoginPage() {
         {/* Login card */}
         <Card className="w-full max-w-md relative z-10 bg-white/90 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">Login to SmartWatch</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center">Staff Login</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="staffAD">Staff AD</Label>
                 <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    id="staffAD"
+                    type="text"
+                    placeholder="Enter your Staff AD"
+                    value={staffAD}
+                    onChange={(e) => setStaffAD(e.target.value)}
                 />
-                {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
+                {errors.staffAD && <p className="text-sm text-red-500">{errors.staffAD}</p>}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
@@ -116,17 +110,6 @@ export default function LoginPage() {
               </Button>
             </form>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-2 text-center text-sm text-gray-600">
-            <a href="#" className="hover:underline">
-              Forgot password?
-            </a>
-            <span>
-            Don't have an account?{' '}
-              <a href="#" className="font-semibold text-primary hover:underline">
-              Create new account
-            </a>
-          </span>
-          </CardFooter>
         </Card>
       </div>
   )
